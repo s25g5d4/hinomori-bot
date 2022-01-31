@@ -1,0 +1,11 @@
+{
+  "name": "hinomori-bot",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "s25g5d4 <s25g5d4@gmail.com> (https://github.com/s25g5d4/)",
+  "license": "MIT"
+}
