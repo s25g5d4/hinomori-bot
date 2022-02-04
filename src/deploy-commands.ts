@@ -17,7 +17,7 @@ const commands = [
         .addStringOption((option) =>
           option
             .setName("type")
-            .setDescription("跑者 (r) 或幫手 (h)")
+            .setDescription("跑者 (runner) 或幫手 (helper)")
             .setRequired(true)
             .addChoices([
               ["跑者", "r"],
@@ -34,7 +34,7 @@ const commands = [
             .setRequired(true)
         )
         .addNumberOption((option) =>
-          option.setName("index").setDescription("設定檔編號 (預設為 1)")
+          option.setName("index").setDescription("設定檔編號 (1~10，預設為 1)")
         )
     ),
 ].map((command) => command.toJSON());

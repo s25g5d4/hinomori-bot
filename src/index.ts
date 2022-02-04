@@ -56,6 +56,6 @@ async function main() {
 main();
 
 /**
-/update_profile type:r power:232477 card1:130 card2:115 card3:110 card4:110 card5:110
-/update_profile type:r power:261020 card1:130 card2:115 card3:110 card4:100 card5:100 index:2
+/profile update type:跑者 power:232477 cards:130,115,110,110,110
+/profile update type:幫手 power:261020 cards:130,115,110,100,100 index:2
 */
