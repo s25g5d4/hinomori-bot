@@ -8,31 +8,34 @@ const commands = [
     .setName("ping")
     .setDescription("Replies with pong!"),
   new SlashCommandBuilder()
-    .setName("update_profile")
-    .setDescription("update profile")
-    .addStringOption((option) =>
-      option.setName("type").setDescription("Runner or helper")
-    )
-    .addNumberOption((option) =>
-      option.setName("card1").setDescription("Card 1 ratio")
-    )
-    .addNumberOption((option) =>
-      option.setName("card2").setDescription("Card 2 ratio")
-    )
-    .addNumberOption((option) =>
-      option.setName("card3").setDescription("Card 3 ratio")
-    )
-    .addNumberOption((option) =>
-      option.setName("card4").setDescription("Card 4 ratio")
-    )
-    .addNumberOption((option) =>
-      option.setName("card5").setDescription("Card 5 ratio")
-    )
-    .addNumberOption((option) =>
-      option.setName("power").setDescription("overall power")
-    )
-    .addNumberOption((option) =>
-      option.setName("index").setDescription("profile index (from 1 to 10)")
+    .setName("profile")
+    .setDescription("卡片編組指令")
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("update")
+        .setDescription("更新卡片編組")
+        .addStringOption((option) =>
+          option
+            .setName("type")
+            .setDescription("跑者 (r) 或幫手 (h)")
+            .setRequired(true)
+            .addChoices([
+              ["跑者", "r"],
+              ["幫手", "h"],
+            ])
+        )
+        .addNumberOption((option) =>
+          option.setName("power").setDescription("綜合力").setRequired(true)
+        )
+        .addStringOption((option) =>
+          option
+            .setName("cards")
+            .setDescription("卡片倍率(以 , 分開，範例：130,110,110,100,100)")
+            .setRequired(true)
+        )
+        .addNumberOption((option) =>
+          option.setName("index").setDescription("設定檔編號 (預設為 1)")
+        )
     ),
 ].map((command) => command.toJSON());
 
