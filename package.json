@@ -10,7 +10,8 @@
     "lint:code": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier -w .",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "clean": "rm -r ./build/*"
   },
   "author": "s25g5d4 <s25g5d4@gmail.com> (https://github.com/s25g5d4/)",
   "license": "MIT",
