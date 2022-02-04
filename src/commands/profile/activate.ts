@@ -1,5 +1,5 @@
 import { Command } from "./../command";
-import { formatUserProfileRecord } from "./../../models/user-profile";
+import { formatUserProfileWithIndex } from "./../../models/user-profile";
 import { CommandInteraction } from "discord.js";
 import { UserProfileStore } from "./../../store/user-profiles";
 
@@ -66,9 +66,9 @@ export class ActivateProfile implements Command {
 
     await this.interaction.reply(
       [
-        `已更新使用中編組編號。`,
+        `已更新使用中編組編號。使用中編組：`,
         "```",
-        formatUserProfileRecord(newRecord),
+        formatUserProfileWithIndex(profile, index),
         "```",
       ].join("\n")
     );

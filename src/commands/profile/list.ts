@@ -51,13 +51,14 @@ export class ListProfile implements Command {
       return await this.noProfile();
     }
 
-    await this.interaction.reply(
-      [
+    await this.interaction.reply({
+      content: [
         `${user} 的編組資料：`,
         "```",
         formatUserProfileRecord(record),
         "```",
-      ].join("\n")
-    );
+      ].join("\n"),
+      allowedMentions: { users: [] },
+    });
   }
 }
