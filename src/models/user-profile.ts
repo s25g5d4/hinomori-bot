@@ -37,5 +37,5 @@ export function formatUserProfileRecord(record: UserProfileRecord) {
     .map((p, i) => p && profileString(p, i))
     .filter((p) => !!p);
 
-  return [`使用中的設定: ${record.active + 1}`, ...profileLines].join("\n");
+  return [`使用中的編組: ${record.active + 1}`, ...profileLines].join("\n");
 }
