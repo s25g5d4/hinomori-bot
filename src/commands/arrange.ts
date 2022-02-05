@@ -21,8 +21,8 @@ interface PlayerProfilesAndRatioOrder {
 }
 
 export class ArrangePlayers implements Command {
-  private static optimizedOrder5 = [4, 3, 0, 1, 2] as const;
-  private static optimizedOrder4 = [3, 0, 1, 2] as const;
+  private static optimizedOrder5 = [2, 1, 0, 3, 4] as const;
+  private static optimizedOrder4 = [2, 1, 0, 3] as const;
 
   constructor(
     private profileStore: UserProfileStore,
