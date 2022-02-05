@@ -27,7 +27,8 @@ export class UpdateProfile implements Command {
   ) {}
 
   private async badRequest() {
-    await this.interaction.reply("格式不正確");
+    logger.info({ reason: "bad request" }, "update failed");
+    await this.interaction.reply("格式不正確。");
   }
 
   private async parseOptions(): Promise<UpdateProfileOptions> {

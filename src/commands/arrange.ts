@@ -9,6 +9,7 @@ import {
 } from "../models/user-profile";
 
 const errParseOptions = new Error("failed to parse options");
+const errIncorrectPlayerNumbers = new Error("incorrect player numbers");
 
 interface ArrangePlayersOptions {
   players: User[];
@@ -29,16 +30,24 @@ export class ArrangePlayers implements Command {
   ) {}
 
   private async badRequest() {
-    await this.interaction.reply("格式不正確");
+    logger.info({ reason: "bad request" }, "arrange failed");
+    await this.interaction.reply("格式不正確。");
   }
 
   private async playerNotEnough() {
+    logger.info({ reason: "no enough players" }, "arrange failed");
     await this.interaction.reply("玩家人數不足四人，不建議開協力 LIVE。");
   }
 
   private async playersDoNotHaveActiveProfile(players: User[]) {
+    logger.info(
+      { reason: "some players do not have valid active profile" },
+      "arrange failed"
+    );
     await this.interaction.reply({
-      content: `${players.join(" ")} 沒有設定編組。`,
+      content: `${players.join(
+        " "
+      )} 沒有設定編組。請檢查使用者是否已新增編組、使用中編組設定是否正確。`,
       allowedMentions: {
         users: [],
       },
@@ -103,7 +112,7 @@ export class ArrangePlayers implements Command {
       case ArrangePlayers.optimizedOrder5.length:
         return ArrangePlayers.optimizedOrder5.map((i) => ratioOrder[i]);
       default:
-        throw new Error("incorrect player number");
+        throw errIncorrectPlayerNumbers;
     }
   }
 

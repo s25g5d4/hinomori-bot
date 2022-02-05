@@ -17,16 +17,19 @@ export class RemoveProfile implements Command {
   ) {}
 
   private async badRequest() {
-    await this.interaction.reply("格式不正確");
+    logger.info({ reason: "bad request" }, "remove failed");
+    await this.interaction.reply("格式不正確。");
   }
 
-  private async noProfile() {
+  private async noRecord() {
+    logger.info({ reason: "user record not found" }, "activate failed");
     await this.interaction.reply(
       "沒有編組資料。請先使用 /profile update 指令新增編組。"
     );
   }
 
   private async emptyProfileSelected() {
+    logger.info({ reason: "selected profile is empty" }, "remove failed");
     await this.interaction.reply("選擇的編組是空白的。");
   }
 
@@ -60,7 +63,7 @@ export class RemoveProfile implements Command {
 
     const record = await this.profileStore.get(user.id);
     if (!record || record.profiles.every((p) => p == null)) {
-      return await this.noProfile();
+      return await this.noRecord();
     }
 
     const i = index - 1;
