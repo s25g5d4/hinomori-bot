@@ -2,6 +2,7 @@ import { Command } from "./../command";
 import { formatUserProfileRecord } from "./../../models/user-profile";
 import { CommandInteraction, User } from "discord.js";
 import { UserProfileStore } from "./../../store/user-profiles";
+import { logger } from "../../logger";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -35,22 +36,35 @@ export class ListProfile implements Command {
   }
 
   async executeCommand(): Promise<void> {
+    logger.debug("list profile");
     let options: ListProfileOptions;
     try {
       options = await this.parseOptions();
     } catch (e) {
       if (e === errParseOptions) {
+        logger.warn({ command: this.interaction.toString() }, e.message);
         return await this.badRequest();
       }
       throw e;
     }
     const { user } = options;
+    logger.debug(
+      { options: { user: user.id }, user: user.id },
+      "remove profile options"
+    );
 
     const record = await this.profileStore.get(user.id);
     if (!record || record.profiles.every((p) => p == null)) {
       return await this.noProfile();
     }
 
+    const logPayload: { user: string; targetUser?: string } = {
+      user: this.interaction.user.id,
+    };
+    if (user.id !== this.interaction.user.id) {
+      logPayload.targetUser = user.id;
+    }
+    logger.info(logPayload, "profile listed");
     await this.interaction.reply({
       content: [
         `${user} 的編組資料：`,

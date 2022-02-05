@@ -18,6 +18,10 @@ export const userProfileRecords = new Map<string, UserProfileRecord>([
 export class UserProfileStore {
   private records = new Map<string, UserProfileRecord>();
 
+  async init(): Promise<void> {
+    return;
+  }
+
   async get(user: string): Promise<UserProfileRecord | null> {
     return this.records.get(user);
   }

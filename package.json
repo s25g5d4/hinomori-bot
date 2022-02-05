@@ -11,7 +11,8 @@
     "lint:fix": "eslint --fix .",
     "format": "prettier -w .",
     "build": "tsc -p .",
-    "clean": "rm -r ./build/*"
+    "clean": "rm -r ./build/*",
+    "start": "node ./build/index.js"
   },
   "author": "s25g5d4 <s25g5d4@gmail.com> (https://github.com/s25g5d4/)",
   "license": "MIT",
@@ -22,6 +23,7 @@
     "discord.js": "^13.6.0",
     "dotenv": "^15.0.0",
     "erlpack": "github:discord/erlpack",
+    "pino": "^7.6.5",
     "utf-8-validate": "^5.0.8",
     "zlib-sync": "^0.1.7"
   },

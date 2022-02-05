@@ -1,3 +1,4 @@
+import { logger } from "./../logger";
 import { Interaction, CommandInteraction } from "discord.js";
 import { CommandFactory } from "./factory";
 import { UserProfileStore } from "./../store/user-profiles";
@@ -43,12 +44,16 @@ export class Commander {
       return;
     }
 
+    logger.debug({ command: interaction.toString() }, "dispatching command");
     const cmd = this.dispatch(interaction);
     if (cmd == null) {
-      await interaction.reply("command unimplemented");
+      logger.warn({ command: interaction.toString() }, "unrecognized command");
+      await interaction.reply("未知的指令");
       return;
     }
 
+    logger.debug("executing command");
     await cmd.executeCommand(interaction);
+    logger.debug("executed command");
   }
 }

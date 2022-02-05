@@ -1,12 +1,19 @@
+import { config } from "./config";
+import { logger } from "./logger";
 import { Commander } from "./commands/commander";
 import { Server } from "./server";
 import { UserProfileStore } from "./store/user-profiles";
 
 async function main() {
+  logger.debug(`starting ${config.app}`);
+
   const profileStore = new UserProfileStore();
   const commander = new Commander(profileStore);
   const server = new Server(commander);
+
+  await profileStore.init();
   await server.init();
+  logger.info(`${config.app} started`);
 }
 
 main();

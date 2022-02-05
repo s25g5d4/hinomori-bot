@@ -1,3 +1,4 @@
+import { logger } from "./logger";
 import { Client, Intents } from "discord.js";
 import { Commander } from "./commands/commander";
 import { config } from "./config";
@@ -12,14 +13,20 @@ export class Server {
       });
 
       client.once("ready", () => {
-        console.log("Ready!");
+        logger.info("connected to discord");
         ok();
       });
 
-      client.on("interactionCreate", (interaction) =>
-        this.commander.execute(interaction)
-      );
+      client.on("interactionCreate", (interaction) => {
+        const { type, channelId, guildId, user } = interaction;
+        logger.info(
+          { interaction: { type, channelId, guildId, user: user.id } },
+          "interaction received"
+        );
+        this.commander.execute(interaction);
+      });
 
+      logger.debug("connecting to discord");
       client.login(config.token);
     });
   }

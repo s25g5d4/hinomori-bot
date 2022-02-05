@@ -9,6 +9,7 @@ import {
   UserProfileType,
 } from "../../models/user-profile";
 import { UserProfileStore } from "./../../store/user-profiles";
+import { logger } from "../../logger";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -85,20 +86,28 @@ export class UpdateProfile implements Command {
   }
 
   async executeCommand(): Promise<void> {
+    logger.debug("update profile");
+
     let options: UpdateProfileOptions;
     try {
       options = await this.parseOptions();
     } catch (e) {
       if (e === errParseOptions) {
+        logger.warn({ command: this.interaction.toString() }, e.message);
         return await this.badRequest();
       }
       throw e;
     }
     const { type, power, ratio, index } = options;
-    const user = this.interaction.user.id;
+    const { user } = this.interaction;
+    logger.debug(
+      { options: { type, power, ratio, index }, user: user.id },
+      "update profile options"
+    );
+
     const newProfile: UserProfile = { type, power, ratio };
 
-    let record = await this.profileStore.get(user);
+    let record = await this.profileStore.get(user.id);
     if (!record) {
       record = {
         profiles: Array(10).fill(null),
@@ -108,8 +117,9 @@ export class UpdateProfile implements Command {
     const newProfiles = [...record.profiles];
     newProfiles[index - 1] = newProfile;
     record = { ...record, profiles: newProfiles };
-    await this.profileStore.set(user, record);
+    await this.profileStore.set(user.id, record);
 
+    logger.info({ user: user.id }, "profile updated");
     await this.interaction.reply(
       [
         "已更新。你的編組資料：",

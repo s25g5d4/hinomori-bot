@@ -2,6 +2,7 @@ import { Command } from "./../command";
 import { formatUserProfileWithIndex } from "./../../models/user-profile";
 import { CommandInteraction } from "discord.js";
 import { UserProfileStore } from "./../../store/user-profiles";
+import { logger } from "../../logger";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -39,17 +40,23 @@ export class ActivateProfile implements Command {
   }
 
   async executeCommand(): Promise<void> {
+    logger.debug("activate profile");
     let options: ActivateProfileOptions;
     try {
       options = await this.parseOptions();
     } catch (e) {
       if (e === errParseOptions) {
+        logger.warn({ command: this.interaction.toString() }, e.message);
         return await this.badRequest();
       }
       throw e;
     }
     const { index } = options;
     const { user } = this.interaction;
+    logger.debug(
+      { options: { index }, user: user.id },
+      "activate profile options"
+    );
 
     const record = await this.profileStore.get(user.id);
     if (!record || record.profiles.every((p) => p == null)) {
@@ -64,6 +71,7 @@ export class ActivateProfile implements Command {
     const newRecord: typeof record = { ...record, active: index - 1 };
     await this.profileStore.set(user.id, newRecord);
 
+    logger.info({ user: user.id }, "profile activated");
     await this.interaction.reply(
       [
         `已更新使用中編組編號。使用中編組：`,

@@ -2,6 +2,7 @@ import { Command } from "./../command";
 import { formatUserProfileRecord } from "./../../models/user-profile";
 import { CommandInteraction } from "discord.js";
 import { UserProfileStore } from "./../../store/user-profiles";
+import { logger } from "../../logger";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -39,17 +40,23 @@ export class RemoveProfile implements Command {
   }
 
   async executeCommand(): Promise<void> {
+    logger.debug("remove profile");
     let options: RemoveProfileOptions;
     try {
       options = await this.parseOptions();
     } catch (e) {
       if (e === errParseOptions) {
+        logger.warn({ command: this.interaction.toString() }, e.message);
         return await this.badRequest();
       }
       throw e;
     }
     const { index } = options;
     const { user } = this.interaction;
+    logger.debug(
+      { options: { index }, user: user.id },
+      "remove profile options"
+    );
 
     const record = await this.profileStore.get(user.id);
     if (!record || record.profiles.every((p) => p == null)) {
@@ -67,6 +74,7 @@ export class RemoveProfile implements Command {
     const newRecord: typeof record = { ...record, profiles: newProfiles };
     await this.profileStore.set(user.id, newRecord);
 
+    logger.info({ user: user.id }, "profile removed");
     await this.interaction.reply(
       [
         `已移除選擇的編組。你的編組資料：`,
