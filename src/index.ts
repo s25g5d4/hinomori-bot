@@ -1,4 +1,4 @@
-import { FirebaseDB } from './store/db';
+import { FirebaseDB } from "./store/db";
 import { config } from "./config";
 import { logger } from "./logger";
 import { Commander } from "./commands/commander";

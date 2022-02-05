@@ -7,9 +7,9 @@ export interface UserProfileRecord {
 
 function activeProfilePrefix(p: string, i: number, active: number): string {
   if (i === active) {
-    return '*' + p;
+    return "*" + p;
   }
-  return ' ' + p;
+  return " " + p;
 }
 
 export function formatUserProfileRecord(record: UserProfileRecord) {

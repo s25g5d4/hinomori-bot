@@ -1,8 +1,8 @@
-import { FirebaseDB } from './db';
+import { FirebaseDB } from "./db";
 import { UserProfileRecord } from "../models/user-profile";
 
 export class UserProfileStore {
-  private readonly collectionName = 'user-profiles';
+  private readonly collectionName = "user-profiles";
   private collection: ReturnType<typeof this.db.db.collection>;
 
   constructor(private db: FirebaseDB) {}
