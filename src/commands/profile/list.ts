@@ -47,27 +47,22 @@ export class ListProfile implements Command {
       }
       throw e;
     }
-    const { user } = options;
+    const { user: targetUser } = options;
+    const { user } = this.interaction;
     logger.debug(
-      { options: { user: user.id }, user: user.id },
+      { options: { user: targetUser.id }, user: user.id },
       "remove profile options"
     );
 
-    const record = await this.profileStore.get(user.id);
+    const record = await this.profileStore.get(targetUser.id);
     if (!record || record.profiles.every((p) => p == null)) {
       return await this.noProfile();
     }
 
-    const logPayload: { user: string; targetUser?: string } = {
-      user: this.interaction.user.id,
-    };
-    if (user.id !== this.interaction.user.id) {
-      logPayload.targetUser = user.id;
-    }
-    logger.info(logPayload, "profile listed");
+    logger.info({ user, targetUser }, "profile listed");
     await this.interaction.reply({
       content: [
-        `${user} 的編組資料：`,
+        `${targetUser} 的編組資料：`,
         "```",
         formatUserProfileRecord(record),
         "```",
