@@ -163,7 +163,7 @@ export class ArrangePlayers implements Command {
     const profileLines = position.map((n, i) => {
       const profileString = formatUserProfile(profiles[n]);
       const isSkill6 = n === skill6Player ? "*" : "";
-      const prefix = `${isSkill6}${i}: `.padStart(4);
+      const prefix = `${isSkill6}${i + 1}: `.padStart(4);
       return `\`${prefix}${profileString}\` ${players[n]}`;
     });
 
