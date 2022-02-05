@@ -3,7 +3,7 @@ import { CommandInteraction, User } from "discord.js";
 import { UserProfileStore } from "./../store/user-profiles";
 import { logger } from "../logger";
 import {
-  formatUserProfileWithIndex,
+  formatUserProfile,
   UserProfile,
   UserProfileRecord,
 } from "../models/user-profile";
@@ -41,7 +41,10 @@ export class ArrangePlayers implements Command {
 
   private async playersDoNotHaveActiveProfile(players: User[]) {
     logger.info(
-      { reason: "some players do not have valid active profile" },
+      {
+        reason: "some players do not have valid active profile",
+        who: players.map((u) => u.id),
+      },
       "arrange failed"
     );
     await this.interaction.reply({
@@ -153,9 +156,15 @@ export class ArrangePlayers implements Command {
     }
     const { ratioOrder, profiles } = sortResult;
     const position = this.getPlayerPosition(ratioOrder);
+    const skill6Player = profiles.reduce(
+      (p, c, i) => (profiles[p].power > c.power ? p : i),
+      0
+    );
     const profileLines = position.map((n, i) => {
-      const profileString = formatUserProfileWithIndex(profiles[n], i, 1);
-      return `\`${profileString}\` ${players[n]}`;
+      const profileString = formatUserProfile(profiles[n]);
+      const isSkill6 = n === skill6Player ? "*" : "";
+      const prefix = `${isSkill6}${i}: `.padStart(4);
+      return `\`${prefix}${profileString}\` ${players[n]}`;
     });
 
     logger.info("players arranged");

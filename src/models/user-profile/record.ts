@@ -1,21 +1,21 @@
-import { formatUserProfileWithIndex, UserProfile } from "./profile";
+import { formatUserProfile, UserProfile } from "./profile";
 
 export interface UserProfileRecord {
   profiles: UserProfile[];
   active: number;
 }
 
-function activeProfilePrefix(p: string, i: number, active: number): string {
-  if (i === active) {
-    return "*" + p;
-  }
-  return " " + p;
+function addProfilePrefix(profile: string, i: number, active: number): string {
+  const displayIndex = (i + 1).toString();
+  const activeSign = i === active ? "*" : "";
+  const prefix = `${activeSign}${displayIndex}: `.padStart(5, " ");
+  return prefix + profile;
 }
 
 export function formatUserProfileRecord(record: UserProfileRecord) {
   const profileLines = record.profiles
-    .map((p, i) => p && formatUserProfileWithIndex(p, i))
-    .map((p, i) => p && activeProfilePrefix(p, i, record.active))
+    .map((p) => p && formatUserProfile(p))
+    .map((p, i) => p && addProfilePrefix(p, i, record.active))
     .filter((p) => !!p);
 
   return [`使用中的編組: *${record.active + 1}`, ...profileLines].join("\n");

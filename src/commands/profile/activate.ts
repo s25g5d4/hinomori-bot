@@ -1,5 +1,5 @@
 import { Command } from "./../command";
-import { formatUserProfileWithIndex } from "./../../models/user-profile";
+import { formatUserProfile } from "./../../models/user-profile";
 import { CommandInteraction } from "discord.js";
 import { UserProfileStore } from "./../../store/user-profiles";
 import { logger } from "../../logger";
@@ -80,7 +80,7 @@ export class ActivateProfile implements Command {
       [
         `已更新使用中編組編號。使用中編組：`,
         "```",
-        formatUserProfileWithIndex(profile, i),
+        `${index}: ${formatUserProfile(profile)}`,
         "```",
       ].join("\n")
     );
