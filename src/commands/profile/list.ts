@@ -61,7 +61,7 @@ export class ListProfile implements Command {
       return await this.noProfile();
     }
 
-    logger.info({ user, targetUser }, "profile listed");
+    logger.info({ user: user.id, targetUser: targetUser.id }, "profile listed");
     await this.interaction.reply({
       content: [
         `${targetUser} 的編組資料：`,
