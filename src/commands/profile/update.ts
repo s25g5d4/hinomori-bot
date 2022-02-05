@@ -40,7 +40,7 @@ export class UpdateProfile implements Command {
     try {
       type = convertToUserProfileType(typeString);
     } catch (e) {
-      console.error("failed to convert user profile type", e);
+      logger.error(e);
       throw errParseOptions;
     }
 
