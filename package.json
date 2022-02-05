@@ -11,7 +11,7 @@
     "lint:fix": "eslint --fix .",
     "format": "prettier -w .",
     "build": "tsc -p .",
-    "clean": "rm -r ./build/*",
+    "clean": "rm -rf ./build/*",
     "start": "node ./build/index.js",
     "prepare": "husky install"
   },
