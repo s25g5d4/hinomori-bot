@@ -1,4 +1,4 @@
-import { FirebaseDB } from './../db';
+import { FirebaseDB } from './db';
 import { UserProfileRecord } from "../models/user-profile";
 
 export class UserProfileStore {
