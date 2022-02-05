@@ -5,9 +5,6 @@ import { config } from "../config";
 
 const commands = [
   new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Replies with pong!"),
-  new SlashCommandBuilder()
     .setName("profile")
     .setDescription("卡片編組指令")
     .addSubcommand((subcommand) =>
@@ -78,6 +75,24 @@ const commands = [
             .setMinValue(1)
             .setMaxValue(10)
         )
+    ),
+  new SlashCommandBuilder()
+    .setName("arrange")
+    .setDescription("協力 LIVE 推車排位")
+    .addUserOption((option) =>
+      option.setName("player1").setDescription("玩家 1")
+    )
+    .addUserOption((option) =>
+      option.setName("player2").setDescription("玩家 2")
+    )
+    .addUserOption((option) =>
+      option.setName("player3").setDescription("玩家 3")
+    )
+    .addUserOption((option) =>
+      option.setName("player4").setDescription("玩家 4")
+    )
+    .addUserOption((option) =>
+      option.setName("player5").setDescription("玩家 5")
     ),
 ].map((command) => command.toJSON());
 

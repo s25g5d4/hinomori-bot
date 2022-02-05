@@ -17,6 +17,8 @@ export class Commander {
     switch (commandName) {
       case "profile":
         return this.dispatchProfileCommand(interaction);
+      case "arrange":
+        return this.factory.newArrangePlayers(interaction);
     }
 
     return null;
