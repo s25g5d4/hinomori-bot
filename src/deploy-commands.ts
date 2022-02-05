@@ -27,14 +27,14 @@ const commands = [
         .addNumberOption((option) =>
           option
             .setName("power")
-            .setDescription("綜合力")
+            .setDescription("綜合力 (輸入完整數字，範例：235401)")
             .setRequired(true)
             .setMinValue(0)
         )
         .addStringOption((option) =>
           option
             .setName("cards")
-            .setDescription("卡片倍率(以 , 分開，範例：130,110,110,100,100)")
+            .setDescription("卡片倍率 (以 , 分開，範例：130,110,110,100,100)")
             .setRequired(true)
         )
         .addNumberOption((option) =>
