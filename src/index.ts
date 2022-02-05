@@ -1,3 +1,4 @@
+import { FirebaseDB } from './db';
 import { config } from "./config";
 import { logger } from "./logger";
 import { Commander } from "./commands/commander";
@@ -7,10 +8,12 @@ import { UserProfileStore } from "./store/user-profiles";
 async function main() {
   logger.debug(`starting ${config.app}`);
 
-  const profileStore = new UserProfileStore();
+  const db = new FirebaseDB();
+  const profileStore = new UserProfileStore(db);
   const commander = new Commander(profileStore);
   const server = new Server(commander);
 
+  await db.init();
   await profileStore.init();
   await server.init();
   logger.info(`${config.app} started`);

@@ -23,6 +23,7 @@
     "discord.js": "^13.6.0",
     "dotenv": "^15.0.0",
     "erlpack": "github:discord/erlpack",
+    "firebase-admin": "^10.0.2",
     "pino": "^7.6.5",
     "utf-8-validate": "^5.0.8",
     "zlib-sync": "^0.1.7"

@@ -1,40 +1,31 @@
+import { FirebaseDB } from './../db';
 import { UserProfileRecord } from "../models/user-profile";
 
-/** example record
-export const userProfileRecords = new Map<string, UserProfileRecord>([
-    [
-        "exampleUser",
-        {
-        profiles: [
-            { type: "r", ratio: 4.67, power: 230541 },
-            ...Array(9).fill(null),
-        ],
-        active: 0,
-        },
-    ],
-]);
-*/
-
 export class UserProfileStore {
-  private records = new Map<string, UserProfileRecord>();
+  private readonly collectionName = 'user-profiles';
+  private collection: ReturnType<typeof this.db.db.collection>;
+
+  constructor(private db: FirebaseDB) {}
 
   async init(): Promise<void> {
+    this.collection = this.db.db.collection(this.collectionName);
     return;
   }
 
   async get(user: string): Promise<UserProfileRecord | null> {
-    return this.records.get(user);
+    const doc = await this.collection.doc(user).get();
+    if (!doc.exists) {
+      return null;
+    }
+    return doc.data() as UserProfileRecord;
   }
 
   async has(user: string): Promise<boolean> {
-    return this.records.has(user);
+    const doc = await this.collection.doc(user).get();
+    return doc.exists;
   }
 
   async set(user: string, record: UserProfileRecord): Promise<void> {
-    this.records.set(user, record);
-  }
-
-  async size(): Promise<number> {
-    return this.records.size;
+    await this.collection.doc(user).set(record);
   }
 }
