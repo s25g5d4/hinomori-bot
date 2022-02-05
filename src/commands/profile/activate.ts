@@ -63,12 +63,13 @@ export class ActivateProfile implements Command {
       return await this.noProfile();
     }
 
-    const profile = record.profiles[index - 1];
+    const i = index - 1;
+    const profile = record.profiles[i];
     if (profile == null) {
       return await this.emptyProfileSelected();
     }
 
-    const newRecord: typeof record = { ...record, active: index - 1 };
+    const newRecord: typeof record = { ...record, active: i };
     await this.profileStore.set(user.id, newRecord);
 
     logger.info({ user: user.id }, "profile activated");
@@ -76,7 +77,7 @@ export class ActivateProfile implements Command {
       [
         `已更新使用中編組編號。使用中編組：`,
         "```",
-        formatUserProfileWithIndex(profile, index),
+        formatUserProfileWithIndex(profile, i),
         "```",
       ].join("\n")
     );

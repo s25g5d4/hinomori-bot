@@ -115,7 +115,8 @@ export class UpdateProfile implements Command {
       };
     }
     const newProfiles = [...record.profiles];
-    newProfiles[index - 1] = newProfile;
+    const i = index - 1;
+    newProfiles[i] = newProfile;
     record = { ...record, profiles: newProfiles };
     await this.profileStore.set(user.id, record);
 

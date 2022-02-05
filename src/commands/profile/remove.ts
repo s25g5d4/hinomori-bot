@@ -63,13 +63,14 @@ export class RemoveProfile implements Command {
       return await this.noProfile();
     }
 
-    const profile = record.profiles[index - 1];
+    const i = index - 1;
+    const profile = record.profiles[i];
     if (profile == null) {
       return await this.emptyProfileSelected();
     }
 
     const newProfiles = [...record.profiles];
-    newProfiles[index - 1] = null;
+    newProfiles[i] = null;
 
     const newRecord: typeof record = { ...record, profiles: newProfiles };
     await this.profileStore.set(user.id, newRecord);
