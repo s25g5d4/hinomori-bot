@@ -19,6 +19,8 @@ export class Commander {
         return this.dispatchProfileCommand(interaction);
       case "arrange":
         return this.factory.newArrangePlayers(interaction);
+      case "arrange_ahead":
+        return this.factory.newArrangePlayers(interaction, false);
     }
 
     return null;

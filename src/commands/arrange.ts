@@ -1,5 +1,5 @@
 import { Command } from "./command";
-import { CommandInteraction, User } from "discord.js";
+import { CommandInteraction, MessageMentionOptions, User } from "discord.js";
 import { UserProfileStore } from "./../store/user-profiles";
 import { logger } from "../logger";
 import {
@@ -26,7 +26,8 @@ export class ArrangePlayers implements Command {
 
   constructor(
     private profileStore: UserProfileStore,
-    private interaction: CommandInteraction
+    private interaction: CommandInteraction,
+    private mention: boolean
   ) {}
 
   private async badRequest() {
@@ -141,7 +142,11 @@ export class ArrangePlayers implements Command {
     const { players } = options;
     const { user } = this.interaction;
     logger.debug(
-      { options: { players: players.map((p) => p.id) }, user: user.id },
+      {
+        options: { players: players.map((p) => p.id) },
+        mention: this.mention,
+        user: user.id,
+      },
       "arrange players options"
     );
 
@@ -166,15 +171,16 @@ export class ArrangePlayers implements Command {
       return `\`${prefix}${profileString}\` ${players[n].username}`;
     });
 
+    const allowedMentions: MessageMentionOptions = this.mention
+      ? undefined
+      : { users: [] };
     logger.info("players arranged");
     await this.interaction.reply({
       content: [
         `推薦站位：${position.map((n) => players[n])}`,
         ...profileLines,
       ].join("\n"),
-      allowedMentions: {
-        users: [],
-      },
+      allowedMentions,
     });
   }
 }

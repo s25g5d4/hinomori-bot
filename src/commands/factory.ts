@@ -25,7 +25,10 @@ export class CommandFactory {
     return new RemoveProfile(this.profileStore, interaction);
   }
 
-  newArrangePlayers(interaction: CommandInteraction): ArrangePlayers {
-    return new ArrangePlayers(this.profileStore, interaction);
+  newArrangePlayers(
+    interaction: CommandInteraction,
+    mention = true
+  ): ArrangePlayers {
+    return new ArrangePlayers(this.profileStore, interaction, mention);
   }
 }
