@@ -62,9 +62,10 @@ export class ListProfile implements Command {
     }
 
     logger.info({ user: user.id, targetUser: targetUser.id }, "profile listed");
+    const userString = `${targetUser.username} (${targetUser})`;
     await this.interaction.reply({
       content: [
-        `${targetUser} 的編組資料：`,
+        `${userString} 的編組資料：`,
         "```",
         formatUserProfileRecord(record),
         "```",

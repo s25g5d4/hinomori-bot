@@ -47,10 +47,9 @@ export class ArrangePlayers implements Command {
       },
       "arrange failed"
     );
+    const userString = players.map((u) => `${u} (${u.username})`).join(" ");
     await this.interaction.reply({
-      content: `${players.join(
-        " "
-      )} 沒有設定編組。請檢查使用者是否已新增編組、使用中編組設定是否正確。`,
+      content: `${userString} 沒有設定編組。請檢查使用者是否已新增編組、使用中編組設定是否正確。`,
       allowedMentions: {
         users: [],
       },
@@ -164,12 +163,15 @@ export class ArrangePlayers implements Command {
       const profileString = formatUserProfile(profiles[n]);
       const isSkill6 = n === skill6Player ? "*" : "";
       const prefix = `${isSkill6}${i + 1}: `.padStart(4);
-      return `\`${prefix}${profileString}\` ${players[n]}`;
+      return `\`${prefix}${profileString}\` ${players[n].username}`;
     });
 
     logger.info("players arranged");
     await this.interaction.reply({
-      content: ["推薦站位：", ...profileLines].join("\n"),
+      content: [
+        `推薦站位：${position.map((n) => players[n])}`,
+        ...profileLines,
+      ].join("\n"),
       allowedMentions: {
         users: [],
       },
