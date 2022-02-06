@@ -3,6 +3,7 @@ import { formatUserProfileRecord } from "./../../models/user-profile";
 import { CommandInteraction, User } from "discord.js";
 import { UserProfileStore } from "./../../store/user-profiles";
 import { logger } from "../../logger";
+import { logUser } from "../../utils/log-user";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -52,7 +53,7 @@ export class ListProfile implements Command {
     const { user: targetUser } = options;
     const { user } = this.interaction;
     logger.debug(
-      { options: { user: targetUser.id }, user: user.id },
+      { options: { user: logUser(targetUser) }, user: logUser(user) },
       "remove profile options"
     );
 
@@ -61,7 +62,10 @@ export class ListProfile implements Command {
       return await this.noProfile();
     }
 
-    logger.info({ user: user.id, targetUser: targetUser.id }, "profile listed");
+    logger.info(
+      { user: logUser(user), targetUser: logUser(targetUser) },
+      "profile listed"
+    );
     const userString = `${targetUser.username} (${targetUser})`;
     await this.interaction.reply({
       content: [

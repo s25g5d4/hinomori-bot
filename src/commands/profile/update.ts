@@ -10,6 +10,7 @@ import {
 } from "../../models/user-profile";
 import { UserProfileStore } from "./../../store/user-profiles";
 import { logger } from "../../logger";
+import { logUser } from "../../utils/log-user";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -102,7 +103,7 @@ export class UpdateProfile implements Command {
     const { type, power, ratio, index } = options;
     const { user } = this.interaction;
     logger.debug(
-      { options: { type, power, ratio, index }, user: user.id },
+      { options: { type, power, ratio, index }, user: logUser(user) },
       "update profile options"
     );
 
@@ -121,7 +122,7 @@ export class UpdateProfile implements Command {
     record = { ...record, profiles: newProfiles };
     await this.profileStore.set(user.id, record);
 
-    logger.info({ user: user.id }, "profile updated");
+    logger.info({ user: logUser(user) }, "profile updated");
     await this.interaction.reply(
       [
         "已更新。你的編組資料：",

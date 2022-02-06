@@ -7,6 +7,7 @@ import {
   UserProfile,
   UserProfileRecord,
 } from "../models/user-profile";
+import { logUser } from "../utils/log-user";
 
 const errParseOptions = new Error("failed to parse options");
 const errIncorrectPlayerNumbers = new Error("incorrect player numbers");
@@ -44,7 +45,7 @@ export class ArrangePlayers implements Command {
     logger.info(
       {
         reason: "some players do not have valid active profile",
-        who: players.map((u) => u.id),
+        who: logUser(players),
       },
       "arrange failed"
     );
@@ -145,7 +146,7 @@ export class ArrangePlayers implements Command {
       {
         options: { players: players.map((p) => p.id) },
         mention: this.mention,
-        user: user.id,
+        user: logUser(user),
       },
       "arrange players options"
     );

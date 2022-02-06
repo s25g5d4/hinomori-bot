@@ -3,6 +3,7 @@ import { formatUserProfile } from "./../../models/user-profile";
 import { CommandInteraction } from "discord.js";
 import { UserProfileStore } from "./../../store/user-profiles";
 import { logger } from "../../logger";
+import { logUser } from "../../utils/log-user";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -57,7 +58,7 @@ export class ActivateProfile implements Command {
     const { index } = options;
     const { user } = this.interaction;
     logger.debug(
-      { options: { index }, user: user.id },
+      { options: { index }, user: logUser(user) },
       "activate profile options"
     );
 

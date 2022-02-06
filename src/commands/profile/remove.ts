@@ -3,6 +3,7 @@ import { formatUserProfileRecord } from "./../../models/user-profile";
 import { CommandInteraction } from "discord.js";
 import { UserProfileStore } from "./../../store/user-profiles";
 import { logger } from "../../logger";
+import { logUser } from "../../utils/log-user";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -57,7 +58,7 @@ export class RemoveProfile implements Command {
     const { index } = options;
     const { user } = this.interaction;
     logger.debug(
-      { options: { index }, user: user.id },
+      { options: { index }, user: logUser(user) },
       "remove profile options"
     );
 
@@ -78,7 +79,7 @@ export class RemoveProfile implements Command {
     const newRecord: typeof record = { ...record, profiles: newProfiles };
     await this.profileStore.set(user.id, newRecord);
 
-    logger.info({ user: user.id }, "profile removed");
+    logger.info({ user: logUser(user) }, "profile removed");
     await this.interaction.reply(
       [
         `已移除選擇的編組。你的編組資料：`,
