@@ -54,7 +54,7 @@ export class ListProfile implements Command {
     const { user } = this.interaction;
     logger.debug(
       { options: { user: logUser(targetUser) }, user: logUser(user) },
-      "remove profile options"
+      "list profile options"
     );
 
     const record = await this.profileStore.get(targetUser.id);
