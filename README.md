@@ -39,7 +39,7 @@ arranging pole position for rushing the event rank.
   ```
   node ./build/scripts/deploy-commands.js
   ```
-  
+
 - Then start the app:
 
   ```
