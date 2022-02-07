@@ -57,7 +57,11 @@ export class Commander {
     }
 
     logger.debug("executing command");
-    await cmd.executeCommand(interaction);
+    try {
+      await cmd.executeCommand(interaction);
+    } catch (error) {
+      logger.error({ error }, "failed to execute command");
+    }
     logger.debug("executed command");
   }
 }
