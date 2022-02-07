@@ -11,6 +11,7 @@ import {
 import { UserProfileStore } from "./../../store/user-profiles";
 import { logger } from "../../logger";
 import { logUser } from "../../utils/log-user";
+import { profileRatio } from "../../models/profile-ratio";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -59,15 +60,7 @@ export class UpdateProfile implements Command {
       throw errParseOptions;
     }
 
-    const ratio = [
-      100 + cards[0],
-      100 + cards[1] / 5,
-      100 + cards[2] / 5,
-      100 + cards[3] / 5,
-      100 + cards[4] / 5,
-    ]
-      .map((p) => p / 100)
-      .reduce((p, c) => p * c);
+    const ratio = profileRatio(cards);
 
     const power = this.interaction.options.getNumber("power");
     if (typeof power !== "number" || isNaN(power)) {

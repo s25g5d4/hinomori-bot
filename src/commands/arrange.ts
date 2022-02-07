@@ -8,23 +8,22 @@ import {
   UserProfileRecord,
 } from "../models/user-profile";
 import { logUser } from "../utils/log-user";
+import { polePosition } from "../models/pole-position";
 
 const errParseOptions = new Error("failed to parse options");
-const errIncorrectPlayerNumbers = new Error("incorrect player numbers");
 
 interface ArrangePlayersOptions {
   players: User[];
 }
 
-interface PlayerProfilesAndRatioOrder {
-  ratioOrder: number[];
-  profiles: UserProfile[];
+class EmptyProfilesError extends Error {
+  private static message = "empty profiles";
+  constructor(public users: User[]) {
+    super(EmptyProfilesError.message);
+  }
 }
 
 export class ArrangePlayers implements Command {
-  private static optimizedOrder5 = [2, 1, 0, 3, 4] as const;
-  private static optimizedOrder4 = [2, 1, 0, 3] as const;
-
   constructor(
     private profileStore: UserProfileStore,
     private interaction: CommandInteraction,
@@ -78,9 +77,7 @@ export class ArrangePlayers implements Command {
     return emptyProfileIndices;
   }
 
-  private async getAndSortProfiles(
-    players: User[]
-  ): Promise<PlayerProfilesAndRatioOrder | null> {
+  private async getActiveUserProfiles(players: User[]): Promise<UserProfile[]> {
     const playerRecords = await Promise.all(
       players.map((p) => this.profileStore.get(p.id))
     );
@@ -88,8 +85,7 @@ export class ArrangePlayers implements Command {
       (n) => players[n]
     );
     if (emptyRecordPlayers != null) {
-      await this.playersDoNotHaveActiveProfile(emptyRecordPlayers);
-      return null;
+      throw new EmptyProfilesError(emptyRecordPlayers);
     }
 
     const playerProfiles = playerRecords.map((p) => p.profiles[p.active]);
@@ -97,27 +93,10 @@ export class ArrangePlayers implements Command {
       (n) => players[n]
     );
     if (emptyProfilePlayers != null) {
-      await this.playersDoNotHaveActiveProfile(emptyProfilePlayers);
-      return null;
+      throw new EmptyProfilesError(emptyProfilePlayers);
     }
 
-    const indirectSortByRatio = Array(players.length)
-      .fill(undefined)
-      .map((_, i) => i)
-      .sort((a, b) => playerProfiles[a].ratio - playerProfiles[b].ratio);
-
-    return { ratioOrder: indirectSortByRatio, profiles: playerProfiles };
-  }
-
-  private getPlayerPosition(ratioOrder: number[]): number[] {
-    switch (ratioOrder.length) {
-      case ArrangePlayers.optimizedOrder4.length:
-        return ArrangePlayers.optimizedOrder4.map((i) => ratioOrder[i]);
-      case ArrangePlayers.optimizedOrder5.length:
-        return ArrangePlayers.optimizedOrder5.map((i) => ratioOrder[i]);
-      default:
-        throw errIncorrectPlayerNumbers;
-    }
+    return playerProfiles;
   }
 
   private async parseOptions(): Promise<ArrangePlayersOptions> {
@@ -155,14 +134,19 @@ export class ArrangePlayers implements Command {
       return await this.playerNotEnough();
     }
 
-    const sortResult = await this.getAndSortProfiles(players);
-    if (sortResult == null) {
-      return;
+    let profiles: UserProfile[];
+    try {
+      profiles = await this.getActiveUserProfiles(players);
+    } catch (err) {
+      if (err instanceof EmptyProfilesError) {
+        return await this.playersDoNotHaveActiveProfile(err.users);
+      }
+      throw err;
     }
-    const { ratioOrder, profiles } = sortResult;
-    const position = this.getPlayerPosition(ratioOrder);
+
+    const position = polePosition(profiles);
     const skill6Player = profiles.reduce(
-      (p, c, i) => (profiles[p].power > c.power ? p : i),
+      (p, c, i, arr) => (arr[p].power > c.power ? p : i),
       0
     );
     const profileLines = position.map((n, i) => {
