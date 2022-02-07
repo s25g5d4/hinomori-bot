@@ -3,25 +3,48 @@
 Hinomori Bot is an Discord bot for storing PJSK player's card profiles and
 arranging pole position for rushing the event rank.
 
+## Prerequisite
+
+- Node.js Environment
+- DIscord Bot Account
+  - Scopes: `bot`, `applications.commands`
+- Google API Account for Firebase
+  - Enable Firestore Database
+  - Get credential JSON file
+
 ## Usage
 
-Install dependencies:
+- Download this project:
 
-```
-npm install
-```
+  ```
+  git clone git@github.com:s25g5d4/hinomori-bot.git
+  ```
 
-Build sources:
+- Set up `.env`
 
-```
-npm run build
-```
+- Install dependencies:
 
-Then start the app:
+  ```
+  npm install
+  ```
 
-```
-npm run start
-```
+- Build sources:
+
+  ```
+  npm run build
+  ```
+
+- Deploy command:
+
+  ```
+  node ./build/scripts/deploy-commands.js
+  ```
+  
+- Then start the app:
+
+  ```
+  npm run start
+  ```
 
 ## Deploy Slash Commands to Guild
 
