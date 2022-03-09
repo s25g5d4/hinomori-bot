@@ -1,4 +1,3 @@
-import { Command } from "../../command";
 import {
   formatUserProfileRecord,
   UserProfile,
@@ -12,6 +11,7 @@ import { UserProfileStore } from "../../../store/user-profiles";
 import { logger } from "../../../logger";
 import { logUser } from "../../../utils/log-user";
 import { profileRatio } from "../../../models/profile-ratio";
+import { InteractiveCommand } from "../../interactive-command";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -22,11 +22,13 @@ interface UpdateProfileOptions {
   index: number;
 }
 
-export class UpdateProfile implements Command {
+export class UpdateProfile extends InteractiveCommand {
   constructor(
-    private profileStore: UserProfileStore,
-    private interaction: CommandInteraction
-  ) {}
+    interaction: CommandInteraction,
+    private profileStore: UserProfileStore
+  ) {
+    super(interaction);
+  }
 
   private async badRequest() {
     logger.info({ reason: "bad request" }, "update failed");

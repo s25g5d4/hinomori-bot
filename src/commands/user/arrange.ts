@@ -1,4 +1,3 @@
-import { Command } from "../command";
 import { CommandInteraction, MessageMentionOptions, User } from "discord.js";
 import { UserProfileStore } from "../../store/user-profiles";
 import { logger } from "../../logger";
@@ -9,52 +8,25 @@ import {
 } from "../../models/user-profile";
 import { logUser } from "../../utils/log-user";
 import { polePosition } from "../../models/pole-position";
-
-const errParseOptions = new Error("failed to parse options");
+import { InteractiveCommand } from "../interactive-command";
+import { CatchExecuteError } from "../catch-error";
+import {
+  EmptyActiveProfilesError,
+  EmptyProfilesError,
+  PlayerNotEnoughError,
+} from "./arrange-errors";
 
 interface ArrangePlayersOptions {
   players: User[];
 }
 
-class EmptyProfilesError extends Error {
-  private static message = "empty profiles";
-  constructor(public users: User[]) {
-    super(EmptyProfilesError.message);
-  }
-}
-
-export class ArrangePlayers implements Command {
+export class ArrangePlayers extends InteractiveCommand {
   constructor(
+    interaction: CommandInteraction,
     private profileStore: UserProfileStore,
-    private interaction: CommandInteraction,
     private mention: boolean
-  ) {}
-
-  private async badRequest() {
-    logger.info({ reason: "bad request" }, "arrange failed");
-    await this.interaction.reply("格式不正確。");
-  }
-
-  private async playerNotEnough() {
-    logger.info({ reason: "no enough players" }, "arrange failed");
-    await this.interaction.reply("玩家人數不足四人，不建議開協力 LIVE。");
-  }
-
-  private async playersDoNotHaveActiveProfile(players: User[]) {
-    logger.info(
-      {
-        reason: "some players do not have valid active profile",
-        who: logUser(players),
-      },
-      "arrange failed"
-    );
-    const userString = players.map((u) => `${u} (${u.username})`).join(" ");
-    await this.interaction.reply({
-      content: `${userString} 沒有設定編組。請檢查使用者是否已新增編組、使用中編組設定是否正確。`,
-      allowedMentions: {
-        users: [],
-      },
-    });
+  ) {
+    super(interaction);
   }
 
   private checkEmptyRecords(records: UserProfileRecord[]): number[] | null {
@@ -85,7 +57,7 @@ export class ArrangePlayers implements Command {
       (n) => players[n]
     );
     if (emptyRecordPlayers != null) {
-      throw new EmptyProfilesError(emptyRecordPlayers);
+      throw new EmptyProfilesError(emptyRecordPlayers, this.mention);
     }
 
     const playerProfiles = playerRecords.map((p) => p.profiles[p.active]);
@@ -93,10 +65,16 @@ export class ArrangePlayers implements Command {
       (n) => players[n]
     );
     if (emptyProfilePlayers != null) {
-      throw new EmptyProfilesError(emptyProfilePlayers);
+      throw new EmptyActiveProfilesError(emptyProfilePlayers, this.mention);
     }
 
     return playerProfiles;
+  }
+
+  private checkPlayerCount(players: User[]) {
+    if (players.length < 4) {
+      throw new PlayerNotEnoughError(players.length);
+    }
   }
 
   private async parseOptions(): Promise<ArrangePlayersOptions> {
@@ -107,18 +85,11 @@ export class ArrangePlayers implements Command {
     return { players };
   }
 
+  @CatchExecuteError()
   async executeCommand(): Promise<void> {
     logger.debug("arrange players");
-    let options: ArrangePlayersOptions;
-    try {
-      options = await this.parseOptions();
-    } catch (e) {
-      if (e === errParseOptions) {
-        logger.warn({ command: this.interaction.toString() }, e.message);
-        return await this.badRequest();
-      }
-      throw e;
-    }
+    const options = await this.parseOptions();
+
     const { players } = options;
     const { user } = this.interaction;
     logger.debug(
@@ -130,20 +101,9 @@ export class ArrangePlayers implements Command {
       "arrange players options"
     );
 
-    if (players.length < 4) {
-      return await this.playerNotEnough();
-    }
+    this.checkPlayerCount(players);
 
-    let profiles: UserProfile[];
-    try {
-      profiles = await this.getActiveUserProfiles(players);
-    } catch (err) {
-      if (err instanceof EmptyProfilesError) {
-        return await this.playersDoNotHaveActiveProfile(err.users);
-      }
-      throw err;
-    }
-
+    const profiles = await this.getActiveUserProfiles(players);
     const position = polePosition(profiles);
     const skill6Player = profiles.reduce(
       (p, c, i, arr) => (arr[p].power > c.power ? p : i),

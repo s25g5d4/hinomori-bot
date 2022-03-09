@@ -1,9 +1,9 @@
-import { Command } from "../../command";
 import { formatUserProfileRecord } from "../../../models/user-profile";
 import { CommandInteraction, User } from "discord.js";
 import { UserProfileStore } from "../../../store/user-profiles";
 import { logger } from "../../../logger";
 import { logUser } from "../../../utils/log-user";
+import { InteractiveCommand } from "../../interactive-command";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -11,11 +11,13 @@ interface ListProfileOptions {
   user: User;
 }
 
-export class ListProfile implements Command {
+export class ListProfile extends InteractiveCommand {
   constructor(
-    private profileStore: UserProfileStore,
-    private interaction: CommandInteraction
-  ) {}
+    interaction: CommandInteraction,
+    private profileStore: UserProfileStore
+  ) {
+    super(interaction);
+  }
 
   private async badRequest() {
     logger.info({ reason: "bad request" }, "list failed");
