@@ -1,9 +1,9 @@
-import { Command } from "./../command";
-import { formatUserProfileRecord } from "./../../models/user-profile";
+import { Command } from "../../command";
+import { formatUserProfileRecord } from "../../../models/user-profile";
 import { CommandInteraction } from "discord.js";
-import { UserProfileStore } from "./../../store/user-profiles";
-import { logger } from "../../logger";
-import { logUser } from "../../utils/log-user";
+import { UserProfileStore } from "../../../store/user-profiles";
+import { logger } from "../../../logger";
+import { logUser } from "../../../utils/log-user";
 
 const errParseOptions = new Error("failed to parse options");
 

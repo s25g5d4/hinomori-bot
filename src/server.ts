@@ -1,6 +1,6 @@
 import { logger } from "./logger";
 import { Client, Intents } from "discord.js";
-import { Commander } from "./commands/commander";
+import { Commander } from "./commander/commander";
 import { config } from "./config";
 
 export class Server {

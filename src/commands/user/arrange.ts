@@ -1,14 +1,14 @@
-import { Command } from "./command";
+import { Command } from "../command";
 import { CommandInteraction, MessageMentionOptions, User } from "discord.js";
-import { UserProfileStore } from "./../store/user-profiles";
-import { logger } from "../logger";
+import { UserProfileStore } from "../../store/user-profiles";
+import { logger } from "../../logger";
 import {
   formatUserProfile,
   UserProfile,
   UserProfileRecord,
-} from "../models/user-profile";
-import { logUser } from "../utils/log-user";
-import { polePosition } from "../models/pole-position";
+} from "../../models/user-profile";
+import { logUser } from "../../utils/log-user";
+import { polePosition } from "../../models/pole-position";
 
 const errParseOptions = new Error("failed to parse options");
 
