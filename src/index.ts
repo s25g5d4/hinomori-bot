@@ -1,7 +1,7 @@
 import { FirebaseDB } from "./store/db";
 import { config } from "./config";
 import { logger } from "./logger";
-import { Commander } from "./commands/commander";
+import { Commander } from "./commander/commander";
 import { Server } from "./server";
 import { UserProfileStore } from "./store/user-profiles";
 

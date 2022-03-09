@@ -1,17 +1,17 @@
-import { Command } from "./../command";
+import { Command } from "../../command";
 import {
   formatUserProfileRecord,
   UserProfile,
-} from "./../../models/user-profile";
+} from "./../../../models/user-profile";
 import { CommandInteraction } from "discord.js";
 import {
   convertToUserProfileType,
   UserProfileType,
-} from "../../models/user-profile";
-import { UserProfileStore } from "./../../store/user-profiles";
-import { logger } from "../../logger";
-import { logUser } from "../../utils/log-user";
-import { profileRatio } from "../../models/profile-ratio";
+} from "../../../models/user-profile";
+import { UserProfileStore } from "../../../store/user-profiles";
+import { logger } from "../../../logger";
+import { logUser } from "../../../utils/log-user";
+import { profileRatio } from "../../../models/profile-ratio";
 
 const errParseOptions = new Error("failed to parse options");
 
