@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "module": "commonjs",
     "outDir": "./build",
     "noImplicitAny": true,

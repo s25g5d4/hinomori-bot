@@ -11,25 +11,25 @@ export class CommandFactory {
   constructor(private profileStore: UserProfileStore) {}
 
   newUpdateProfile(interaction: CommandInteraction): UpdateProfile {
-    return new UpdateProfile(this.profileStore, interaction);
+    return new UpdateProfile(interaction, this.profileStore);
   }
 
   newListProfile(interaction: CommandInteraction): ListProfile {
-    return new ListProfile(this.profileStore, interaction);
+    return new ListProfile(interaction, this.profileStore);
   }
 
   newActivateProfile(interaction: CommandInteraction): ActivateProfile {
-    return new ActivateProfile(this.profileStore, interaction);
+    return new ActivateProfile(interaction, this.profileStore);
   }
 
   newRemoveProfile(interaction: CommandInteraction): RemoveProfile {
-    return new RemoveProfile(this.profileStore, interaction);
+    return new RemoveProfile(interaction, this.profileStore);
   }
 
   newArrangePlayers(
     interaction: CommandInteraction,
     mention = true
   ): ArrangePlayers {
-    return new ArrangePlayers(this.profileStore, interaction, mention);
+    return new ArrangePlayers(interaction, this.profileStore, mention);
   }
 }
