@@ -1,17 +1,11 @@
 import { CommandInteraction } from "discord.js";
 import { logger } from "../logger";
 import { CommandError } from "./command-error";
-import { errorReplies } from "./error-replies";
+import { errorReplies, generalErrorMessage } from "./error-replies";
 import { ReplyFunc } from "./error-replies/reply-func";
 import { InteractiveCommand } from "./interactive-command";
 
 type ExecuteCommandType = typeof InteractiveCommand.prototype.executeCommand;
-
-const generalErrorMessage: ReplyFunc = () => {
-  return {
-    content: "指令錯誤",
-  };
-};
 
 async function handleError(
   err: Error,
