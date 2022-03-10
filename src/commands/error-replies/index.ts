@@ -5,3 +5,9 @@ export const errorReplies: Record<string, ReplyFunc> = Object.assign(
   {},
   arrangeErrorReplies
 );
+
+export const generalErrorMessage: ReplyFunc = () => {
+  return {
+    content: "指令錯誤",
+  };
+};

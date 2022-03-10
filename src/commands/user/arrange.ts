@@ -9,7 +9,7 @@ import {
 import { logUser } from "../../utils/log-user";
 import { polePosition } from "../../models/pole-position";
 import { InteractiveCommand } from "../interactive-command";
-import { CatchExecuteError } from "../catch-error";
+import { CatchExecuteError } from "../catch-execute-error";
 import {
   EmptyActiveProfilesError,
   EmptyProfilesError,
