@@ -44,7 +44,7 @@ export class ActivateProfile extends InteractiveCommand {
     if (typeof index !== "number" || isNaN(index)) {
       throw new IndexNotANumberError();
     }
-    if (index < 1 || index > 10) {
+    if (index < 1 || index > 10 || !Number.isInteger(index)) {
       throw new IndexOutOfRangeError();
     }
 
