@@ -12,8 +12,16 @@ import { logger } from "../../../logger";
 import { logUser } from "../../../utils/log-user";
 import { profileRatio } from "../../../models/profile-ratio";
 import { InteractiveCommand } from "../../interactive-command";
-
-const errParseOptions = new Error("failed to parse options");
+import { CatchExecuteError } from "../../catch-execute-error";
+import {
+  IndexNotANumberError,
+  IndexOutOfRangeError,
+  invalidOptionCardsError,
+  InvalidOptionPowerError,
+  InvalidOptionTypeError,
+  OptionPowerOutOfRangeError,
+} from "./update-errors";
+import { isNil } from "lodash";
 
 interface UpdateProfileOptions {
   type: UserProfileType;
@@ -30,15 +38,10 @@ export class UpdateProfile extends InteractiveCommand {
     super(interaction);
   }
 
-  private async badRequest() {
-    logger.info({ reason: "bad request" }, "update failed");
-    await this.interaction.reply("格式不正確。");
-  }
-
-  private async parseOptions(): Promise<UpdateProfileOptions> {
+  private parseOptionType(): UserProfileType {
     const typeString = this.interaction.options.getString("type");
     if (typeof typeString !== "string") {
-      throw errParseOptions;
+      throw new InvalidOptionTypeError();
     }
 
     let type: UserProfileType;
@@ -46,33 +49,60 @@ export class UpdateProfile extends InteractiveCommand {
       type = convertToUserProfileType(typeString);
     } catch (e) {
       logger.error(e);
-      throw errParseOptions;
+      throw new InvalidOptionTypeError();
     }
+    return type;
+  }
 
+  private parseOptionCards(): number {
     const cardsString = this.interaction.options.getString("cards");
     if (typeof cardsString !== "string") {
-      throw errParseOptions;
+      throw new invalidOptionCardsError();
     }
     const cardRatioStrings = cardsString.split(",");
     if (cardRatioStrings.length !== 5) {
-      throw errParseOptions;
+      throw new invalidOptionCardsError();
     }
     const cards = cardRatioStrings.map((s) => parseInt(s, 10));
     if (cards.some((n) => typeof n !== "number" || isNaN(n))) {
-      throw errParseOptions;
+      throw new invalidOptionCardsError();
     }
+    return profileRatio(cards);
+  }
 
-    const ratio = profileRatio(cards);
-
+  private parseOptionPower(): number {
     const power = this.interaction.options.getNumber("power");
     if (typeof power !== "number" || isNaN(power)) {
-      throw errParseOptions;
+      throw new InvalidOptionPowerError();
+    }
+    if (power < 10000 || power > 350000) {
+      throw new OptionPowerOutOfRangeError();
+    }
+    return power;
+  }
+
+  private parseOptionIndex(): number {
+    const index = this.interaction.options.getNumber("index");
+    if (isNil(index)) {
+      return 1;
     }
 
-    const index = this.interaction.options.getNumber("index") ?? 1;
-    if (isNaN(index) || index < 1 || index > 10) {
-      throw errParseOptions;
+    if (isNaN(index)) {
+      throw new IndexNotANumberError();
     }
+
+    if (index < 1 || index > 10) {
+      throw new IndexOutOfRangeError();
+    }
+
+    return index;
+  }
+
+  private async parseOptions(): Promise<UpdateProfileOptions> {
+    const type = this.parseOptionType();
+    const ratio = this.parseOptionCards();
+    const power = this.parseOptionPower();
+    const index = this.parseOptionIndex();
 
     return {
       type,
@@ -82,19 +112,11 @@ export class UpdateProfile extends InteractiveCommand {
     };
   }
 
+  @CatchExecuteError()
   async executeCommand(): Promise<void> {
     logger.debug("update profile");
 
-    let options: UpdateProfileOptions;
-    try {
-      options = await this.parseOptions();
-    } catch (e) {
-      if (e === errParseOptions) {
-        logger.warn({ command: this.interaction.toString() }, e.message);
-        return await this.badRequest();
-      }
-      throw e;
-    }
+    const options = await this.parseOptions();
     const { type, power, ratio, index } = options;
     const { user } = this.interaction;
     logger.debug(

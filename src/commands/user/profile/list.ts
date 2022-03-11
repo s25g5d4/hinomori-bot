@@ -4,6 +4,9 @@ import { UserProfileStore } from "../../../store/user-profiles";
 import { logger } from "../../../logger";
 import { logUser } from "../../../utils/log-user";
 import { InteractiveCommand } from "../../interactive-command";
+import { CatchExecuteError } from "../../catch-execute-error";
+import { NoProfileRecordError, NoValidProfileError } from "./list-errors";
+import { isNil } from "lodash";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -19,16 +22,15 @@ export class ListProfile extends InteractiveCommand {
     super(interaction);
   }
 
-  private async badRequest() {
-    logger.info({ reason: "bad request" }, "list failed");
-    await this.interaction.reply("格式不正確。");
-  }
-
-  private async noProfile() {
-    logger.info({ reason: "no valid profile" }, "list failed");
-    await this.interaction.reply(
-      "沒有編組資料。請先使用 /profile update 指令新增編組。"
-    );
+  private async getUserProfileRecord(user: User) {
+    const record = await this.profileStore.get(user.id);
+    if (!record) {
+      throw new NoProfileRecordError();
+    }
+    if (record.profiles.every((p) => isNil(p))) {
+      throw new NoValidProfileError();
+    }
+    return record;
   }
 
   private async parseOptions(): Promise<ListProfileOptions> {
@@ -40,18 +42,11 @@ export class ListProfile extends InteractiveCommand {
     return { user };
   }
 
+  @CatchExecuteError()
   async executeCommand(): Promise<void> {
     logger.debug("list profile");
-    let options: ListProfileOptions;
-    try {
-      options = await this.parseOptions();
-    } catch (e) {
-      if (e === errParseOptions) {
-        logger.warn({ command: this.interaction.toString() }, e.message);
-        return await this.badRequest();
-      }
-      throw e;
-    }
+    const options = await this.parseOptions();
+
     const { user: targetUser } = options;
     const { user } = this.interaction;
     logger.debug(
@@ -59,10 +54,7 @@ export class ListProfile extends InteractiveCommand {
       "list profile options"
     );
 
-    const record = await this.profileStore.get(targetUser.id);
-    if (!record || record.profiles.every((p) => p == null)) {
-      return await this.noProfile();
-    }
+    const record = await this.getUserProfileRecord(targetUser);
 
     logger.info(
       { user: logUser(user), targetUser: logUser(targetUser) },

@@ -1,9 +1,18 @@
 import { formatUserProfile } from "../../../models/user-profile";
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, User } from "discord.js";
 import { UserProfileStore } from "../../../store/user-profiles";
 import { logger } from "../../../logger";
 import { logUser } from "../../../utils/log-user";
 import { InteractiveCommand } from "../../interactive-command";
+import { CatchExecuteError } from "../../catch-execute-error";
+import { isNil } from "lodash";
+import {
+  EmptyIndexError,
+  EmptyProfileError,
+  IndexNotANumberError,
+  IndexOutOfRangeError,
+  NoProfileRecordError,
+} from "./activate-errors";
 
 const errParseOptions = new Error("failed to parse options");
 
@@ -19,44 +28,34 @@ export class ActivateProfile extends InteractiveCommand {
     super(interaction);
   }
 
-  private async badRequest() {
-    logger.info({ reason: "bad request" }, "activate failed");
-    await this.interaction.reply("格式不正確。");
-  }
-
-  private async noRecord() {
-    logger.info({ reason: "user record not found" }, "activate failed");
-    await this.interaction.reply(
-      "沒有編組資料。請先使用 /profile update 指令新增編組。"
-    );
-  }
-
-  private async emptyProfileSelected() {
-    logger.info({ reason: "selected profile is empty" }, "activate failed");
-    await this.interaction.reply("選擇的編組是空白的。");
+  private async getUserProfileRecord(user: User) {
+    const record = await this.profileStore.get(user.id);
+    if (!record) {
+      throw new NoProfileRecordError();
+    }
+    return record;
   }
 
   private async parseOptions(): Promise<ActivateProfileOptions> {
     const index = this.interaction.options.getNumber("index");
-    if (typeof index !== "number" || isNaN(index) || index < 1 || index > 10) {
-      throw errParseOptions;
+    if (isNil(index)) {
+      throw new EmptyIndexError();
+    }
+    if (typeof index !== "number" || isNaN(index)) {
+      throw new IndexNotANumberError();
+    }
+    if (index < 1 || index > 10) {
+      throw new IndexOutOfRangeError();
     }
 
     return { index };
   }
 
+  @CatchExecuteError()
   async executeCommand(): Promise<void> {
     logger.debug("activate profile");
-    let options: ActivateProfileOptions;
-    try {
-      options = await this.parseOptions();
-    } catch (e) {
-      if (e === errParseOptions) {
-        logger.warn({ command: this.interaction.toString() }, e.message);
-        return await this.badRequest();
-      }
-      throw e;
-    }
+    const options = await this.parseOptions();
+
     const { index } = options;
     const { user } = this.interaction;
     logger.debug(
@@ -64,15 +63,11 @@ export class ActivateProfile extends InteractiveCommand {
       "activate profile options"
     );
 
-    const record = await this.profileStore.get(user.id);
-    if (!record) {
-      return await this.noRecord();
-    }
-
+    const record = await this.getUserProfileRecord(user);
     const i = index - 1;
     const profile = record.profiles[i];
-    if (profile == null) {
-      return await this.emptyProfileSelected();
+    if (isNil(profile)) {
+      throw new EmptyProfileError();
     }
 
     const newRecord: typeof record = { ...record, active: i };
