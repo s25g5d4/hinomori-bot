@@ -8,8 +8,6 @@ import { CatchExecuteError } from "../../catch-execute-error";
 import { NoProfileRecordError, NoValidProfileError } from "./list-errors";
 import { isNil } from "lodash";
 
-const errParseOptions = new Error("failed to parse options");
-
 interface ListProfileOptions {
   user: User;
 }

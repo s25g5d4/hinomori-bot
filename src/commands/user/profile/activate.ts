@@ -14,8 +14,6 @@ import {
   NoProfileRecordError,
 } from "./activate-errors";
 
-const errParseOptions = new Error("failed to parse options");
-
 interface ActivateProfileOptions {
   index: number;
 }
