@@ -91,7 +91,7 @@ export class UpdateProfile extends InteractiveCommand {
       throw new IndexNotANumberError();
     }
 
-    if (index < 1 || index > 10) {
+    if (index < 1 || index > 10 || !Number.isInteger(index)) {
       throw new IndexOutOfRangeError();
     }
 
