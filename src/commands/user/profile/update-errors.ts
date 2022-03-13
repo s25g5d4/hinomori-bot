@@ -28,7 +28,7 @@ export interface IndexOutOfRangeErrorData {
 export class IndexOutOfRangeError extends CommandError<IndexOutOfRangeErrorData> {
   constructor() {
     const data: IndexOutOfRangeErrorData = {
-      reason: "index is not a number",
+      reason: "index out of range",
     };
     super(updateFailed, data, IndexOutOfRangeError.id);
   }
@@ -93,12 +93,12 @@ export interface invalidOptionCardsErrorData {
   reason: string;
 }
 
-export class invalidOptionCardsError extends CommandError<invalidOptionCardsErrorData> {
+export class InvalidOptionCardsError extends CommandError<invalidOptionCardsErrorData> {
   constructor() {
     const data: invalidOptionCardsErrorData = {
       reason: "option cards is invalid",
     };
-    super(updateFailed, data, invalidOptionCardsError.id);
+    super(updateFailed, data, InvalidOptionCardsError.id);
   }
 
   static readonly id = invalidOptionCards;
