@@ -45,7 +45,7 @@ export interface IndexOutOfRangeErrorData {
 export class IndexOutOfRangeError extends CommandError<IndexOutOfRangeErrorData> {
   constructor() {
     const data: IndexOutOfRangeErrorData = {
-      reason: "index is not a number",
+      reason: "index out of range",
     };
     super(removeFailed, data, IndexOutOfRangeError.id);
   }

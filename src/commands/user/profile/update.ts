@@ -16,7 +16,7 @@ import { CatchExecuteError } from "../../catch-execute-error";
 import {
   IndexNotANumberError,
   IndexOutOfRangeError,
-  invalidOptionCardsError,
+  InvalidOptionCardsError,
   InvalidOptionPowerError,
   InvalidOptionTypeError,
   OptionPowerOutOfRangeError,
@@ -57,15 +57,15 @@ export class UpdateProfile extends InteractiveCommand {
   private parseOptionCards(): number {
     const cardsString = this.interaction.options.getString("cards");
     if (typeof cardsString !== "string") {
-      throw new invalidOptionCardsError();
+      throw new InvalidOptionCardsError();
     }
     const cardRatioStrings = cardsString.split(",");
     if (cardRatioStrings.length !== 5) {
-      throw new invalidOptionCardsError();
+      throw new InvalidOptionCardsError();
     }
     const cards = cardRatioStrings.map((s) => parseInt(s, 10));
     if (cards.some((n) => typeof n !== "number" || isNaN(n))) {
-      throw new invalidOptionCardsError();
+      throw new InvalidOptionCardsError();
     }
     return profileRatio(cards);
   }
