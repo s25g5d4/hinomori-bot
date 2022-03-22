@@ -4,7 +4,7 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "test": "mocha --recursive --extension ts --require ts-node/register",
+    "test": "LOG_LEVEL=error mocha --recursive --extension ts --require ts-node/register",
     "lint": "npm run lint:format && npm run lint:code",
     "lint:format": "prettier -c .",
     "lint:code": "eslint .",
@@ -34,6 +34,7 @@
     "@types/chai": "^4.3.0",
     "@types/lodash": "^4.14.178",
     "@types/mocha": "^9.1.0",
+    "@types/sinon": "^10.0.11",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "chai": "^4.3.6",
@@ -42,6 +43,7 @@
     "husky": "^7.0.4",
     "mocha": "^9.2.0",
     "prettier": "^2.5.1",
+    "sinon": "^13.0.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5"
   }

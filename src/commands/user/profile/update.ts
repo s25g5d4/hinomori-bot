@@ -87,7 +87,7 @@ export class UpdateProfile extends InteractiveCommand {
       return 1;
     }
 
-    if (isNaN(index)) {
+    if (typeof index !== "number" || isNaN(index)) {
       throw new IndexNotANumberError();
     }
 
