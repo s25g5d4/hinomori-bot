@@ -1,8 +1,8 @@
-import { logger } from "./../logger";
 import { Interaction, CommandInteraction } from "discord.js";
-import { CommandFactory } from "./command-factory";
-import { UserProfileStore } from "./../store/user-profiles";
+import { logger } from "../logger";
+import { UserProfileStore } from "../store/user-profiles";
 import { Command } from "../commands/command";
+import { CommandFactory } from "./command-factory";
 
 export class Commander {
   private factory: CommandFactory;

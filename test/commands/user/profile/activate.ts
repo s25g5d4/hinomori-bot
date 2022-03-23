@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { User } from "discord.js";
+import { match } from "sinon";
 import { ActivateProfile } from "../../../../src/commands/user/profile/activate";
 import {
   UserProfileRecord,
@@ -9,7 +10,6 @@ import { StubInteraction } from "../../../mocks/interaction";
 import { StubUserProfileStore } from "../../../mocks/profile-store";
 import { genUserProfileRecord } from "../../../mocks/record";
 import { genUser } from "../../../mocks/user";
-import { match } from "sinon";
 
 describe("Profile Activate Command", function () {
   let users: User[] = [];

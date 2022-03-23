@@ -1,13 +1,13 @@
 import { CommandInteraction, MessageMentionOptions, User } from "discord.js";
-import { UserProfileStore } from "../../store/user-profiles";
-import { logger } from "../../logger";
+import { UserProfileStore } from "src/store/user-profiles";
+import { logger } from "src/logger";
 import {
   formatUserProfile,
   UserProfile,
   UserProfileRecord,
-} from "../../models/user-profile";
-import { logUser } from "../../utils/log-user";
-import { polePosition } from "../../models/pole-position";
+} from "src/models/user-profile";
+import { logUser } from "src/utils/log-user";
+import { polePosition } from "src/models/pole-position";
 import { InteractiveCommand } from "../interactive-command";
 import { CatchExecuteError } from "../catch-execute-error";
 import {

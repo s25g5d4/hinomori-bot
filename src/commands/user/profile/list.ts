@@ -1,12 +1,12 @@
-import { formatUserProfileRecord } from "../../../models/user-profile";
 import { CommandInteraction, User } from "discord.js";
-import { UserProfileStore } from "../../../store/user-profiles";
-import { logger } from "../../../logger";
-import { logUser } from "../../../utils/log-user";
+import { isNil } from "lodash";
+import { formatUserProfileRecord } from "src/models/user-profile";
+import { UserProfileStore } from "src/store/user-profiles";
+import { logger } from "src/logger";
+import { logUser } from "src/utils/log-user";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import { NoProfileRecordError, NoValidProfileError } from "./list-errors";
-import { isNil } from "lodash";
 
 interface ListProfileOptions {
   user: User;

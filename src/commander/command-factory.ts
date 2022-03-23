@@ -1,11 +1,11 @@
 import { CommandInteraction } from "discord.js";
 
-import { UserProfileStore } from "../store/user-profiles";
-import { UpdateProfile } from "../commands/user/profile/update";
-import { ActivateProfile } from "../commands/user/profile/activate";
-import { ListProfile } from "../commands/user/profile/list";
-import { RemoveProfile } from "../commands/user/profile/remove";
-import { ArrangePlayers } from "../commands/user/arrange";
+import { UserProfileStore } from "src/store/user-profiles";
+import { UpdateProfile } from "src/commands/user/profile/update";
+import { ActivateProfile } from "src/commands/user/profile/activate";
+import { ListProfile } from "src/commands/user/profile/list";
+import { RemoveProfile } from "src/commands/user/profile/remove";
+import { ArrangePlayers } from "src/commands/user/arrange";
 
 export class CommandFactory {
   constructor(private profileStore: UserProfileStore) {}
