@@ -239,6 +239,33 @@ describe("Profile Update Command", function () {
     }
   });
 
+  it("should allow using space as separator in option cards", async function () {
+    const stubInteraction = new StubInteraction()
+      .withUser(users[1])
+      .withGetString(["type"], "r")
+      .withGetNumber(["power"], 250000)
+      .withGetString(["cards"], "130 100 80 80 60")
+      .withGetNumber(["index"], undefined);
+
+    const stubProfileStore = new StubUserProfileStore()
+      .withGet([users[1].id], records[1])
+      .withSet([users[1].id, match.any], null);
+
+    const cmd = new UpdateProfile(
+      stubInteraction.build(),
+      stubProfileStore.build()
+    );
+    expect(await cmd.executeCommand()).to.not.exist;
+    expect(stubInteraction.fakeReply.callCount).to.be.equal(1);
+    expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
+      `已更新。你的編組資料：
+\`\`\`
+使用中的編組: *1
+ *1: 跑者 綜合力: 250000 倍率: 4.16
+\`\`\``,
+    ]);
+  });
+
   it("should throw index not a number error (NaN)", async function () {
     const stubInteraction = new StubInteraction()
       .withGetString(["type"], "r")
@@ -559,7 +586,7 @@ describe("Profile Update Command", function () {
     const stubInteraction = new StubInteraction()
       .withGetString(["type"], "r")
       .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130 100 80 80 60")
+      .withGetString(["cards"], "130|100|80|80|60")
       .withGetNumber(["index"], undefined);
 
     const stubProfileStore = new StubUserProfileStore();
