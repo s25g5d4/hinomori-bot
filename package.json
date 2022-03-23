@@ -10,7 +10,7 @@
     "lint:code": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier -w .",
-    "build": "tsc -p .",
+    "build": "tsc && resolve-tspaths",
     "clean": "rm -rf ./build/*",
     "start": "node ./build/index.js",
     "prepare": "husky install"
@@ -46,6 +46,7 @@
     "husky": "^7.0.4",
     "mocha": "^9.2.0",
     "prettier": "^2.5.1",
+    "resolve-tspaths": "^0.2.4",
     "sinon": "^13.0.1",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.14.1",
