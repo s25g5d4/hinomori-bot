@@ -1,11 +1,11 @@
-import { formatUserProfile } from "../../../models/user-profile";
 import { CommandInteraction, User } from "discord.js";
-import { UserProfileStore } from "../../../store/user-profiles";
-import { logger } from "../../../logger";
-import { logUser } from "../../../utils/log-user";
+import { isNil } from "lodash";
+import { formatUserProfile } from "src/models/user-profile";
+import { UserProfileStore } from "src/store/user-profiles";
+import { logger } from "src/logger";
+import { logUser } from "src/utils/log-user";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
-import { isNil } from "lodash";
 import {
   EmptyIndexError,
   EmptyProfileError,

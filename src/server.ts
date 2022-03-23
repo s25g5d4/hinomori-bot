@@ -1,5 +1,5 @@
-import { logger } from "./logger";
 import { Client, Intents } from "discord.js";
+import { logger } from "./logger";
 import { Commander } from "./commander/commander";
 import { config } from "./config";
 

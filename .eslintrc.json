@@ -17,5 +17,19 @@
       // it just solved the eslint-plugin-import not recognizing esm modules problem
       "alias": []
     }
+  },
+  "rules": {
+    "import/order": [
+      "error",
+      {
+        "pathGroups": [
+          {
+            "pattern": "src/**",
+            "group": "external",
+            "position": "after"
+          }
+        ]
+      }
+    ]
   }
 }

@@ -1,14 +1,15 @@
 import { CommandInteraction } from "discord.js";
+import { isNil } from "lodash";
 import {
   formatUserProfileRecord,
   UserProfile,
   convertToUserProfileType,
   UserProfileType,
-} from "../../../models/user-profile";
-import { UserProfileStore } from "../../../store/user-profiles";
-import { logger } from "../../../logger";
-import { logUser } from "../../../utils/log-user";
-import { profileRatio } from "../../../models/profile-ratio";
+} from "src/models/user-profile";
+import { UserProfileStore } from "src/store/user-profiles";
+import { logger } from "src/logger";
+import { logUser } from "src/utils/log-user";
+import { profileRatio } from "src/models/profile-ratio";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import {
@@ -19,7 +20,6 @@ import {
   InvalidOptionTypeError,
   OptionPowerOutOfRangeError,
 } from "./update-errors";
-import { isNil } from "lodash";
 
 interface UpdateProfileOptions {
   type: UserProfileType;

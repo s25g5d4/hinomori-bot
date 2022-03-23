@@ -1,6 +1,6 @@
-import { FirebaseDB } from "./db";
 import { UserProfileRecord } from "../models/user-profile";
 import { logger } from "../logger";
+import { FirebaseDB } from "./db";
 
 export class UserProfileStore {
   private readonly collectionName = "user-profiles";

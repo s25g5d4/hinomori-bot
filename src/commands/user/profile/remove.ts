@@ -1,13 +1,14 @@
+import { CommandInteraction, User } from "discord.js";
+import { isNil } from "lodash";
 import {
   formatUserProfileRecord,
   isEmptyRecord,
-} from "../../../models/user-profile";
-import { CommandInteraction, User } from "discord.js";
-import { UserProfileStore } from "../../../store/user-profiles";
-import { logger } from "../../../logger";
-import { logUser } from "../../../utils/log-user";
+} from "src/models/user-profile";
+import { UserProfileStore } from "src/store/user-profiles";
+import { logger } from "src/logger";
+import { logUser } from "src/utils/log-user";
 import { InteractiveCommand } from "../../interactive-command";
-import { isNil } from "lodash";
+import { CatchExecuteError } from "../../catch-execute-error";
 import {
   EmptyIndexError,
   EmptyProfileError,
@@ -15,7 +16,6 @@ import {
   IndexOutOfRangeError,
   NoProfileRecordError,
 } from "./remove-errors";
-import { CatchExecuteError } from "../../catch-execute-error";
 
 interface RemoveProfileOptions {
   index: number;
