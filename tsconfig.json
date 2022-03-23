@@ -13,11 +13,11 @@
     "target": "es2017",
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2017"],
-    "types": ["node", "mocha"],
+    "types": ["node"],
     "paths": {
       "src/*": ["src/*"]
     }
   },
   "include": ["./src"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": ["node_modules"]
 }
