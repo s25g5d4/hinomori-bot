@@ -1,3 +1,4 @@
+import { isNil } from "lodash";
 import { formatUserProfile, UserProfile } from "./profile";
 
 export interface UserProfileRecord {
@@ -19,4 +20,8 @@ export function formatUserProfileRecord(record: UserProfileRecord) {
     .filter((p) => !!p);
 
   return [`使用中的編組: *${record.active + 1}`, ...profileLines].join("\n");
+}
+
+export function isEmptyRecord(record: UserProfileRecord): boolean {
+  return record.profiles.every((p) => isNil(p));
 }

@@ -18,6 +18,7 @@ describe("Profile Remove Command", function () {
     users = [
       genUser("user1_id", "user1", "1234"),
       genUser("user2_id", "no-profile", "2345"),
+      genUser("user3_id", "one-profile", "3456"),
     ];
     records = [
       genUserProfileRecord({
@@ -25,6 +26,9 @@ describe("Profile Remove Command", function () {
         1: { type: UserProfileType.Helper, power: 200000, ratio: 5 },
       }),
       null,
+      genUserProfileRecord({
+        0: { type: UserProfileType.Runner, power: 250000, ratio: 3 },
+      }),
     ];
   });
 
@@ -63,6 +67,26 @@ describe("Profile Remove Command", function () {
     expect(stubProfileStore.fakeSet.args[0]).to.deep.equal([
       users[0].id,
       updatedRecord,
+    ]);
+  });
+
+  it("should reply different mesage when profiles are all empty", async function () {
+    const stubInteraction = new StubInteraction()
+      .withUser(users[2])
+      .withGetNumber(["index"], 1);
+
+    const stubProfileStore = new StubUserProfileStore()
+      .withGet([users[2].id], records[2])
+      .withSet([users[2].id, match.any], undefined);
+
+    const cmd = new RemoveProfile(
+      stubInteraction.build(),
+      stubProfileStore.build()
+    );
+    expect(await cmd.executeCommand()).to.not.exist;
+    expect(stubInteraction.fakeReply.callCount).to.equal(1);
+    expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
+      `已移除選擇的編組。你的編組資料是空的。`,
     ]);
   });
 
