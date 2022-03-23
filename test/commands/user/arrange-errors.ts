@@ -9,20 +9,21 @@ import {
 describe("Arrange Command Errors", function () {
   describe("PlayerNotEnoughError", function () {
     it("should create", function () {
-      expect(new PlayerNotEnoughError(1)).to.be.instanceOf(
+      expect(new PlayerNotEnoughError(1, false)).to.be.instanceOf(
         PlayerNotEnoughError
       );
     });
     it("should have correct id", function () {
-      const err = new PlayerNotEnoughError(1);
+      const err = new PlayerNotEnoughError(1, false);
       expect(err.errorId).to.equal("arrange-noEnoughPlayers");
       expect(PlayerNotEnoughError.id).to.equal(err.errorId);
     });
     it("should have correct data", function () {
-      const err = new PlayerNotEnoughError(1);
+      const err = new PlayerNotEnoughError(1, false);
       expect(err.data).to.deep.equal({
         reason: "no enough players",
         count: 1,
+        hasDuplicatedPlayers: false,
       });
     });
   });

@@ -137,6 +137,40 @@ describe("Arrange Command", function () {
     ]);
   });
 
+  it("should remove duplicated players", async function () {
+    const stubProfileStore = new StubUserProfileStore()
+      .withGet([users[0].id], records[0])
+      .withGet([users[1].id], records[1])
+      .withGet([users[2].id], records[2])
+      .withGet([users[3].id], records[3]);
+
+    const stubInteraction = new StubInteraction()
+      .withGetUser(["player1"], users[0])
+      .withGetUser(["player2"], users[1])
+      .withGetUser(["player3"], users[2])
+      .withGetUser(["player4"], users[3])
+      .withGetUser(["player5"], users[3]);
+
+    const cmd = new ArrangePlayers(
+      stubInteraction.build(),
+      stubProfileStore.build(),
+      true
+    );
+    expect(await cmd.executeCommand()).to.not.exist;
+    expect(stubInteraction.fakeReply.callCount).to.equal(1);
+    expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
+      {
+        content: `已過濾重複的玩家。
+推薦站位：<@user3_id>,<@user2_id>,<@user1_id>,<@user4_id>
+\` 1: 幫手 綜合力: 150000 倍率: 5.00\` user3
+\`*2: 幫手 綜合力: 200000 倍率: 5.00\` user2
+\` 3: 跑者 綜合力: 150000 倍率: 3.00\` user1
+\` 4: 幫手 綜合力: 150000 倍率: 5.00\` user4`,
+        allowedMentions: undefined,
+      },
+    ]);
+  });
+
   it("should throw player not enough error", async function () {
     const stubProfileStore = new StubUserProfileStore()
       .withGet([users[0].id], records[0])
