@@ -80,6 +80,9 @@ export class ArrangePlayers extends InteractiveCommand {
     const map = new Map(players.map((p) => [p.id, p]));
     const hasDuplicatedPlayers = map.size !== players.length;
     players = Array.from(map.values());
+    if (hasDuplicatedPlayers) {
+      logger.info("has duplicated players");
+    }
     return {
       players,
       hasDuplicatedPlayers,
