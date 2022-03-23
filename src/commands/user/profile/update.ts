@@ -29,6 +29,8 @@ interface UpdateProfileOptions {
 }
 
 export class UpdateProfile extends InteractiveCommand {
+  private readonly separator = /,| /g;
+
   constructor(
     interaction: CommandInteraction,
     private profileStore: UserProfileStore
@@ -57,7 +59,7 @@ export class UpdateProfile extends InteractiveCommand {
     if (typeof cardsString !== "string") {
       throw new InvalidOptionCardsError();
     }
-    const cardRatioStrings = cardsString.split(",");
+    const cardRatioStrings = cardsString.split(this.separator);
     if (cardRatioStrings.length !== 5) {
       throw new InvalidOptionCardsError();
     }
