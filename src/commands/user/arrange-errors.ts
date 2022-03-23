@@ -8,13 +8,15 @@ const noEnoughPlayers = "arrange-noEnoughPlayers";
 export interface PlayerNotEnoughErrorData {
   reason: string;
   count: number;
+  hasDuplicatedPlayers: boolean;
 }
 
 export class PlayerNotEnoughError extends CommandError<PlayerNotEnoughErrorData> {
-  constructor(count: number) {
+  constructor(count: number, hasDuplicatedPlayers: boolean) {
     const data: PlayerNotEnoughErrorData = {
       reason: "no enough players",
       count,
+      hasDuplicatedPlayers,
     };
     super(arrangeFailed, data, PlayerNotEnoughError.id);
   }
