@@ -1,4 +1,7 @@
-import { formatUserProfileRecord } from "../../../models/user-profile";
+import {
+  formatUserProfileRecord,
+  isEmptyRecord,
+} from "../../../models/user-profile";
 import { CommandInteraction, User } from "discord.js";
 import { UserProfileStore } from "../../../store/user-profiles";
 import { logger } from "../../../logger";
@@ -73,14 +76,16 @@ export class RemoveProfile extends InteractiveCommand {
     const newRecord: typeof record = { ...record, profiles: newProfiles };
     await this.profileStore.set(user.id, newRecord);
 
+    const reply = isEmptyRecord(newRecord)
+      ? `已移除選擇的編組。你的編組資料是空的。`
+      : `
+已移除選擇的編組。你的編組資料：
+\`\`\`
+${formatUserProfileRecord(newRecord)}
+\`\`\`
+`.trim();
+
     logger.info({ user: logUser(user) }, "profile removed");
-    await this.interaction.reply(
-      [
-        `已移除選擇的編組。你的編組資料：`,
-        "```",
-        formatUserProfileRecord(newRecord),
-        "```",
-      ].join("\n")
-    );
+    await this.interaction.reply(reply);
   }
 }
