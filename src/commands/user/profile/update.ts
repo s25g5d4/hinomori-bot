@@ -1,9 +1,7 @@
+import { CommandInteraction } from "discord.js";
 import {
   formatUserProfileRecord,
   UserProfile,
-} from "./../../../models/user-profile";
-import { CommandInteraction } from "discord.js";
-import {
   convertToUserProfileType,
   UserProfileType,
 } from "../../../models/user-profile";

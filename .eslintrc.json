@@ -1,10 +1,21 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "import"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier"
-  ]
+    "prettier",
+    "plugin:import/recommended",
+    "plugin:import/typescript"
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": "."
+      },
+      // it just solved the eslint-plugin-import not recognizing esm modules problem
+      "alias": []
+    }
+  }
 }
