@@ -3,6 +3,7 @@ import { errorReplies as profileActivateErrorReplies } from "./profile-activate"
 import { errorReplies as profileListErrorReplies } from "./profile-list";
 import { errorReplies as profileRemoveErrorReplies } from "./profile-remove";
 import { errorReplies as profileUpdateErrorReplies } from "./profile-update";
+import { errorReplies as ratioTWErrorReplies } from "./ratio-tw";
 import { ReplyFunc } from "./reply-func";
 
 export const errorReplies: Record<string, ReplyFunc> = Object.assign(
@@ -11,7 +12,8 @@ export const errorReplies: Record<string, ReplyFunc> = Object.assign(
   profileActivateErrorReplies,
   profileListErrorReplies,
   profileRemoveErrorReplies,
-  profileUpdateErrorReplies
+  profileUpdateErrorReplies,
+  ratioTWErrorReplies
 );
 
 export const generalErrorMessage: ReplyFunc = () => {

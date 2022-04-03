@@ -22,6 +22,8 @@ export class Commander {
         return this.factory.newArrangePlayers(interaction);
       case "arrange_ahead":
         return this.factory.newArrangePlayers(interaction, false);
+      case "ratio-tw":
+        return this.factory.newRatioTW(interaction);
     }
 
     return null;

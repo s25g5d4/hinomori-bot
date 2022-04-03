@@ -549,11 +549,11 @@ describe("Profile Update Command", function () {
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
       {
-        content:
-          "輸入的卡片倍率 (cards) 格式錯誤。請以逗號 , 分隔，不要使用空白分隔。",
+        content: "輸入的卡片倍率 (cards) 格式錯誤。",
       },
     ]);
   });
+
   it("should throw invalid option cards error (less than 4 cards)", async function () {
     const stubInteraction = new StubInteraction()
       .withGetString(["type"], "r")
@@ -572,8 +572,7 @@ describe("Profile Update Command", function () {
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
       {
-        content:
-          "輸入的卡片倍率 (cards) 格式錯誤。請以逗號 , 分隔，不要使用空白分隔。",
+        content: "輸入的卡片倍率 (cards) 格式錯誤。",
       },
     ]);
   });
@@ -596,8 +595,7 @@ describe("Profile Update Command", function () {
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
       {
-        content:
-          "輸入的卡片倍率 (cards) 格式錯誤。請以逗號 , 分隔，不要使用空白分隔。",
+        content: "輸入的卡片倍率 (cards) 格式錯誤。",
       },
     ]);
   });
@@ -620,8 +618,7 @@ describe("Profile Update Command", function () {
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
       {
-        content:
-          "輸入的卡片倍率 (cards) 格式錯誤。請以逗號 , 分隔，不要使用空白分隔。",
+        content: "輸入的卡片倍率 (cards) 格式錯誤。",
       },
     ]);
   });
@@ -644,8 +641,7 @@ describe("Profile Update Command", function () {
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
       {
-        content:
-          "輸入的卡片倍率 (cards) 格式錯誤。請以逗號 , 分隔，不要使用空白分隔。",
+        content: "輸入的卡片倍率 (cards) 格式錯誤。",
       },
     ]);
   });
