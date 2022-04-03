@@ -31,8 +31,7 @@ export const errorReplies: Record<string, ReplyFunc> = {
   },
   [errorIds.invalidOptionCards]: (): InteractionReplyOptions => {
     return {
-      content:
-        "輸入的卡片倍率 (cards) 格式錯誤。請以逗號 , 分隔，不要使用空白分隔。",
+      content: "輸入的卡片倍率 (cards) 格式錯誤。",
     };
   },
 };

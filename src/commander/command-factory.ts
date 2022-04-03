@@ -6,6 +6,7 @@ import { ActivateProfile } from "src/commands/user/profile/activate";
 import { ListProfile } from "src/commands/user/profile/list";
 import { RemoveProfile } from "src/commands/user/profile/remove";
 import { ArrangePlayers } from "src/commands/user/arrange";
+import { RatioTW } from "src/commands/user/ratio-tw";
 import { logger } from "src/logger";
 import { logInteraction } from "src/utils/log-interaction";
 
@@ -38,6 +39,11 @@ export class CommandFactory {
   ): ArrangePlayers {
     const l = this.createLogger(interaction);
     return new ArrangePlayers(l, interaction, this.profileStore, mention);
+  }
+
+  newRatioTW(interaction: CommandInteraction): RatioTW {
+    const l = this.createLogger(interaction);
+    return new RatioTW(l, interaction);
   }
 
   private createLogger(interaction: CommandInteraction) {
