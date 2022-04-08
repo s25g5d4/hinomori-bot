@@ -118,7 +118,7 @@ export class UpdateProfile extends InteractiveCommand {
 
     const options = await this.parseOptions();
     const { type, power, cards, index } = options;
-    const { user } = this.interaction;
+    const { user, guild } = this.interaction;
     this.l.debug(
       { options: { type, power, cards, index }, user: logUser(user) },
       "update profile options"
@@ -126,7 +126,7 @@ export class UpdateProfile extends InteractiveCommand {
 
     const newProfile: UserProfile = { type, power, cards };
 
-    let record = await this.profileStore.get(user.id);
+    let record = await this.profileStore.get(guild.id, user.id);
     if (!record) {
       record = {
         profiles: Array(10).fill(null),
@@ -137,7 +137,7 @@ export class UpdateProfile extends InteractiveCommand {
     const i = index - 1;
     newProfiles[i] = newProfile;
     record = { ...record, profiles: newProfiles };
-    await this.profileStore.set(user.id, record);
+    await this.profileStore.set(guild.id, user.id, record);
 
     this.l.info({ user: logUser(user) }, "profile updated");
     await this.interaction.reply(

@@ -56,8 +56,8 @@ describe("Profile Remove Command", function () {
       .withGetNumber(["index"], 2);
 
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[0].id], records[0])
-      .withSet([users[0].id, match.any], undefined);
+      .withGet([match.string, users[0].id], records[0])
+      .withSet([match.string, users[0].id, match.any], undefined);
 
     const cmd = new RemoveProfile(
       logger,
@@ -83,6 +83,7 @@ describe("Profile Remove Command", function () {
     });
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
     expect(stubProfileStore.fakeSet.args[0]).to.deep.equal([
+      stubInteraction.guild.id,
       users[0].id,
       updatedRecord,
     ]);
@@ -94,8 +95,8 @@ describe("Profile Remove Command", function () {
       .withGetNumber(["index"], 1);
 
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[2].id], records[2])
-      .withSet([users[2].id, match.any], undefined);
+      .withGet([match.string, users[2].id], records[2])
+      .withSet([match.string, users[2].id, match.any], undefined);
 
     const cmd = new RemoveProfile(
       logger,
@@ -115,8 +116,8 @@ describe("Profile Remove Command", function () {
       .withGetNumber(["index"], 1);
 
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[0].id], records[0])
-      .withSet([users[0].id, match.any], undefined);
+      .withGet([match.string, users[0].id], records[0])
+      .withSet([match.string, users[0].id, match.any], undefined);
 
     const cmd = new RemoveProfile(
       logger,
@@ -137,6 +138,7 @@ describe("Profile Remove Command", function () {
     );
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
     expect(stubProfileStore.fakeSet.args[0]).to.deep.equal([
+      stubInteraction.guild.id,
       users[0].id,
       updatedRecord,
     ]);
@@ -148,7 +150,7 @@ describe("Profile Remove Command", function () {
       .withGetNumber(["index"], undefined);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
-      [users[0].id],
+      [match.string, users[0].id],
       records[0]
     );
 
@@ -273,7 +275,7 @@ describe("Profile Remove Command", function () {
       .withGetNumber(["index"], 2);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
-      [users[1].id],
+      [match.string, users[1].id],
       records[1]
     );
 
@@ -297,7 +299,7 @@ describe("Profile Remove Command", function () {
       .withGetNumber(["index"], 10);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
-      [users[0].id],
+      [match.string, users[0].id],
       records[0]
     );
 

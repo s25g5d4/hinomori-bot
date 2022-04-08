@@ -56,9 +56,12 @@ export class ArrangePlayers extends InteractiveCommand {
     return emptyProfileIndices;
   }
 
-  private async getActiveUserProfiles(players: User[]): Promise<UserProfile[]> {
+  private async getActiveUserProfiles(
+    guild: string,
+    players: User[]
+  ): Promise<UserProfile[]> {
     const playerRecords = await Promise.all(
-      players.map((p) => this.profileStore.get(p.id))
+      players.map((p) => this.profileStore.get(guild, p.id))
     );
     const emptyRecordPlayers = this.checkEmptyRecords(playerRecords)?.map(
       (n) => players[n]
@@ -111,7 +114,7 @@ export class ArrangePlayers extends InteractiveCommand {
     const options = await this.parseOptions();
 
     let { players } = options;
-    const { user } = this.interaction;
+    const { guild, user } = this.interaction;
     this.l.debug(
       {
         options: { players: players.map((p) => p.id) },
@@ -126,7 +129,7 @@ export class ArrangePlayers extends InteractiveCommand {
     const { hasDuplicatedPlayers } = deduped;
     this.checkPlayerCount(players, hasDuplicatedPlayers);
 
-    const profiles = await this.getActiveUserProfiles(players);
+    const profiles = await this.getActiveUserProfiles(guild.id, players);
     const ratios = profiles.map((p) => profileRatio(p.cards));
     const position = polePosition(ratios);
     const skill6Player = profiles.reduce(

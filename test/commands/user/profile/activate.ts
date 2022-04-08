@@ -48,8 +48,8 @@ describe("Profile Activate Command", function () {
       .withGetNumber(["index"], 2);
 
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[0].id], records[0])
-      .withSet([users[0].id, match.any], undefined);
+      .withGet([match.string, users[0].id], records[0])
+      .withSet([match.string, users[0].id, match.any], undefined);
 
     const cmd = new ActivateProfile(
       logger,
@@ -65,6 +65,7 @@ describe("Profile Activate Command", function () {
     const updatedRecord: UserProfileRecord = { ...records[0], active: 1 };
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
     expect(stubProfileStore.fakeSet.args[0]).to.deep.equal([
+      stubInteraction.guild.id,
       users[0].id,
       updatedRecord,
     ]);
@@ -199,7 +200,7 @@ describe("Profile Activate Command", function () {
       .withGetNumber(["index"], 2);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
-      [users[1].id],
+      [match.string, users[1].id],
       records[1]
     );
 
@@ -223,7 +224,7 @@ describe("Profile Activate Command", function () {
       .withGetNumber(["index"], 10);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
-      [users[0].id],
+      [match.string, users[0].id],
       records[0]
     );
 

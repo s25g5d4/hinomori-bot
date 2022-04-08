@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { User } from "discord.js";
+import { match } from "sinon";
 import { ArrangePlayers } from "../../../src/commands/user/arrange";
 import { logger } from "../../../src/logger";
 import {
@@ -98,11 +99,11 @@ describe("Arrange Command", function () {
 
   it("should reply", async function () {
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[0].id], records[0])
-      .withGet([users[1].id], records[1])
-      .withGet([users[2].id], records[2])
-      .withGet([users[3].id], records[3])
-      .withGet([users[4].id], records[4]);
+      .withGet([match.string, users[0].id], records[0])
+      .withGet([match.string, users[1].id], records[1])
+      .withGet([match.string, users[2].id], records[2])
+      .withGet([match.string, users[3].id], records[3])
+      .withGet([match.string, users[4].id], records[4]);
 
     const stubInteraction = new StubInteraction()
       .withGetUser(["player1"], users[0])
@@ -134,11 +135,11 @@ describe("Arrange Command", function () {
 
   it("should reply (no mention)", async function () {
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[0].id], records[0])
-      .withGet([users[1].id], records[1])
-      .withGet([users[2].id], records[2])
-      .withGet([users[3].id], records[3])
-      .withGet([users[4].id], records[4]);
+      .withGet([match.string, users[0].id], records[0])
+      .withGet([match.string, users[1].id], records[1])
+      .withGet([match.string, users[2].id], records[2])
+      .withGet([match.string, users[3].id], records[3])
+      .withGet([match.string, users[4].id], records[4]);
 
     const stubInteraction = new StubInteraction()
       .withGetUser(["player1"], users[0])
@@ -170,10 +171,10 @@ describe("Arrange Command", function () {
 
   it("should remove duplicated players", async function () {
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[0].id], records[0])
-      .withGet([users[1].id], records[1])
-      .withGet([users[2].id], records[2])
-      .withGet([users[3].id], records[3]);
+      .withGet([match.string, users[0].id], records[0])
+      .withGet([match.string, users[1].id], records[1])
+      .withGet([match.string, users[2].id], records[2])
+      .withGet([match.string, users[3].id], records[3]);
 
     const stubInteraction = new StubInteraction()
       .withGetUser(["player1"], users[0])
@@ -204,10 +205,7 @@ describe("Arrange Command", function () {
   });
 
   it("should throw player not enough error", async function () {
-    const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[0].id], records[0])
-      .withGet([users[1].id], records[1])
-      .withGet([users[2].id], records[2]);
+    const stubProfileStore = new StubUserProfileStore();
 
     const stubInteraction = new StubInteraction()
       .withGetUser(["player1"], users[0])
@@ -231,11 +229,11 @@ describe("Arrange Command", function () {
 
   it("should throw empty profile records error", async function () {
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[7].id], records[7])
-      .withGet([users[0].id], records[0])
-      .withGet([users[8].id], records[8])
-      .withGet([users[1].id], records[1])
-      .withGet([users[2].id], records[2]);
+      .withGet([match.string, users[7].id], records[7])
+      .withGet([match.string, users[0].id], records[0])
+      .withGet([match.string, users[8].id], records[8])
+      .withGet([match.string, users[1].id], records[1])
+      .withGet([match.string, users[2].id], records[2]);
 
     const stubInteraction = new StubInteraction()
       .withGetUser(["player1"], users[7])
@@ -262,11 +260,11 @@ describe("Arrange Command", function () {
 
     it("should throw empty profile records error (no mention)", async function () {
       const stubProfileStore = new StubUserProfileStore()
-        .withGet([users[7].id], records[7])
-        .withGet([users[0].id], records[0])
-        .withGet([users[8].id], records[8])
-        .withGet([users[1].id], records[1])
-        .withGet([users[2].id], records[2]);
+        .withGet([match.string, users[7].id], records[7])
+        .withGet([match.string, users[0].id], records[0])
+        .withGet([match.string, users[8].id], records[8])
+        .withGet([match.string, users[1].id], records[1])
+        .withGet([match.string, users[2].id], records[2]);
 
       const stubInteraction = new StubInteraction()
         .withGetUser(["player1"], users[7])
@@ -295,11 +293,11 @@ describe("Arrange Command", function () {
 
   it("should throw empty active profiles error", async function () {
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[0].id], records[0])
-      .withGet([users[1].id], records[1])
-      .withGet([users[2].id], records[2])
-      .withGet([users[5].id], records[5])
-      .withGet([users[6].id], records[6]);
+      .withGet([match.string, users[0].id], records[0])
+      .withGet([match.string, users[1].id], records[1])
+      .withGet([match.string, users[2].id], records[2])
+      .withGet([match.string, users[5].id], records[5])
+      .withGet([match.string, users[6].id], records[6]);
 
     const stubInteraction = new StubInteraction()
       .withGetUser(["player1"], users[0])
@@ -326,11 +324,11 @@ describe("Arrange Command", function () {
 
     it("should throw empty active profiles error (no mention)", async function () {
       const stubProfileStore = new StubUserProfileStore()
-        .withGet([users[0].id], records[0])
-        .withGet([users[1].id], records[1])
-        .withGet([users[2].id], records[2])
-        .withGet([users[5].id], records[5])
-        .withGet([users[6].id], records[6]);
+        .withGet([match.string, users[0].id], records[0])
+        .withGet([match.string, users[1].id], records[1])
+        .withGet([match.string, users[2].id], records[2])
+        .withGet([match.string, users[5].id], records[5])
+        .withGet([match.string, users[6].id], records[6]);
 
       const stubInteraction = new StubInteraction()
         .withGetUser(["player1"], users[0])

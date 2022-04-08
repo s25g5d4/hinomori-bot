@@ -21,8 +21,8 @@ export class ListProfile extends InteractiveCommand {
     super(interaction);
   }
 
-  private async getUserProfileRecord(user: User) {
-    const record = await this.profileStore.get(user.id);
+  private async getUserProfileRecord(guild: string, user: User) {
+    const record = await this.profileStore.get(guild, user.id);
     if (!record) {
       throw new NoProfileRecordError();
     }
@@ -47,13 +47,13 @@ export class ListProfile extends InteractiveCommand {
     const options = await this.parseOptions();
 
     const { user: targetUser } = options;
-    const { user } = this.interaction;
+    const { user, guild } = this.interaction;
     this.l.debug(
       { options: { user: logUser(targetUser) }, user: logUser(user) },
       "list profile options"
     );
 
-    const record = await this.getUserProfileRecord(targetUser);
+    const record = await this.getUserProfileRecord(guild.id, targetUser);
 
     this.l.info(
       { user: logUser(user), targetUser: logUser(targetUser) },

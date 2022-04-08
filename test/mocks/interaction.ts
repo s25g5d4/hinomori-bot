@@ -1,5 +1,6 @@
-import { CommandInteraction, User } from "discord.js";
+import { CommandInteraction, Guild, User } from "discord.js";
 import { fake, SinonStub, stub } from "sinon";
+import { genGuild } from "./guild";
 import { genUser } from "./user";
 
 type Options = typeof CommandInteraction.prototype.options;
@@ -11,6 +12,7 @@ type Reply = typeof CommandInteraction.prototype.reply;
 export class StubInteraction {
   id = "default-interaction-id";
   user: User = genUser("issueCommandUser", "command-user", "0000");
+  guild: Guild = genGuild("default-guild", "default guild");
   fakeGetUser: SinonStub<Parameters<GetUser>, ReturnType<GetUser>>;
   fakeGetString: SinonStub<Parameters<GetString>, ReturnType<GetString>>;
   fakeGetNumber: SinonStub<Parameters<GetNumber>, ReturnType<GetNumber>>;
@@ -18,6 +20,11 @@ export class StubInteraction {
 
   withUser(user: User): StubInteraction {
     this.user = user;
+    return this;
+  }
+
+  withGuild(guild: Guild): StubInteraction {
+    this.guild = guild;
     return this;
   }
 
@@ -63,6 +70,7 @@ export class StubInteraction {
 
     return (<Omit<Partial<CommandInteraction>, "valueOf">>{
       id: this.id,
+      guild: this.guild,
       user: this.user,
       options,
       reply: this.fakeReply as unknown,

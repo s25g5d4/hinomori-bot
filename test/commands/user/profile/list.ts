@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { User } from "discord.js";
+import { match } from "sinon";
 import { ListProfile } from "../../../../src/commands/user/profile/list";
 import { logger } from "../../../../src/logger";
 import {
@@ -65,7 +66,7 @@ describe("Profile List Command", function () {
       .withGetUser(["user"], undefined);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
-      [users[0].id],
+      [match.string, users[0].id],
       records[0]
     );
 
@@ -97,7 +98,7 @@ describe("Profile List Command", function () {
       .withGetUser(["user"], users[1]);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
-      [users[1].id],
+      [match.string, users[1].id],
       records[1]
     );
 
@@ -129,7 +130,7 @@ describe("Profile List Command", function () {
       .withGetUser(["user"], undefined);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
-      [users[2].id],
+      [match.string, users[2].id],
       records[2]
     );
 
@@ -153,7 +154,7 @@ describe("Profile List Command", function () {
       .withGetUser(["user"], undefined);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
-      [users[3].id],
+      [match.string, users[3].id],
       records[3]
     );
 
