@@ -22,8 +22,16 @@ describe("Profile Activate Command", function () {
     ];
     records = [
       genUserProfileRecord({
-        0: { type: UserProfileType.Runner, power: 250000, ratio: 3 },
-        1: { type: UserProfileType.Helper, power: 200000, ratio: 5 },
+        0: {
+          type: UserProfileType.Runner,
+          power: 250000,
+          cards: [110, 80, 80, 60, 60],
+        },
+        1: {
+          type: UserProfileType.Helper,
+          power: 200000,
+          cards: [130, 110, 110, 110, 110],
+        },
       }),
       null,
     ];
@@ -51,7 +59,7 @@ describe("Profile Activate Command", function () {
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
-      "已更新使用中編組編號。使用中編組：\n```\n2: 幫手 綜合力: 200000 倍率: 5.00\n```",
+      "已更新使用中編組編號。使用中編組：\n```\n2: 幫手 綜合力: 200000 倍率: 5.10\n```",
     ]);
 
     const updatedRecord: UserProfileRecord = { ...records[0], active: 1 };

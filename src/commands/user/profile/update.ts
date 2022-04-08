@@ -9,7 +9,6 @@ import {
 } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
 import { logUser } from "src/utils/log-user";
-import { profileRatio } from "src/models/profile-ratio";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import {
@@ -24,7 +23,7 @@ import {
 interface UpdateProfileOptions {
   type: UserProfileType;
   power: number;
-  ratio: number;
+  cards: [number, number, number, number, number];
   index: number;
 }
 
@@ -55,7 +54,7 @@ export class UpdateProfile extends InteractiveCommand {
     return type;
   }
 
-  private parseOptionCards(): number {
+  private parseOptionCards(): [number, number, number, number, number] {
     const cardsString = this.interaction.options.getString("cards");
     if (typeof cardsString !== "string") {
       throw new InvalidOptionCardsError();
@@ -68,7 +67,7 @@ export class UpdateProfile extends InteractiveCommand {
     if (cards.some((n) => typeof n !== "number" || isNaN(n))) {
       throw new InvalidOptionCardsError();
     }
-    return profileRatio(cards);
+    return cards as [number, number, number, number, number];
   }
 
   private parseOptionPower(): number {
@@ -101,14 +100,14 @@ export class UpdateProfile extends InteractiveCommand {
 
   private async parseOptions(): Promise<UpdateProfileOptions> {
     const type = this.parseOptionType();
-    const ratio = this.parseOptionCards();
+    const cards = this.parseOptionCards();
     const power = this.parseOptionPower();
     const index = this.parseOptionIndex();
 
     return {
       type,
       power,
-      ratio,
+      cards,
       index,
     };
   }
@@ -118,14 +117,14 @@ export class UpdateProfile extends InteractiveCommand {
     this.l.debug("update profile");
 
     const options = await this.parseOptions();
-    const { type, power, ratio, index } = options;
+    const { type, power, cards, index } = options;
     const { user } = this.interaction;
     this.l.debug(
-      { options: { type, power, ratio, index }, user: logUser(user) },
+      { options: { type, power, cards, index }, user: logUser(user) },
       "update profile options"
     );
 
-    const newProfile: UserProfile = { type, power, ratio };
+    const newProfile: UserProfile = { type, power, cards };
 
     let record = await this.profileStore.get(user.id);
     if (!record) {

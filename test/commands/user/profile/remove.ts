@@ -23,12 +23,24 @@ describe("Profile Remove Command", function () {
     ];
     records = [
       genUserProfileRecord({
-        0: { type: UserProfileType.Runner, power: 250000, ratio: 3 },
-        1: { type: UserProfileType.Helper, power: 200000, ratio: 5 },
+        0: {
+          type: UserProfileType.Runner,
+          power: 250000,
+          cards: [110, 80, 80, 60, 60],
+        },
+        1: {
+          type: UserProfileType.Helper,
+          power: 200000,
+          cards: [130, 110, 110, 110, 110],
+        },
       }),
       null,
       genUserProfileRecord({
-        0: { type: UserProfileType.Runner, power: 250000, ratio: 3 },
+        0: {
+          type: UserProfileType.Runner,
+          power: 250000,
+          cards: [110, 80, 80, 60, 60],
+        },
       }),
     ];
   });
@@ -58,12 +70,16 @@ describe("Profile Remove Command", function () {
       `已移除選擇的編組。你的編組資料：
 \`\`\`
 使用中的編組: *1
- *1: 跑者 綜合力: 250000 倍率: 3.00
+ *1: 跑者 綜合力: 250000 倍率: 3.54
 \`\`\``,
     ]);
 
     const updatedRecord: UserProfileRecord = genUserProfileRecord({
-      0: { type: UserProfileType.Runner, power: 250000, ratio: 3 },
+      0: {
+        type: UserProfileType.Runner,
+        power: 250000,
+        cards: [110, 80, 80, 60, 60],
+      },
     });
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
     expect(stubProfileStore.fakeSet.args[0]).to.deep.equal([
@@ -111,7 +127,11 @@ describe("Profile Remove Command", function () {
 
     const updatedRecord: UserProfileRecord = genUserProfileRecord(
       {
-        1: { type: UserProfileType.Helper, power: 200000, ratio: 5 },
+        1: {
+          type: UserProfileType.Helper,
+          power: 200000,
+          cards: [130, 110, 110, 110, 110],
+        },
       },
       0
     );

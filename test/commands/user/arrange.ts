@@ -29,34 +29,62 @@ describe("Arrange Command", function () {
     records = [
       genUserProfileRecord({
         // user 1
-        0: { type: UserProfileType.Runner, ratio: 3, power: 150000 },
+        0: {
+          type: UserProfileType.Runner,
+          cards: [110, 80, 80, 60, 60],
+          power: 150000,
+        },
       }),
       genUserProfileRecord({
         // user 2
-        0: { type: UserProfileType.Helper, ratio: 5, power: 200000 },
+        0: {
+          type: UserProfileType.Helper,
+          cards: [130, 110, 110, 110, 110],
+          power: 200000,
+        },
       }),
       genUserProfileRecord({
         // user 3
-        0: { type: UserProfileType.Helper, ratio: 5, power: 150000 },
+        0: {
+          type: UserProfileType.Helper,
+          cards: [130, 110, 110, 110, 110],
+          power: 150000,
+        },
       }),
       genUserProfileRecord({
         // user 4
-        0: { type: UserProfileType.Helper, ratio: 5, power: 150000 },
+        0: {
+          type: UserProfileType.Helper,
+          cards: [130, 110, 110, 110, 110],
+          power: 150000,
+        },
       }),
       genUserProfileRecord({
         // user 5
-        0: { type: UserProfileType.Helper, ratio: 5, power: 150000 },
+        0: {
+          type: UserProfileType.Helper,
+          cards: [130, 110, 110, 110, 110],
+          power: 150000,
+        },
       }),
       genUserProfileRecord(
         {
           // user 6
-          0: { type: UserProfileType.Helper, ratio: 5, power: 150000 },
+          0: {
+            type: UserProfileType.Helper,
+            cards: [130, 110, 110, 110, 110],
+            power: 150000,
+          },
         },
         1
       ),
       genUserProfileRecord({
         // user 7
-        1: { type: UserProfileType.Helper, ratio: 5, power: 150000 },
+        1: {
+          type: UserProfileType.Helper,
+          cards: [130, 110, 110, 110, 110],
+          power: 150000,
+        },
       }),
       null,
       null,
@@ -94,11 +122,11 @@ describe("Arrange Command", function () {
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
       {
         content: `推薦站位：<@user3_id>,<@user2_id>,<@user1_id>,<@user4_id>,<@user5_id>
-\` 1: 幫手 綜合力: 150000 倍率: 5.00\` user3
-\`*2: 幫手 綜合力: 200000 倍率: 5.00\` user2
-\` 3: 跑者 綜合力: 150000 倍率: 3.00\` user1
-\` 4: 幫手 綜合力: 150000 倍率: 5.00\` user4
-\` 5: 幫手 綜合力: 150000 倍率: 5.00\` user5`,
+\` 1: 幫手 綜合力: 150000 倍率: 5.10\` user3
+\`*2: 幫手 綜合力: 200000 倍率: 5.10\` user2
+\` 3: 跑者 綜合力: 150000 倍率: 3.54\` user1
+\` 4: 幫手 綜合力: 150000 倍率: 5.10\` user4
+\` 5: 幫手 綜合力: 150000 倍率: 5.10\` user5`,
         allowedMentions: undefined,
       },
     ]);
@@ -130,11 +158,11 @@ describe("Arrange Command", function () {
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
       {
         content: `推薦站位：<@user3_id>,<@user2_id>,<@user1_id>,<@user4_id>,<@user5_id>
-\` 1: 幫手 綜合力: 150000 倍率: 5.00\` user3
-\`*2: 幫手 綜合力: 200000 倍率: 5.00\` user2
-\` 3: 跑者 綜合力: 150000 倍率: 3.00\` user1
-\` 4: 幫手 綜合力: 150000 倍率: 5.00\` user4
-\` 5: 幫手 綜合力: 150000 倍率: 5.00\` user5`,
+\` 1: 幫手 綜合力: 150000 倍率: 5.10\` user3
+\`*2: 幫手 綜合力: 200000 倍率: 5.10\` user2
+\` 3: 跑者 綜合力: 150000 倍率: 3.54\` user1
+\` 4: 幫手 綜合力: 150000 倍率: 5.10\` user4
+\` 5: 幫手 綜合力: 150000 倍率: 5.10\` user5`,
         allowedMentions: { users: [] },
       },
     ]);
@@ -166,10 +194,10 @@ describe("Arrange Command", function () {
       {
         content: `已過濾重複的玩家。
 推薦站位：<@user3_id>,<@user2_id>,<@user1_id>,<@user4_id>
-\` 1: 幫手 綜合力: 150000 倍率: 5.00\` user3
-\`*2: 幫手 綜合力: 200000 倍率: 5.00\` user2
-\` 3: 跑者 綜合力: 150000 倍率: 3.00\` user1
-\` 4: 幫手 綜合力: 150000 倍率: 5.00\` user4`,
+\` 1: 幫手 綜合力: 150000 倍率: 5.10\` user3
+\`*2: 幫手 綜合力: 200000 倍率: 5.10\` user2
+\` 3: 跑者 綜合力: 150000 倍率: 3.54\` user1
+\` 4: 幫手 綜合力: 150000 倍率: 5.10\` user4`,
         allowedMentions: undefined,
       },
     ]);

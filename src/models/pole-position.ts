@@ -5,16 +5,12 @@ const optimizedOrder4 = [2, 1, 0, 3] as const;
 
 export const errIncorrectPlayerNumbers = new Error("incorrect player numbers");
 
-export interface PlayerRatio {
-  ratio: number;
-}
-
-function indirectSort(arr: PlayerRatio[]): number[] {
+function indirectSort(arr: number[]): number[] {
   const indices = range(0, arr.length);
-  return indices.sort((a, b) => arr[a].ratio - arr[b].ratio);
+  return indices.sort((a, b) => arr[a] - arr[b]);
 }
 
-export function polePosition(players: PlayerRatio[]): number[] {
+export function polePosition(players: number[]): number[] {
   if (players.length < 4 || players.length > 5) {
     throw errIncorrectPlayerNumbers;
   }
