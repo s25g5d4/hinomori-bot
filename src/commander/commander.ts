@@ -60,7 +60,7 @@ export class Commander {
     try {
       await cmd.executeCommand();
     } catch (error) {
-      logger.error({ error }, "failed to execute command");
+      logger.error({ err: error }, "failed to execute command");
     }
     logger.debug("executed command");
   }
