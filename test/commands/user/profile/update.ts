@@ -47,8 +47,8 @@ describe("Profile Update Command", function () {
       .withGetNumber(["index"], undefined);
 
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[1].id], records[1])
-      .withSet([users[1].id, match.any], null);
+      .withGet([match.string, users[1].id], records[1])
+      .withSet([match.string, users[1].id, match.any], null);
 
     const cmd = new UpdateProfile(
       logger,
@@ -74,6 +74,7 @@ describe("Profile Update Command", function () {
     });
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
     expect(stubProfileStore.fakeSet.args[0]).to.deep.equal([
+      stubInteraction.guild.id,
       users[1].id,
       updatedRecord,
     ]);
@@ -88,8 +89,8 @@ describe("Profile Update Command", function () {
       .withGetNumber(["index"], undefined);
 
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[0].id], records[0])
-      .withSet([users[0].id, match.any], null);
+      .withGet([match.string, users[0].id], records[0])
+      .withSet([match.string, users[0].id, match.any], null);
 
     const cmd = new UpdateProfile(
       logger,
@@ -115,6 +116,7 @@ describe("Profile Update Command", function () {
     });
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
     expect(stubProfileStore.fakeSet.args[0]).to.deep.equal([
+      stubInteraction.guild.id,
       users[0].id,
       updatedRecord,
     ]);
@@ -129,8 +131,8 @@ describe("Profile Update Command", function () {
       .withGetNumber(["index"], 2);
 
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[1].id], records[1])
-      .withSet([users[1].id, match.any], null);
+      .withGet([match.string, users[1].id], records[1])
+      .withSet([match.string, users[1].id, match.any], null);
 
     const cmd = new UpdateProfile(
       logger,
@@ -156,6 +158,7 @@ describe("Profile Update Command", function () {
     });
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
     expect(stubProfileStore.fakeSet.args[0]).to.deep.equal([
+      stubInteraction.guild.id,
       users[1].id,
       updatedRecord,
     ]);
@@ -170,8 +173,8 @@ describe("Profile Update Command", function () {
       .withGetNumber(["index"], 2);
 
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[0].id], records[0])
-      .withSet([users[0].id, match.any], null);
+      .withGet([match.string, users[0].id], records[0])
+      .withSet([match.string, users[0].id, match.any], null);
 
     const cmd = new UpdateProfile(
       logger,
@@ -197,6 +200,7 @@ describe("Profile Update Command", function () {
     };
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
     expect(stubProfileStore.fakeSet.args[0]).to.deep.equal([
+      stubInteraction.guild.id,
       users[0].id,
       updatedRecord,
     ]);
@@ -212,8 +216,8 @@ describe("Profile Update Command", function () {
         .withGetNumber(["index"], i);
 
       const stubProfileStore = new StubUserProfileStore()
-        .withGet([users[0].id], records[0])
-        .withSet([users[0].id, match.any], null);
+        .withGet([match.string, users[0].id], records[0])
+        .withSet([match.string, users[0].id, match.any], null);
 
       const cmd = new UpdateProfile(
         logger,
@@ -232,6 +236,7 @@ describe("Profile Update Command", function () {
       });
       expect(stubProfileStore.fakeSet.callCount).to.equal(1);
       expect(stubProfileStore.fakeSet.args[0]).to.deep.equal([
+        stubInteraction.guild.id,
         users[0].id,
         updatedRecord,
       ]);
@@ -247,8 +252,8 @@ describe("Profile Update Command", function () {
       .withGetNumber(["index"], undefined);
 
     const stubProfileStore = new StubUserProfileStore()
-      .withGet([users[1].id], records[1])
-      .withSet([users[1].id, match.any], null);
+      .withGet([match.string, users[1].id], records[1])
+      .withSet([match.string, users[1].id, match.any], null);
 
     const cmd = new UpdateProfile(
       logger,

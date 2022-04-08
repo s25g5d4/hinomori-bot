@@ -30,8 +30,8 @@ export class RemoveProfile extends InteractiveCommand {
     super(interaction);
   }
 
-  private async getUserProfileRecord(user: User) {
-    const record = await this.profileStore.get(user.id);
+  private async getUserProfileRecord(guild: string, user: User) {
+    const record = await this.profileStore.get(guild, user.id);
     if (!record) {
       throw new NoProfileRecordError();
     }
@@ -59,13 +59,13 @@ export class RemoveProfile extends InteractiveCommand {
     const options = await this.parseOptions();
 
     const { index } = options;
-    const { user } = this.interaction;
+    const { user, guild } = this.interaction;
     this.l.debug(
       { options: { index }, user: logUser(user) },
       "remove profile options"
     );
 
-    const record = await this.getUserProfileRecord(user);
+    const record = await this.getUserProfileRecord(guild.id, user);
     const i = index - 1;
     const profile = record.profiles[i];
     if (isNil(profile)) {
@@ -75,7 +75,7 @@ export class RemoveProfile extends InteractiveCommand {
     const newProfiles = [...record.profiles];
     newProfiles[i] = null;
     const newRecord: typeof record = { ...record, profiles: newProfiles };
-    await this.profileStore.set(user.id, newRecord);
+    await this.profileStore.set(guild.id, user.id, newRecord);
 
     const reply = isEmptyRecord(newRecord)
       ? `已移除選擇的編組。你的編組資料是空的。`

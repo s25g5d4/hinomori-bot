@@ -27,8 +27,8 @@ export class ActivateProfile extends InteractiveCommand {
     super(interaction);
   }
 
-  private async getUserProfileRecord(user: User) {
-    const record = await this.profileStore.get(user.id);
+  private async getUserProfileRecord(guild: string, user: User) {
+    const record = await this.profileStore.get(guild, user.id);
     if (!record) {
       throw new NoProfileRecordError();
     }
@@ -56,13 +56,13 @@ export class ActivateProfile extends InteractiveCommand {
     const options = await this.parseOptions();
 
     const { index } = options;
-    const { user } = this.interaction;
+    const { user, guild } = this.interaction;
     this.l.debug(
       { options: { index }, user: logUser(user) },
       "activate profile options"
     );
 
-    const record = await this.getUserProfileRecord(user);
+    const record = await this.getUserProfileRecord(guild.id, user);
     const i = index - 1;
     const profile = record.profiles[i];
     if (isNil(profile)) {
@@ -70,7 +70,7 @@ export class ActivateProfile extends InteractiveCommand {
     }
 
     const newRecord: typeof record = { ...record, active: i };
-    await this.profileStore.set(user.id, newRecord);
+    await this.profileStore.set(guild.id, user.id, newRecord);
 
     this.l.info({ user: logUser(user) }, "profile activated");
     await this.interaction.reply(
