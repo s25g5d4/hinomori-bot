@@ -23,7 +23,11 @@ describe("Profile Update Command", function () {
     ];
     records = [
       genUserProfileRecord({
-        0: { type: UserProfileType.Runner, power: 250000, ratio: 3 },
+        0: {
+          type: UserProfileType.Runner,
+          power: 250000,
+          cards: [110, 80, 80, 60, 60],
+        },
       }),
       null,
     ];
@@ -61,13 +65,11 @@ describe("Profile Update Command", function () {
 \`\`\``,
     ]);
 
-    // FIXME: Chai doesn't support tolerance of number comparison in deep
-    // equality assertion, yet?
     const updatedRecord = genUserProfileRecord({
       0: {
         type: UserProfileType.Runner,
         power: 250000,
-        ratio: 4.1595187199999994,
+        cards: [130, 100, 80, 80, 60],
       },
     });
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
@@ -104,13 +106,11 @@ describe("Profile Update Command", function () {
 \`\`\``,
     ]);
 
-    // FIXME: Chai doesn't support tolerance of number comparison in deep
-    // equality assertion, yet?
     const updatedRecord = genUserProfileRecord({
       0: {
         type: UserProfileType.Runner,
         power: 250000,
-        ratio: 4.1595187199999994,
+        cards: [130, 100, 80, 80, 60],
       },
     });
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
@@ -147,13 +147,11 @@ describe("Profile Update Command", function () {
 \`\`\``,
     ]);
 
-    // FIXME: Chai doesn't support tolerance of number comparison in deep
-    // equality assertion, yet?
     const updatedRecord = genUserProfileRecord({
       1: {
         type: UserProfileType.Runner,
         power: 250000,
-        ratio: 4.1595187199999994,
+        cards: [130, 100, 80, 80, 60],
       },
     });
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
@@ -186,18 +184,16 @@ describe("Profile Update Command", function () {
       `已更新。你的編組資料：
 \`\`\`
 使用中的編組: *1
- *1: 跑者 綜合力: 250000 倍率: 3.00
+ *1: 跑者 綜合力: 250000 倍率: 3.54
   2: 跑者 綜合力: 250000 倍率: 4.16
 \`\`\``,
     ]);
 
-    // FIXME: Chai doesn't support tolerance of number comparison in deep
-    // equality assertion, yet?
     const updatedRecord = records[0];
     updatedRecord.profiles[1] = {
       type: UserProfileType.Runner,
       power: 250000,
-      ratio: 4.1595187199999994,
+      cards: [130, 100, 80, 80, 60],
     };
     expect(stubProfileStore.fakeSet.callCount).to.equal(1);
     expect(stubProfileStore.fakeSet.args[0]).to.deep.equal([
@@ -226,14 +222,12 @@ describe("Profile Update Command", function () {
       );
       expect(await cmd.executeCommand()).to.not.exist;
 
-      // FIXME: Chai doesn't support tolerance of number comparison in deep
-      // equality assertion, yet?
       const updatedRecord = { ...records[0] };
       updatedRecord.profiles = merge(updatedRecord.profiles, {
         [i - 1]: {
           type: UserProfileType.Runner,
           power: 250000,
-          ratio: 4.1595187199999994,
+          cards: [130, 100, 80, 80, 60],
         },
       });
       expect(stubProfileStore.fakeSet.callCount).to.equal(1);

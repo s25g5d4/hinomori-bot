@@ -23,13 +23,29 @@ describe("Profile List Command", function () {
     ];
     records = [
       genUserProfileRecord({
-        0: { type: UserProfileType.Runner, power: 250000, ratio: 3 },
-        1: { type: UserProfileType.Helper, power: 200000, ratio: 5 },
+        0: {
+          type: UserProfileType.Runner,
+          power: 250000,
+          cards: [110, 80, 80, 60, 60],
+        },
+        1: {
+          type: UserProfileType.Helper,
+          power: 200000,
+          cards: [130, 110, 110, 110, 110],
+        },
       }),
       genUserProfileRecord(
         {
-          0: { type: UserProfileType.Helper, power: 250000, ratio: 5.5 },
-          1: { type: UserProfileType.Helper, power: 260000, ratio: 5.3 },
+          0: {
+            type: UserProfileType.Helper,
+            power: 250000,
+            cards: [130, 130, 120, 120, 115],
+          },
+          1: {
+            type: UserProfileType.Helper,
+            power: 260000,
+            cards: [130, 110, 110, 110, 110],
+          },
         },
         1
       ),
@@ -65,8 +81,8 @@ describe("Profile List Command", function () {
         content: `user1 (<@user1_id>) 的編組資料：
 \`\`\`
 使用中的編組: *1
- *1: 跑者 綜合力: 250000 倍率: 3.00
-  2: 幫手 綜合力: 200000 倍率: 5.00
+ *1: 跑者 綜合力: 250000 倍率: 3.54
+  2: 幫手 綜合力: 200000 倍率: 5.10
 \`\`\``,
         allowedMentions: {
           users: [],
@@ -97,8 +113,8 @@ describe("Profile List Command", function () {
         content: `user2 (<@user2_id>) 的編組資料：
 \`\`\`
 使用中的編組: *2
-  1: 幫手 綜合力: 250000 倍率: 5.50
- *2: 幫手 綜合力: 260000 倍率: 5.30
+  1: 幫手 綜合力: 250000 倍率: 5.48
+ *2: 幫手 綜合力: 260000 倍率: 5.10
 \`\`\``,
         allowedMentions: {
           users: [],
