@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageMentionOptions, User } from "discord.js";
+import { Logger } from "pino";
 import { UserProfileStore } from "src/store/user-profiles";
-import { logger } from "src/logger";
 import {
   formatUserProfile,
   UserProfile,
@@ -27,6 +27,7 @@ interface ArrangePlayersOptions {
 
 export class ArrangePlayers extends InteractiveCommand {
   constructor(
+    private l: Logger,
     interaction: CommandInteraction,
     private profileStore: UserProfileStore,
     private mention: boolean
@@ -81,7 +82,7 @@ export class ArrangePlayers extends InteractiveCommand {
     const hasDuplicatedPlayers = map.size !== players.length;
     players = Array.from(map.values());
     if (hasDuplicatedPlayers) {
-      logger.info("has duplicated players");
+      this.l.info("has duplicated players");
     }
     return {
       players,
@@ -105,12 +106,12 @@ export class ArrangePlayers extends InteractiveCommand {
 
   @CatchExecuteError()
   async executeCommand(): Promise<void> {
-    logger.debug("arrange players");
+    this.l.debug("arrange players");
     const options = await this.parseOptions();
 
     let { players } = options;
     const { user } = this.interaction;
-    logger.debug(
+    this.l.debug(
       {
         options: { players: players.map((p) => p.id) },
         mention: this.mention,
@@ -148,7 +149,7 @@ export class ArrangePlayers extends InteractiveCommand {
     const allowedMentions: MessageMentionOptions = this.mention
       ? undefined
       : { users: [] };
-    logger.info("players arranged");
+    this.l.info("players arranged");
     await this.interaction.reply({
       content: replyLines.join("\n"),
       allowedMentions,

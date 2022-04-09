@@ -1,5 +1,6 @@
 import { CommandInteraction } from "discord.js";
 import { isNil } from "lodash";
+import { Logger } from "pino";
 import {
   formatUserProfileRecord,
   UserProfile,
@@ -7,7 +8,6 @@ import {
   UserProfileType,
 } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
-import { logger } from "src/logger";
 import { logUser } from "src/utils/log-user";
 import { profileRatio } from "src/models/profile-ratio";
 import { InteractiveCommand } from "../../interactive-command";
@@ -32,6 +32,7 @@ export class UpdateProfile extends InteractiveCommand {
   private readonly separator = /,| /g;
 
   constructor(
+    private l: Logger,
     interaction: CommandInteraction,
     private profileStore: UserProfileStore
   ) {
@@ -48,7 +49,7 @@ export class UpdateProfile extends InteractiveCommand {
     try {
       type = convertToUserProfileType(typeString);
     } catch (e) {
-      logger.error(e);
+      this.l.error(e);
       throw new InvalidOptionTypeError();
     }
     return type;
@@ -114,12 +115,12 @@ export class UpdateProfile extends InteractiveCommand {
 
   @CatchExecuteError()
   async executeCommand(): Promise<void> {
-    logger.debug("update profile");
+    this.l.debug("update profile");
 
     const options = await this.parseOptions();
     const { type, power, ratio, index } = options;
     const { user } = this.interaction;
-    logger.debug(
+    this.l.debug(
       { options: { type, power, ratio, index }, user: logUser(user) },
       "update profile options"
     );
@@ -139,7 +140,7 @@ export class UpdateProfile extends InteractiveCommand {
     record = { ...record, profiles: newProfiles };
     await this.profileStore.set(user.id, record);
 
-    logger.info({ user: logUser(user) }, "profile updated");
+    this.l.info({ user: logUser(user) }, "profile updated");
     await this.interaction.reply(
       [
         "已更新。你的編組資料：",

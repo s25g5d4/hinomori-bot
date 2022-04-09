@@ -1,4 +1,5 @@
 import { Interaction, CommandInteraction } from "discord.js";
+import { logInteraction } from "src/utils/log-interaction";
 import { logger } from "../logger";
 import { UserProfileStore } from "../store/user-profiles";
 import { Command } from "../commands/command";
@@ -48,20 +49,22 @@ export class Commander {
       return;
     }
 
-    logger.debug({ command: interaction.toString() }, "dispatching command");
+    const l = logger.child({ interaction: logInteraction(interaction) });
+
+    l.debug({ command: interaction.toString() }, "dispatching command");
     const cmd = this.dispatch(interaction);
     if (cmd == null) {
-      logger.warn({ command: interaction.toString() }, "unrecognized command");
+      l.warn({ command: interaction.toString() }, "unrecognized command");
       await interaction.reply("未知的指令");
       return;
     }
 
-    logger.debug("executing command");
+    l.debug("executing command");
     try {
       await cmd.executeCommand();
     } catch (error) {
-      logger.error({ err: error }, "failed to execute command");
+      l.error({ err: error }, "failed to execute command");
     }
-    logger.debug("executed command");
+    l.debug("executed command");
   }
 }

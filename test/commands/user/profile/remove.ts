@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { User } from "discord.js";
 import { match } from "sinon";
 import { RemoveProfile } from "../../../../src/commands/user/profile/remove";
+import { logger } from "../../../../src/logger";
 import {
   UserProfileRecord,
   UserProfileType,
@@ -33,7 +34,7 @@ describe("Profile Remove Command", function () {
   });
 
   it("should create", function () {
-    const cmd = new RemoveProfile(null, null);
+    const cmd = new RemoveProfile(logger, null, null);
     expect(cmd).to.be.instanceOf(RemoveProfile);
   });
 
@@ -47,6 +48,7 @@ describe("Profile Remove Command", function () {
       .withSet([users[0].id, match.any], undefined);
 
     const cmd = new RemoveProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -80,6 +82,7 @@ describe("Profile Remove Command", function () {
       .withSet([users[2].id, match.any], undefined);
 
     const cmd = new RemoveProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -100,6 +103,7 @@ describe("Profile Remove Command", function () {
       .withSet([users[0].id, match.any], undefined);
 
     const cmd = new RemoveProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -129,6 +133,7 @@ describe("Profile Remove Command", function () {
     );
 
     const cmd = new RemoveProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -147,6 +152,7 @@ describe("Profile Remove Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new RemoveProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -168,6 +174,7 @@ describe("Profile Remove Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new RemoveProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -186,6 +193,7 @@ describe("Profile Remove Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new RemoveProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -204,6 +212,7 @@ describe("Profile Remove Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new RemoveProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -225,6 +234,7 @@ describe("Profile Remove Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new RemoveProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -248,6 +258,7 @@ describe("Profile Remove Command", function () {
     );
 
     const cmd = new RemoveProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -271,6 +282,7 @@ describe("Profile Remove Command", function () {
     );
 
     const cmd = new RemoveProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );

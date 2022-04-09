@@ -2,6 +2,7 @@ import { Client, Intents } from "discord.js";
 import { logger } from "./logger";
 import { Commander } from "./commander/commander";
 import { config } from "./config";
+import { logInteraction } from "./utils/log-interaction";
 
 export class Server {
   constructor(private commander: Commander) {}
@@ -18,9 +19,8 @@ export class Server {
       });
 
       client.on("interactionCreate", (interaction) => {
-        const { type, channelId, guildId, user } = interaction;
         logger.info(
-          { interaction: { type, channelId, guildId, user: user.id } },
+          { interaction: logInteraction(interaction, true) },
           "interaction received"
         );
         this.commander.execute(interaction);

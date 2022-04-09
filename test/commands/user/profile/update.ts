@@ -30,7 +30,7 @@ describe("Profile Update Command", function () {
   });
 
   it("should create", function () {
-    const cmd = new UpdateProfile(null, null);
+    const cmd = new UpdateProfile(logger, null, null);
     expect(cmd).to.be.instanceOf(UpdateProfile);
   });
 
@@ -47,6 +47,7 @@ describe("Profile Update Command", function () {
       .withSet([users[1].id, match.any], null);
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -89,6 +90,7 @@ describe("Profile Update Command", function () {
       .withSet([users[0].id, match.any], null);
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -131,6 +133,7 @@ describe("Profile Update Command", function () {
       .withSet([users[1].id, match.any], null);
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -173,6 +176,7 @@ describe("Profile Update Command", function () {
       .withSet([users[0].id, match.any], null);
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -216,6 +220,7 @@ describe("Profile Update Command", function () {
         .withSet([users[0].id, match.any], null);
 
       const cmd = new UpdateProfile(
+        logger,
         stubInteraction.build(),
         stubProfileStore.build()
       );
@@ -252,6 +257,7 @@ describe("Profile Update Command", function () {
       .withSet([users[1].id, match.any], null);
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -276,6 +282,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -298,6 +305,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -320,6 +328,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -342,6 +351,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -364,6 +374,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -386,6 +397,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -408,6 +420,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -434,6 +447,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -456,6 +470,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -478,6 +493,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -501,6 +517,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -524,6 +541,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -546,6 +564,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -569,6 +588,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -592,6 +612,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -615,6 +636,7 @@ describe("Profile Update Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );

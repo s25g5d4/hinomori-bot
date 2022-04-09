@@ -1,11 +1,16 @@
 import { User } from "discord.js";
+import { isNil } from "lodash";
 
-interface LogUserObject {
+export interface LogUserObject {
   id: string;
   username: string;
 }
 
 function logSingleUser(user: User): LogUserObject {
+  if (isNil(user)) {
+    return undefined;
+  }
+
   const { id, username } = user;
   return { id, username };
 }

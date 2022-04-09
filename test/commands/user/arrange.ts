@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { User } from "discord.js";
 import { ArrangePlayers } from "../../../src/commands/user/arrange";
+import { logger } from "../../../src/logger";
 import {
   UserProfileRecord,
   UserProfileType,
@@ -63,7 +64,7 @@ describe("Arrange Command", function () {
   });
 
   it("should create", function () {
-    const cmd = new ArrangePlayers(null, null, false);
+    const cmd = new ArrangePlayers(logger, null, null, false);
     expect(cmd).to.be.instanceOf(ArrangePlayers);
   });
 
@@ -83,6 +84,7 @@ describe("Arrange Command", function () {
       .withGetUser(["player5"], users[4]);
 
     const cmd = new ArrangePlayers(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build(),
       true
@@ -118,6 +120,7 @@ describe("Arrange Command", function () {
       .withGetUser(["player5"], users[4]);
 
     const cmd = new ArrangePlayers(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build(),
       false
@@ -152,6 +155,7 @@ describe("Arrange Command", function () {
       .withGetUser(["player5"], users[3]);
 
     const cmd = new ArrangePlayers(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build(),
       true
@@ -183,6 +187,7 @@ describe("Arrange Command", function () {
       .withGetUser(["player3"], users[2]);
 
     const cmd = new ArrangePlayers(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build(),
       true
@@ -212,6 +217,7 @@ describe("Arrange Command", function () {
       .withGetUser(["player5"], users[2]);
 
     const cmd = new ArrangePlayers(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build(),
       true
@@ -242,6 +248,7 @@ describe("Arrange Command", function () {
         .withGetUser(["player5"], users[2]);
 
       const cmd = new ArrangePlayers(
+        logger,
         stubInteraction.build(),
         stubProfileStore.build(),
         false
@@ -274,6 +281,7 @@ describe("Arrange Command", function () {
       .withGetUser(["player5"], users[6]);
 
     const cmd = new ArrangePlayers(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build(),
       true
@@ -304,6 +312,7 @@ describe("Arrange Command", function () {
         .withGetUser(["player5"], users[6]);
 
       const cmd = new ArrangePlayers(
+        logger,
         stubInteraction.build(),
         stubProfileStore.build(),
         false

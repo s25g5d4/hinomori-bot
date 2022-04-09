@@ -10,6 +10,7 @@ import { StubInteraction } from "../../../mocks/interaction";
 import { StubUserProfileStore } from "../../../mocks/profile-store";
 import { genUserProfileRecord } from "../../../mocks/record";
 import { genUser } from "../../../mocks/user";
+import { logger } from "../../../../src/logger";
 
 describe("Profile Activate Command", function () {
   let users: User[] = [];
@@ -29,7 +30,7 @@ describe("Profile Activate Command", function () {
   });
 
   it("should create", function () {
-    const cmd = new ActivateProfile(null, null);
+    const cmd = new ActivateProfile(logger, null, null);
     expect(cmd).to.be.instanceOf(ActivateProfile);
   });
 
@@ -43,6 +44,7 @@ describe("Profile Activate Command", function () {
       .withSet([users[0].id, match.any], undefined);
 
     const cmd = new ActivateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -69,6 +71,7 @@ describe("Profile Activate Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new ActivateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -87,6 +90,7 @@ describe("Profile Activate Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new ActivateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -108,6 +112,7 @@ describe("Profile Activate Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new ActivateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -126,6 +131,7 @@ describe("Profile Activate Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new ActivateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -144,6 +150,7 @@ describe("Profile Activate Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new ActivateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -165,6 +172,7 @@ describe("Profile Activate Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new ActivateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -188,6 +196,7 @@ describe("Profile Activate Command", function () {
     );
 
     const cmd = new ActivateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -211,6 +220,7 @@ describe("Profile Activate Command", function () {
     );
 
     const cmd = new ActivateProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );

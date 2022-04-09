@@ -1,8 +1,8 @@
 import { CommandInteraction, User } from "discord.js";
 import { isNil } from "lodash";
+import { Logger } from "pino";
 import { formatUserProfileRecord } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
-import { logger } from "src/logger";
 import { logUser } from "src/utils/log-user";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
@@ -14,6 +14,7 @@ interface ListProfileOptions {
 
 export class ListProfile extends InteractiveCommand {
   constructor(
+    private l: Logger,
     interaction: CommandInteraction,
     private profileStore: UserProfileStore
   ) {
@@ -42,19 +43,19 @@ export class ListProfile extends InteractiveCommand {
 
   @CatchExecuteError()
   async executeCommand(): Promise<void> {
-    logger.debug("list profile");
+    this.l.debug("list profile");
     const options = await this.parseOptions();
 
     const { user: targetUser } = options;
     const { user } = this.interaction;
-    logger.debug(
+    this.l.debug(
       { options: { user: logUser(targetUser) }, user: logUser(user) },
       "list profile options"
     );
 
     const record = await this.getUserProfileRecord(targetUser);
 
-    logger.info(
+    this.l.info(
       { user: logUser(user), targetUser: logUser(targetUser) },
       "profile listed"
     );
