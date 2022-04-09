@@ -1,4 +1,5 @@
 import { CommandInteraction } from "discord.js";
+import { logInteraction } from "src/utils/log-interaction";
 import { logger } from "../logger";
 import { CommandError } from "./command-error";
 import { errorReplies, generalErrorMessage } from "./error-replies";
@@ -15,7 +16,10 @@ async function handleError(
     throw err;
   }
 
-  logger.info(err.data, err.message);
+  logger.info(
+    { interaction: logInteraction(interaction), data: err.data },
+    err.message
+  );
   const getReplyMessage: ReplyFunc =
     errorReplies[err.errorId] ?? generalErrorMessage;
   await interaction.reply(getReplyMessage(err.data));

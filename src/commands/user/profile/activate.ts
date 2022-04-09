@@ -1,8 +1,8 @@
 import { CommandInteraction, User } from "discord.js";
 import { isNil } from "lodash";
+import { Logger } from "pino";
 import { formatUserProfile } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
-import { logger } from "src/logger";
 import { logUser } from "src/utils/log-user";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
@@ -20,6 +20,7 @@ interface ActivateProfileOptions {
 
 export class ActivateProfile extends InteractiveCommand {
   constructor(
+    private l: Logger,
     interaction: CommandInteraction,
     private profileStore: UserProfileStore
   ) {
@@ -51,12 +52,12 @@ export class ActivateProfile extends InteractiveCommand {
 
   @CatchExecuteError()
   async executeCommand(): Promise<void> {
-    logger.debug("activate profile");
+    this.l.debug("activate profile");
     const options = await this.parseOptions();
 
     const { index } = options;
     const { user } = this.interaction;
-    logger.debug(
+    this.l.debug(
       { options: { index }, user: logUser(user) },
       "activate profile options"
     );
@@ -71,7 +72,7 @@ export class ActivateProfile extends InteractiveCommand {
     const newRecord: typeof record = { ...record, active: i };
     await this.profileStore.set(user.id, newRecord);
 
-    logger.info({ user: user.id }, "profile activated");
+    this.l.info({ user: logUser(user) }, "profile activated");
     await this.interaction.reply(
       [
         `已更新使用中編組編號。使用中編組：`,

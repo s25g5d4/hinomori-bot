@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { User } from "discord.js";
 import { ListProfile } from "../../../../src/commands/user/profile/list";
+import { logger } from "../../../../src/logger";
 import {
   UserProfileRecord,
   UserProfileType,
@@ -38,7 +39,7 @@ describe("Profile List Command", function () {
   });
 
   it("should create", function () {
-    const cmd = new ListProfile(null, null);
+    const cmd = new ListProfile(logger, null, null);
     expect(cmd).to.be.instanceOf(ListProfile);
   });
 
@@ -53,6 +54,7 @@ describe("Profile List Command", function () {
     );
 
     const cmd = new ListProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -84,6 +86,7 @@ describe("Profile List Command", function () {
     );
 
     const cmd = new ListProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -115,6 +118,7 @@ describe("Profile List Command", function () {
     );
 
     const cmd = new ListProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );
@@ -138,6 +142,7 @@ describe("Profile List Command", function () {
     );
 
     const cmd = new ListProfile(
+      logger,
       stubInteraction.build(),
       stubProfileStore.build()
     );

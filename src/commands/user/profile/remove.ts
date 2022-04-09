@@ -1,11 +1,11 @@
 import { CommandInteraction, User } from "discord.js";
 import { isNil } from "lodash";
+import { Logger } from "pino";
 import {
   formatUserProfileRecord,
   isEmptyRecord,
 } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
-import { logger } from "src/logger";
 import { logUser } from "src/utils/log-user";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
@@ -23,6 +23,7 @@ interface RemoveProfileOptions {
 
 export class RemoveProfile extends InteractiveCommand {
   constructor(
+    private l: Logger,
     interaction: CommandInteraction,
     private profileStore: UserProfileStore
   ) {
@@ -54,12 +55,12 @@ export class RemoveProfile extends InteractiveCommand {
 
   @CatchExecuteError()
   async executeCommand(): Promise<void> {
-    logger.debug("remove profile");
+    this.l.debug("remove profile");
     const options = await this.parseOptions();
 
     const { index } = options;
     const { user } = this.interaction;
-    logger.debug(
+    this.l.debug(
       { options: { index }, user: logUser(user) },
       "remove profile options"
     );
@@ -85,7 +86,7 @@ ${formatUserProfileRecord(newRecord)}
 \`\`\`
 `.trim();
 
-    logger.info({ user: logUser(user) }, "profile removed");
+    this.l.info({ user: logUser(user) }, "profile removed");
     await this.interaction.reply(reply);
   }
 }

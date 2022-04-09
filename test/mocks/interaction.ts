@@ -9,6 +9,7 @@ type GetNumber = typeof CommandInteraction.prototype.options.getNumber;
 type Reply = typeof CommandInteraction.prototype.reply;
 
 export class StubInteraction {
+  id = "default-interaction-id";
   user: User = genUser("issueCommandUser", "command-user", "0000");
   fakeGetUser: SinonStub<Parameters<GetUser>, ReturnType<GetUser>>;
   fakeGetString: SinonStub<Parameters<GetString>, ReturnType<GetString>>;
@@ -61,6 +62,7 @@ export class StubInteraction {
     };
 
     return (<Omit<Partial<CommandInteraction>, "valueOf">>{
+      id: this.id,
       user: this.user,
       options,
       reply: this.fakeReply as unknown,
