@@ -1,10 +1,11 @@
 import { expect } from "chai";
 import { RatioTW } from "../../../src/commands/user/ratio-tw";
+import { logger } from "../../../src/logger";
 import { StubInteraction } from "../../mocks/interaction";
 
 describe("Ratio-TW Command", function () {
   it("should create", function () {
-    const cmd = new RatioTW(null);
+    const cmd = new RatioTW(logger, null);
     expect(cmd).to.be.instanceOf(RatioTW);
   });
 
@@ -14,7 +15,7 @@ describe("Ratio-TW Command", function () {
       "130,130,130,130,130"
     );
 
-    const cmd = new RatioTW(stubInteraction.build());
+    const cmd = new RatioTW(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
@@ -28,7 +29,7 @@ describe("Ratio-TW Command", function () {
       "130 130 120 115 110"
     );
 
-    const cmd = new RatioTW(stubInteraction.build());
+    const cmd = new RatioTW(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
@@ -43,7 +44,7 @@ describe("Ratio-TW Command", function () {
       .withGetString(["cards"], "130,100,80,80")
       .withGetNumber(["index"], undefined);
 
-    const cmd = new RatioTW(stubInteraction.build());
+    const cmd = new RatioTW(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
