@@ -60,7 +60,7 @@ describe("Generate 25 Miku Profile Command", function () {
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
-      "白蔥指令：\n`&b rtw shiho h 20.00 130 110 110 110 110`",
+      "&b rtw shiho h 20.00 130 110 110 110 110",
     ]);
   });
 
