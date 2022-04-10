@@ -92,8 +92,6 @@ export class NiGoMikuProfile extends InteractiveCommand {
     const s = profile.cards.join(" ");
     const niGoMikuProfile = `&b rtw ${nickname} ${t} ${p} ${s}`;
     this.l.info("25 miku profile generated");
-    await this.interaction.reply(
-      ["白蔥指令：", "`" + niGoMikuProfile + "`"].join("\n")
-    );
+    await this.interaction.reply(niGoMikuProfile);
   }
 }
