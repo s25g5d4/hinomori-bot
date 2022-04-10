@@ -6,7 +6,7 @@ class InvalidCardsStringError extends Error {
 
 export function parseCards(str: string): number[] {
   const separator = /,| /g;
-  const cardRatioStrings = str.split(separator);
+  const cardRatioStrings = str.split(separator).filter((s) => !!s);
   if (cardRatioStrings.length !== 5) {
     throw new InvalidCardsStringError();
   }
