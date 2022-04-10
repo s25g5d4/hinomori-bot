@@ -74,6 +74,22 @@ export const commands = [
             .setMinValue(1)
             .setMaxValue(10)
         )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("25-miku")
+        .setDescription("產生白蔥註冊格式")
+        .addStringOption((option) =>
+          option.setName("nickname").setDescription("暱稱").setRequired(true)
+        )
+        .addNumberOption((option) =>
+          option
+            .setName("index")
+            .setDescription("設定檔編號 (1~10)")
+            .setRequired(true)
+            .setMinValue(1)
+            .setMaxValue(10)
+        )
     ),
   new SlashCommandBuilder()
     .setName("arrange")
@@ -111,7 +127,6 @@ export const commands = [
     .addUserOption((option) =>
       option.setName("player5").setDescription("玩家 5")
     ),
-
   new SlashCommandBuilder()
     .setName("ratio-tw")
     .setDescription("計算台服卡片倍率")

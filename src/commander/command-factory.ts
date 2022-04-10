@@ -9,6 +9,7 @@ import { ArrangePlayers } from "src/commands/user/arrange";
 import { RatioTW } from "src/commands/user/ratio-tw";
 import { logger } from "src/logger";
 import { logInteraction } from "src/utils/log-interaction";
+import { NiGoMikuProfile } from "src/commands/user/profile/25-miku";
 
 export class CommandFactory {
   constructor(private profileStore: UserProfileStore) {}
@@ -31,6 +32,11 @@ export class CommandFactory {
   newRemoveProfile(interaction: CommandInteraction): RemoveProfile {
     const l = this.createLogger(interaction);
     return new RemoveProfile(l, interaction, this.profileStore);
+  }
+
+  new25MikuProfile(interaction: CommandInteraction): NiGoMikuProfile {
+    const l = this.createLogger(interaction);
+    return new NiGoMikuProfile(l, interaction, this.profileStore);
   }
 
   newArrangePlayers(

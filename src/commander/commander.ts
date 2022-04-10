@@ -41,6 +41,8 @@ export class Commander {
         return this.factory.newActivateProfile(interaction);
       case "remove":
         return this.factory.newRemoveProfile(interaction);
+      case "25-miku":
+        return this.factory.new25MikuProfile(interaction);
     }
 
     return null;
