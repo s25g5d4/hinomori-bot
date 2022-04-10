@@ -47,18 +47,15 @@ export class ListProfile extends InteractiveCommand {
     const options = await this.parseOptions();
 
     const { user: targetUser } = options;
-    const { user, guild } = this.interaction;
+    const { guild } = this.interaction;
     this.l.debug(
-      { options: { user: logUser(targetUser) }, user: logUser(user) },
+      { options: { user: logUser(targetUser) } },
       "list profile options"
     );
 
     const record = await this.getUserProfileRecord(guild.id, targetUser);
 
-    this.l.info(
-      { user: logUser(user), targetUser: logUser(targetUser) },
-      "profile listed"
-    );
+    this.l.info("profile listed");
     const userString = `${targetUser.username} (${targetUser})`;
     await this.interaction.reply({
       content: [

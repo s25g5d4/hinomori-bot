@@ -6,7 +6,6 @@ import {
   isEmptyRecord,
 } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
-import { logUser } from "src/utils/log-user";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import {
@@ -60,10 +59,7 @@ export class RemoveProfile extends InteractiveCommand {
 
     const { index } = options;
     const { user, guild } = this.interaction;
-    this.l.debug(
-      { options: { index }, user: logUser(user) },
-      "remove profile options"
-    );
+    this.l.debug({ options: { index } }, "remove profile options");
 
     const record = await this.getUserProfileRecord(guild.id, user);
     const i = index - 1;
@@ -86,7 +82,7 @@ ${formatUserProfileRecord(newRecord)}
 \`\`\`
 `.trim();
 
-    this.l.info({ user: logUser(user) }, "profile removed");
+    this.l.info("profile removed");
     await this.interaction.reply(reply);
   }
 }
