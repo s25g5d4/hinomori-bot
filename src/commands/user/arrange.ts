@@ -6,9 +6,9 @@ import {
   UserProfile,
   UserProfileRecord,
 } from "src/models/user-profile";
-import { logUser } from "src/utils/log-user";
 import { polePosition } from "src/models/pole-position";
 import { profileRatio } from "src/models/profile-ratio";
+import { logUser } from "src/utils/log-user";
 import { InteractiveCommand } from "../interactive-command";
 import { CatchExecuteError } from "../catch-execute-error";
 import {
@@ -114,12 +114,11 @@ export class ArrangePlayers extends InteractiveCommand {
     const options = await this.parseOptions();
 
     let { players } = options;
-    const { guild, user } = this.interaction;
+    const { guild } = this.interaction;
     this.l.debug(
       {
-        options: { players: players.map((p) => p.id) },
+        options: { players: logUser(players) },
         mention: this.mention,
-        user: logUser(user),
       },
       "arrange players options"
     );

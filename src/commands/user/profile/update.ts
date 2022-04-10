@@ -8,7 +8,6 @@ import {
   UserProfileType,
 } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
-import { logUser } from "src/utils/log-user";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import {
@@ -120,7 +119,7 @@ export class UpdateProfile extends InteractiveCommand {
     const { type, power, cards, index } = options;
     const { user, guild } = this.interaction;
     this.l.debug(
-      { options: { type, power, cards, index }, user: logUser(user) },
+      { options: { type, power, cards, index } },
       "update profile options"
     );
 
@@ -139,7 +138,7 @@ export class UpdateProfile extends InteractiveCommand {
     record = { ...record, profiles: newProfiles };
     await this.profileStore.set(guild.id, user.id, record);
 
-    this.l.info({ user: logUser(user) }, "profile updated");
+    this.l.info("profile updated");
     await this.interaction.reply(
       [
         "已更新。你的編組資料：",

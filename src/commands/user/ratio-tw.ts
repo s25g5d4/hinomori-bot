@@ -2,7 +2,6 @@ import { CommandInteraction } from "discord.js";
 import { Logger } from "pino";
 import { parseCards } from "src/models/parse-cards";
 import { profileRatio } from "src/models/profile-ratio";
-import { logUser } from "src/utils/log-user";
 import { CatchExecuteError } from "../catch-execute-error";
 import { InteractiveCommand } from "../interactive-command";
 import { InvalidOptionCardsError } from "./ratio-tw-errors";
@@ -38,13 +37,9 @@ export class RatioTW extends InteractiveCommand {
 
     const options = await this.parseOptions();
     const { ratio } = options;
-    const { user } = this.interaction;
-    this.l.debug(
-      { options: { ratio }, user: logUser(user) },
-      "ratio-tw options"
-    );
+    this.l.debug({ options: { ratio } }, "ratio-tw options");
 
-    this.l.info({ user: logUser(user) }, "ratio-tw calculated");
+    this.l.info("ratio-tw calculated");
     await this.interaction.reply(`此組卡片倍率為 ${ratio.toFixed(2)}。`);
   }
 }

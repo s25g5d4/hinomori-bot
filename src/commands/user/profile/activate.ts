@@ -3,7 +3,6 @@ import { isNil } from "lodash";
 import { Logger } from "pino";
 import { formatUserProfile } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
-import { logUser } from "src/utils/log-user";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import {
@@ -57,10 +56,7 @@ export class ActivateProfile extends InteractiveCommand {
 
     const { index } = options;
     const { user, guild } = this.interaction;
-    this.l.debug(
-      { options: { index }, user: logUser(user) },
-      "activate profile options"
-    );
+    this.l.debug({ options: { index } }, "activate profile options");
 
     const record = await this.getUserProfileRecord(guild.id, user);
     const i = index - 1;
@@ -72,7 +68,7 @@ export class ActivateProfile extends InteractiveCommand {
     const newRecord: typeof record = { ...record, active: i };
     await this.profileStore.set(guild.id, user.id, newRecord);
 
-    this.l.info({ user: logUser(user) }, "profile activated");
+    this.l.info("profile activated");
     await this.interaction.reply(
       [
         `已更新使用中編組編號。使用中編組：`,
