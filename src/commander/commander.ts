@@ -62,6 +62,8 @@ export class Commander {
         return this.factory.newRatioV1(interaction);
       case "v2":
         return this.factory.newRatioV2(interaction);
+      case "server-version":
+        return this.factory.newRatioServerVersion(interaction);
     }
 
     return null;

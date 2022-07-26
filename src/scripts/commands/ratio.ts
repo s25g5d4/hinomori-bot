@@ -64,5 +64,10 @@ export const ratioCommands = [
             )
             .setRequired(true)
         )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("server-version")
+        .setDescription("各服倍率計算公式版本")
     ),
 ].map((command) => command.toJSON());
