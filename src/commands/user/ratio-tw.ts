@@ -1,7 +1,7 @@
 import { CommandInteraction } from "discord.js";
 import { Logger } from "pino";
 import { parseCards } from "src/models/parse-cards";
-import { profileRatio } from "src/models/profile-ratio";
+import { twProfileRatio } from "src/models/profile-ratio";
 import { CatchExecuteError } from "../catch-execute-error";
 import { InteractiveCommand } from "../interactive-command";
 import { InvalidOptionCardsError } from "./ratio-tw-errors";
@@ -28,7 +28,7 @@ export class RatioTW extends InteractiveCommand {
       throw new InvalidOptionCardsError();
     }
 
-    return { ratio: profileRatio(cardRatios) };
+    return { ratio: twProfileRatio(cardRatios) };
   }
 
   @CatchExecuteError()
@@ -40,6 +40,6 @@ export class RatioTW extends InteractiveCommand {
     this.l.debug({ options: { ratio } }, "ratio-tw options");
 
     this.l.info("ratio-tw calculated");
-    await this.interaction.reply(`此組卡片倍率為 ${ratio.toFixed(2)}。`);
+    await this.interaction.reply(`此組卡片倍率為 ${ratio.toFixed(2)} (tw)。`);
   }
 }
