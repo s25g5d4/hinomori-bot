@@ -6,6 +6,8 @@ import { errorReplies as profileUpdateErrorReplies } from "./profile-update";
 import { errorReplies as profile25mikuErrorReplies } from "./profile-25-miku";
 import { errorReplies as ratioTWErrorReplies } from "./ratio-tw";
 import { errorReplies as ratioJPErrorReplies } from "./ratio-jp";
+import { errorReplies as ratioV1ErrorReplies } from "./ratio-v1";
+import { errorReplies as ratioV2ErrorReplies } from "./ratio-v2";
 import { ReplyFunc } from "./reply-func";
 
 export const errorReplies: Record<string, ReplyFunc> = Object.assign(
@@ -17,7 +19,9 @@ export const errorReplies: Record<string, ReplyFunc> = Object.assign(
   profileUpdateErrorReplies,
   profile25mikuErrorReplies,
   ratioTWErrorReplies,
-  ratioJPErrorReplies
+  ratioJPErrorReplies,
+  ratioV1ErrorReplies,
+  ratioV2ErrorReplies
 );
 
 export const generalErrorMessage: ReplyFunc = () => {

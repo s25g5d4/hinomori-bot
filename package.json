@@ -4,7 +4,7 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "test": "TS_NODE_PROJECT=\"./tsconfig.test.json\" LOG_LEVEL=\"error\" mocha --recursive --extension ts --require ts-node/register --require tsconfig-paths/register",
+    "test": "TS_NODE_PROJECT=\"./test/tsconfig.json\" LOG_LEVEL=\"error\" mocha --recursive --extension ts --require ts-node/register --require tsconfig-paths/register",
     "lint": "npm run lint:format && npm run lint:code",
     "lint:format": "prettier -c .",
     "lint:code": "eslint .",

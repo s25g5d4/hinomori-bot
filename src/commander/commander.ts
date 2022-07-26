@@ -18,14 +18,14 @@ export class Commander {
     switch (commandName) {
       case "profile":
         return this.dispatchProfileCommand(interaction);
+      case "ratio":
+        return this.dispatchRatioCommand(interaction);
       case "arrange":
         return this.factory.newArrangePlayers(interaction);
       case "arrange_ahead":
         return this.factory.newArrangePlayers(interaction, false);
       case "ratio-tw":
         return this.factory.newRatioTW(interaction);
-      case "ratio-jp":
-        return this.factory.newRatioJP(interaction);
     }
 
     return null;
@@ -45,6 +45,23 @@ export class Commander {
         return this.factory.newRemoveProfile(interaction);
       case "25-miku":
         return this.factory.new25MikuProfile(interaction);
+    }
+
+    return null;
+  }
+
+  private dispatchRatioCommand(interaction: CommandInteraction): Command {
+    const subcommand = interaction.options.getSubcommand();
+
+    switch (subcommand) {
+      case "tw":
+        return this.factory.newRatioTW(interaction);
+      case "jp":
+        return this.factory.newRatioJP(interaction);
+      case "v1":
+        return this.factory.newRatioV1(interaction);
+      case "v2":
+        return this.factory.newRatioV2(interaction);
     }
 
     return null;

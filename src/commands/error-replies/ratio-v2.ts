@@ -1,5 +1,5 @@
 import { InteractionReplyOptions } from "discord.js";
-import { errorIds } from "../user/ratio/jp-errors";
+import { errorIds } from "../user/ratio/v2-errors";
 import { ReplyFunc } from "./reply-func";
 
 export const errorReplies: Record<string, ReplyFunc> = {

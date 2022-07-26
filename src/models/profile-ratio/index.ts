@@ -8,6 +8,17 @@ export enum ProfileRatioVersion {
   V2,
 }
 
+export const ProfileRatioVersionName: Record<ProfileRatioVersion, string> = {
+  [ProfileRatioVersion.V1]: "v1",
+  [ProfileRatioVersion.V2]: "v2",
+};
+
+export const ProfileRatioVersionNameValue: Record<string, ProfileRatioVersion> =
+  {
+    v1: ProfileRatioVersion.V1,
+    v2: ProfileRatioVersion.V2,
+  };
+
 export const profileRatioFunctions: Record<
   ProfileRatioVersion,
   ProfileRatioFn
@@ -16,7 +27,7 @@ export const profileRatioFunctions: Record<
   [ProfileRatioVersion.V2]: profileRatioV2,
 };
 
-const defaultVersion: ProfileRatioVersion =
+export const defaultVersion: ProfileRatioVersion =
   (ProfileRatioVersion[config.defaultProfileRatioVersion as any] as any) ??
   ProfileRatioVersion.V1;
 export const defaultProfileRatio = profileRatioFunctions[defaultVersion];
@@ -26,7 +37,7 @@ export const twVersion: ProfileRatioVersion =
   ProfileRatioVersion.V1;
 export const jpVersion: ProfileRatioVersion =
   (ProfileRatioVersion[config.jpProfileRatioVersion as any] as any) ??
-  ProfileRatioVersion.V1;
+  ProfileRatioVersion.V2;
 export const twProfileRatio = profileRatioFunctions[twVersion];
 export const jpProfileRatio = profileRatioFunctions[jpVersion];
 

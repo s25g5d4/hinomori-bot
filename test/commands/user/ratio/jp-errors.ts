@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { InvalidOptionCardsError } from "../../../src/commands/user/ratio-tw-errors";
+import { InvalidOptionCardsError } from "src/commands/user/ratio/jp-errors";
 
-describe("Ratio-TW Command Errors", function () {
+describe("Ratio-JP Command Errors", function () {
   describe("InvalidOptionCardsError", function () {
     it("should create", function () {
       expect(new InvalidOptionCardsError()).to.be.instanceOf(
@@ -10,7 +10,7 @@ describe("Ratio-TW Command Errors", function () {
     });
     it("should have correct id", function () {
       const err = new InvalidOptionCardsError();
-      expect(err.errorId).to.equal("ratioTW-invalidOptionCards");
+      expect(err.errorId).to.equal("ratioJP-invalidOptionCards");
       expect(InvalidOptionCardsError.id).to.equal(err.errorId);
     });
     it("should have correct data", function () {
