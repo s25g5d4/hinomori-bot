@@ -4,10 +4,10 @@ import { UserProfileStore } from "src/store/user-profiles";
 import {
   formatUserProfile,
   UserProfile,
+  userProfileRatio,
   UserProfileRecord,
 } from "src/models/user-profile";
 import { polePosition } from "src/models/pole-position";
-import { profileRatio } from "src/models/profile-ratio";
 import { logUser } from "src/utils/log-user";
 import { InteractiveCommand } from "../interactive-command";
 import { CatchExecuteError } from "../catch-execute-error";
@@ -129,7 +129,7 @@ export class ArrangePlayers extends InteractiveCommand {
     this.checkPlayerCount(players, hasDuplicatedPlayers);
 
     const profiles = await this.getActiveUserProfiles(guild.id, players);
-    const ratios = profiles.map((p) => profileRatio(p.cards));
+    const ratios = profiles.map((p) => userProfileRatio(p));
     const position = polePosition(ratios);
     const skill6Player = profiles.reduce(
       (p, c, i, arr) => (arr[p].power > c.power ? p : i),

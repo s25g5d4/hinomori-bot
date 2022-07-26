@@ -2,9 +2,9 @@ import { expect } from "chai";
 import {
   errNotEnoughRatios,
   profileRatio,
-} from "../../src/models/profile-ratio";
+} from "../../../src/models/profile-ratio/v1";
 
-describe("Profile Ratio", function () {
+describe("Profile Ratio v1", function () {
   it("should return correct ratio", function () {
     expect(profileRatio([100, 100, 100, 100, 100])).to.be.closeTo(4.147, 0.001);
     expect(profileRatio([130, 115, 110, 110, 110])).to.be.closeTo(5.137, 0.001);
