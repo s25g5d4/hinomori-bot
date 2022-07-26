@@ -136,4 +136,13 @@ export const commands = [
         .setDescription("卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)")
         .setRequired(true)
     ),
+  new SlashCommandBuilder()
+    .setName("ratio-jp")
+    .setDescription("計算日服卡片倍率")
+    .addStringOption((option) =>
+      option
+        .setName("cards")
+        .setDescription("卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)")
+        .setRequired(true)
+    ),
 ].map((command) => command.toJSON());
