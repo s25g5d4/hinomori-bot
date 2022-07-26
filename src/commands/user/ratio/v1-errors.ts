@@ -1,8 +1,8 @@
-import { CommandError } from "../command-error";
+import { CommandError } from "src/commands/command-error";
 
-const ratioJPFailed = "ratio-jp failed";
+const ratioV1Failed = "ratio v1 failed";
 
-const invalidOptionCards = "ratioJP-invalidOptionCards";
+const invalidOptionCards = "ratioV1-invalidOptionCards";
 
 export interface invalidOptionCardsErrorData {
   reason: string;
@@ -13,7 +13,7 @@ export class InvalidOptionCardsError extends CommandError<invalidOptionCardsErro
     const data: invalidOptionCardsErrorData = {
       reason: "option cards is invalid",
     };
-    super(ratioJPFailed, data, InvalidOptionCardsError.id);
+    super(ratioV1Failed, data, InvalidOptionCardsError.id);
   }
 
   static readonly id = invalidOptionCards;

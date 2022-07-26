@@ -1,39 +1,39 @@
 import { expect } from "chai";
-import { RatioJP } from "../../../src/commands/user/ratio-jp";
-import { logger } from "../../../src/logger";
-import { StubInteraction } from "../../mocks/interaction";
+import { RatioV1 } from "src/commands/user/ratio/v1";
+import { logger } from "src/logger";
+import { StubInteraction } from "test/mocks/interaction";
 
-describe("Ratio-JP Command", function () {
+describe("Ratio-V1 Command", function () {
   it("should create", function () {
-    const cmd = new RatioJP(logger, null as any);
-    expect(cmd).to.be.instanceOf(RatioJP);
+    const cmd = new RatioV1(logger, null);
+    expect(cmd).to.be.instanceOf(RatioV1);
   });
 
   it("should reply", async function () {
     const stubInteraction = new StubInteraction().withGetString(
       ["cards"],
-      "150,150,140,140,130"
+      "130,130,130,130,130"
     );
 
-    const cmd = new RatioJP(logger, stubInteraction.build());
+    const cmd = new RatioV1(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
-      "此組卡片倍率為 3.62 (jp)。",
+      "此組卡片倍率為 5.80 (v1)。",
     ]);
   });
 
-  it("should allow using space as separator in option cardsr", async function () {
+  it("should allow using space as separator in option cards", async function () {
     const stubInteraction = new StubInteraction().withGetString(
       ["cards"],
-      "120 110 100 80 30"
+      "130 130 120 115 110"
     );
 
-    const cmd = new RatioJP(logger, stubInteraction.build());
+    const cmd = new RatioV1(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
-      "此組卡片倍率為 2.84 (jp)。",
+      "此組卡片倍率為 5.39 (v1)。",
     ]);
   });
 
@@ -44,7 +44,7 @@ describe("Ratio-JP Command", function () {
       .withGetString(["cards"], "130,100,80,80")
       .withGetNumber(["index"], undefined!);
 
-    const cmd = new RatioJP(logger, stubInteraction.build());
+    const cmd = new RatioV1(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([

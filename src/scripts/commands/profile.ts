@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 
-export const commands = [
+export const profileCommands = [
   new SlashCommandBuilder()
     .setName("profile")
     .setDescription("卡片編組指令")
@@ -90,59 +90,5 @@ export const commands = [
             .setMinValue(1)
             .setMaxValue(10)
         )
-    ),
-  new SlashCommandBuilder()
-    .setName("arrange")
-    .setDescription("協力 LIVE 推車排位")
-    .addUserOption((option) =>
-      option.setName("player1").setDescription("玩家 1")
-    )
-    .addUserOption((option) =>
-      option.setName("player2").setDescription("玩家 2")
-    )
-    .addUserOption((option) =>
-      option.setName("player3").setDescription("玩家 3")
-    )
-    .addUserOption((option) =>
-      option.setName("player4").setDescription("玩家 4")
-    )
-    .addUserOption((option) =>
-      option.setName("player5").setDescription("玩家 5")
-    ),
-  new SlashCommandBuilder()
-    .setName("arrange_ahead")
-    .setDescription("預先排位協力 LIVE 推車 (不會通知被 tag 到的人)")
-    .addUserOption((option) =>
-      option.setName("player1").setDescription("玩家 1")
-    )
-    .addUserOption((option) =>
-      option.setName("player2").setDescription("玩家 2")
-    )
-    .addUserOption((option) =>
-      option.setName("player3").setDescription("玩家 3")
-    )
-    .addUserOption((option) =>
-      option.setName("player4").setDescription("玩家 4")
-    )
-    .addUserOption((option) =>
-      option.setName("player5").setDescription("玩家 5")
-    ),
-  new SlashCommandBuilder()
-    .setName("ratio-tw")
-    .setDescription("計算台服卡片倍率")
-    .addStringOption((option) =>
-      option
-        .setName("cards")
-        .setDescription("卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)")
-        .setRequired(true)
-    ),
-  new SlashCommandBuilder()
-    .setName("ratio-jp")
-    .setDescription("計算日服卡片倍率")
-    .addStringOption((option) =>
-      option
-        .setName("cards")
-        .setDescription("卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)")
-        .setRequired(true)
     ),
 ].map((command) => command.toJSON());
