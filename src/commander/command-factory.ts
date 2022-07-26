@@ -13,6 +13,7 @@ import { NiGoMikuProfile } from "src/commands/user/profile/25-miku";
 import { RatioJP } from "src/commands/user/ratio/jp";
 import { RatioV1 } from "src/commands/user/ratio/v1";
 import { RatioV2 } from "src/commands/user/ratio/v2";
+import { RatioServerVersion } from "src/commands/user/ratio/server-version";
 
 export class CommandFactory {
   constructor(private profileStore: UserProfileStore) {}
@@ -68,6 +69,11 @@ export class CommandFactory {
   newRatioV2(interaction: CommandInteraction): RatioV2 {
     const l = this.createLogger(interaction);
     return new RatioV2(l, interaction);
+  }
+
+  newRatioServerVersion(interaction: CommandInteraction): RatioServerVersion {
+    const l = this.createLogger(interaction);
+    return new RatioServerVersion(l, interaction);
   }
 
   private createLogger(interaction: CommandInteraction) {
