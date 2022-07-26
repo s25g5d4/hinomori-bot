@@ -10,6 +10,7 @@ import { RatioTW } from "src/commands/user/ratio-tw";
 import { logger } from "src/logger";
 import { logInteraction } from "src/utils/log-interaction";
 import { NiGoMikuProfile } from "src/commands/user/profile/25-miku";
+import { RatioJP } from "src/commands/user/ratio-jp";
 
 export class CommandFactory {
   constructor(private profileStore: UserProfileStore) {}
@@ -50,6 +51,11 @@ export class CommandFactory {
   newRatioTW(interaction: CommandInteraction): RatioTW {
     const l = this.createLogger(interaction);
     return new RatioTW(l, interaction);
+  }
+
+  newRatioJP(interaction: CommandInteraction): RatioJP {
+    const l = this.createLogger(interaction);
+    return new RatioJP(l, interaction);
   }
 
   private createLogger(interaction: CommandInteraction) {

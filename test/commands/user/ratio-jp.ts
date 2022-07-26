@@ -1,39 +1,39 @@
 import { expect } from "chai";
-import { RatioTW } from "../../../src/commands/user/ratio-tw";
+import { RatioJP } from "../../../src/commands/user/ratio-jp";
 import { logger } from "../../../src/logger";
 import { StubInteraction } from "../../mocks/interaction";
 
-describe("Ratio-TW Command", function () {
+describe("Ratio-JP Command", function () {
   it("should create", function () {
-    const cmd = new RatioTW(logger, null as any);
-    expect(cmd).to.be.instanceOf(RatioTW);
+    const cmd = new RatioJP(logger, null as any);
+    expect(cmd).to.be.instanceOf(RatioJP);
   });
 
   it("should reply", async function () {
     const stubInteraction = new StubInteraction().withGetString(
       ["cards"],
-      "130,130,130,130,130"
+      "150,150,140,140,130"
     );
 
-    const cmd = new RatioTW(logger, stubInteraction.build());
+    const cmd = new RatioJP(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
-      "此組卡片倍率為 5.80 (tw)。",
+      "此組卡片倍率為 3.62 (jp)。",
     ]);
   });
 
   it("should allow using space as separator in option cardsr", async function () {
     const stubInteraction = new StubInteraction().withGetString(
       ["cards"],
-      "130 130 120 115 110"
+      "120 110 100 80 30"
     );
 
-    const cmd = new RatioTW(logger, stubInteraction.build());
+    const cmd = new RatioJP(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
-      "此組卡片倍率為 5.39 (tw)。",
+      "此組卡片倍率為 2.84 (jp)。",
     ]);
   });
 
@@ -44,7 +44,7 @@ describe("Ratio-TW Command", function () {
       .withGetString(["cards"], "130,100,80,80")
       .withGetNumber(["index"], undefined!);
 
-    const cmd = new RatioTW(logger, stubInteraction.build());
+    const cmd = new RatioJP(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
