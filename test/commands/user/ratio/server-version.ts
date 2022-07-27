@@ -16,7 +16,10 @@ describe("Ratio-ServerVersion Command", function () {
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
     expect(stubInteraction.fakeReply.args[0]).to.deep.equal([
-      "台服倍率計算公式版本：v1。\n日服倍率計算公式版本：v2。",
+      `台服倍率計算公式版本： v1
+日服倍率計算公式版本： v2
+
+機器人預設使用的版本： v1`,
     ]);
   });
 });
