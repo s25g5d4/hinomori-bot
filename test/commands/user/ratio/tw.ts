@@ -42,7 +42,7 @@ describe("Ratio-TW Command", function () {
       .withGetString(["type"], "r")
       .withGetNumber(["power"], 250000)
       .withGetString(["cards"], "130,100,80,80")
-      .withGetNumber(["index"], undefined!);
+      .withGetNumber(["index"], undefined);
 
     const cmd = new RatioTW(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;

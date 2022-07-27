@@ -42,7 +42,7 @@ describe("Ratio-V1 Command", function () {
       .withGetString(["type"], "r")
       .withGetNumber(["power"], 250000)
       .withGetString(["cards"], "130,100,80,80")
-      .withGetNumber(["index"], undefined!);
+      .withGetNumber(["index"], undefined);
 
     const cmd = new RatioV1(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;
