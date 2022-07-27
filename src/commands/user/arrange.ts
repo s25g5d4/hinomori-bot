@@ -9,6 +9,7 @@ import {
 } from "src/models/user-profile";
 import { polePosition } from "src/models/pole-position";
 import { logUser } from "src/utils/log-user";
+import { defaultVersion } from "src/models/profile-ratio";
 import { InteractiveCommand } from "../interactive-command";
 import { CatchExecuteError } from "../catch-execute-error";
 import {
@@ -129,14 +130,14 @@ export class ArrangePlayers extends InteractiveCommand {
     this.checkPlayerCount(players, hasDuplicatedPlayers);
 
     const profiles = await this.getActiveUserProfiles(guild.id, players);
-    const ratios = profiles.map((p) => userProfileRatio(p));
+    const ratios = profiles.map((p) => userProfileRatio(p, defaultVersion));
     const position = polePosition(ratios);
     const skill6Player = profiles.reduce(
       (p, c, i, arr) => (arr[p].power > c.power ? p : i),
       0
     );
     const profileLines = position.map((n, i) => {
-      const profileString = formatUserProfile(profiles[n]);
+      const profileString = formatUserProfile(profiles[n], defaultVersion);
       const isSkill6 = n === skill6Player ? "*" : "";
       const prefix = `${isSkill6}${i + 1}: `.padStart(4);
       return `\`${prefix}${profileString}\` ${players[n].username}`;

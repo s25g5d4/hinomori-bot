@@ -3,6 +3,7 @@ import { isNil } from "lodash";
 import { Logger } from "pino";
 import { formatUserProfile } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
+import { defaultVersion } from "src/models/profile-ratio";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import {
@@ -73,7 +74,7 @@ export class ActivateProfile extends InteractiveCommand {
       [
         `已更新使用中編組編號。使用中編組：`,
         "```",
-        `${index}: ${formatUserProfile(profile)}`,
+        `${index}: ${formatUserProfile(profile, defaultVersion)}`,
         "```",
       ].join("\n")
     );
