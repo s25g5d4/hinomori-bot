@@ -8,6 +8,7 @@ import {
   UserProfileType,
 } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
+import { defaultVersion } from "src/models/profile-ratio";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import {
@@ -143,7 +144,7 @@ export class UpdateProfile extends InteractiveCommand {
       [
         "已更新。你的編組資料：",
         "```",
-        formatUserProfileRecord(record),
+        formatUserProfileRecord(record, defaultVersion),
         "```",
       ].join("\n")
     );
