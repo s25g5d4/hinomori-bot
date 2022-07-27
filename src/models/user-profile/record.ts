@@ -1,4 +1,5 @@
 import { isNil } from "lodash";
+import { defaultVersion } from "../profile-ratio";
 import { formatUserProfile, UserProfile } from "./profile";
 
 export interface UserProfileRecord {
@@ -15,7 +16,7 @@ function addProfilePrefix(profile: string, i: number, active: number): string {
 
 export function formatUserProfileRecord(record: UserProfileRecord) {
   const profileLines = record.profiles
-    .map((p) => p && formatUserProfile(p))
+    .map((p) => p && formatUserProfile(p, defaultVersion))
     .map((p, i) => p && addProfilePrefix(p, i, record.active))
     .filter((p) => !!p);
 
