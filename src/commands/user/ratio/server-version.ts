@@ -1,6 +1,7 @@
 import { CommandInteraction } from "discord.js";
 import { Logger } from "pino";
 import {
+  defaultVersion,
   jpVersion,
   ProfileRatioVersion,
   ProfileRatioVersionName,
@@ -21,8 +22,10 @@ export class RatioServerVersion extends InteractiveCommand {
     this.l.debug("server version");
     await this.interaction.reply(
       `
-台服倍率計算公式版本：${ProfileRatioVersionName[twVersion]}。
-日服倍率計算公式版本：${ProfileRatioVersionName[jpVersion]}。
+台服倍率計算公式版本： ${ProfileRatioVersionName[twVersion]}
+日服倍率計算公式版本： ${ProfileRatioVersionName[jpVersion]}
+
+機器人預設使用的版本： ${ProfileRatioVersionName[defaultVersion]}
     `.trim()
     );
   }
