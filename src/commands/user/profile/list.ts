@@ -4,6 +4,7 @@ import { Logger } from "pino";
 import { formatUserProfileRecord } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
 import { logUser } from "src/utils/log-user";
+import { defaultVersion } from "src/models/profile-ratio";
 import { InteractiveCommand } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import { NoProfileRecordError, NoValidProfileError } from "./list-errors";
@@ -61,7 +62,7 @@ export class ListProfile extends InteractiveCommand {
       content: [
         `${userString} 的編組資料：`,
         "```",
-        formatUserProfileRecord(record),
+        formatUserProfileRecord(record, defaultVersion),
         "```",
       ].join("\n"),
       allowedMentions: { users: [] },
