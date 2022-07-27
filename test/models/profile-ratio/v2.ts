@@ -1,8 +1,5 @@
 import { expect } from "chai";
-import {
-  errNotEnoughRatios,
-  profileRatio,
-} from "../../../src/models/profile-ratio/v2";
+import { errNotEnoughRatios, profileRatio } from "src/models/profile-ratio/v2";
 
 describe("Profile Ratio v2", function () {
   it("should return correct ratio", function () {
