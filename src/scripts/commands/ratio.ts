@@ -55,7 +55,7 @@ export const ratioCommands = [
     .addSubcommand((subcommand) =>
       subcommand
         .setName("v2")
-        .setDescription("使用 v2 版計算台服卡片倍率")
+        .setDescription("使用 v2 版計算卡片倍率")
         .addStringOption((option) =>
           option
             .setName("cards")
