@@ -105,3 +105,6 @@ dist
 
 # TypeScript build file
 build/
+
+# kubernetes files
+kube/

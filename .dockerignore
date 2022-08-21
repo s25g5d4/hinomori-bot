@@ -112,3 +112,6 @@ build/
 # Editor or IDE settings
 .vscode
 .editorconfig
+
+# kubernetes files
+kube/
