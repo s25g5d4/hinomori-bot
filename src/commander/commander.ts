@@ -1,5 +1,6 @@
 import { Interaction, CommandInteraction } from "discord.js";
 import { logInteraction } from "src/utils/log-interaction";
+import { TagStore } from "src/store/tags";
 import { logger } from "../logger";
 import { UserProfileStore } from "../store/user-profiles";
 import { Command } from "../commands/command";
@@ -8,8 +9,8 @@ import { CommandFactory } from "./command-factory";
 export class Commander {
   private factory: CommandFactory;
 
-  constructor(profileStore: UserProfileStore) {
-    this.factory = new CommandFactory(profileStore);
+  constructor(profileStore: UserProfileStore, tagStore: TagStore) {
+    this.factory = new CommandFactory(profileStore, tagStore);
   }
 
   private dispatch(interaction: CommandInteraction): Command {
@@ -26,6 +27,14 @@ export class Commander {
         return this.factory.newArrangePlayers(interaction, false);
       case "ratio-tw":
         return this.factory.newRatioTW(interaction);
+      case "tag":
+        return this.factory.newTagGet(interaction);
+      case "tag-create":
+        return this.factory.newTagCreate(interaction);
+      case "tag-update":
+        return this.factory.newTagUpdate(interaction);
+      case "tag-remove":
+        return this.factory.newTagRemove(interaction);
     }
 
     return null;
