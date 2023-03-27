@@ -14,9 +14,17 @@ import { RatioJP } from "src/commands/user/ratio/jp";
 import { RatioV1 } from "src/commands/user/ratio/v1";
 import { RatioV2 } from "src/commands/user/ratio/v2";
 import { RatioServerVersion } from "src/commands/user/ratio/server-version";
+import { GetTag } from "src/commands/tag/get";
+import { TagStore } from "src/store/tags";
+import { CreateTag } from "src/commands/tag/create";
+import { UpdateTag } from "src/commands/tag/update";
+import { RemoveTag } from "src/commands/tag/remove";
 
 export class CommandFactory {
-  constructor(private profileStore: UserProfileStore) {}
+  constructor(
+    private profileStore: UserProfileStore,
+    private tagStore: TagStore
+  ) {}
 
   newUpdateProfile(interaction: CommandInteraction): UpdateProfile {
     const l = this.createLogger(interaction);
@@ -74,6 +82,26 @@ export class CommandFactory {
   newRatioServerVersion(interaction: CommandInteraction): RatioServerVersion {
     const l = this.createLogger(interaction);
     return new RatioServerVersion(l, interaction);
+  }
+
+  newTagCreate(interaction: CommandInteraction): CreateTag {
+    const l = this.createLogger(interaction);
+    return new CreateTag(l, interaction, this.tagStore);
+  }
+
+  newTagGet(interaction: CommandInteraction): GetTag {
+    const l = this.createLogger(interaction);
+    return new GetTag(l, interaction, this.tagStore);
+  }
+
+  newTagUpdate(interaction: CommandInteraction): UpdateTag {
+    const l = this.createLogger(interaction);
+    return new UpdateTag(l, interaction, this.tagStore);
+  }
+
+  newTagRemove(interaction: CommandInteraction): RemoveTag {
+    const l = this.createLogger(interaction);
+    return new RemoveTag(l, interaction, this.tagStore);
   }
 
   private createLogger(interaction: CommandInteraction) {
