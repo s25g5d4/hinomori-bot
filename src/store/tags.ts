@@ -41,7 +41,7 @@ export class TagStore {
   private logger: Logger;
 
   constructor(private db: FirebaseDB) {
-    this.logger = logger;
+    this.logger = logger.child({ name: "store" });
   }
 
   async init(): Promise<void> {
@@ -61,7 +61,7 @@ export class TagStore {
       throw new EmptyNameError();
     }
 
-    const l = this.logger.child({ guild, name });
+    const l = this.logger.child({ options: { guild, name } });
     l.debug("get tag");
     const doc = await this.tagDoc(guild, name).get();
     if (!doc.exists) {
@@ -80,7 +80,9 @@ export class TagStore {
       throw new EmptyUserError();
     }
 
-    const l = this.logger.child({ guild, name: tag.name, user: tag.user });
+    const l = this.logger.child({
+      options: { guild, name: tag.name, user: tag.user },
+    });
 
     l.debug("create tag");
     try {
@@ -102,7 +104,9 @@ export class TagStore {
       throw new EmptyUserError();
     }
 
-    const l = this.logger.child({ guild, name: tag.name, user: tag.user });
+    const l = this.logger.child({
+      options: { guild, name: tag.name, user: tag.user },
+    });
 
     l.debug("update tag");
     await this.db.db.runTransaction(async (tx) => {
@@ -129,7 +133,7 @@ export class TagStore {
       throw new EmptyUserError();
     }
 
-    const l = this.logger.child({ guild, name: name, user: user });
+    const l = this.logger.child({ options: { guild, name: name, user: user } });
 
     l.debug("remove tag");
     await this.db.db.runTransaction(async (tx) => {
