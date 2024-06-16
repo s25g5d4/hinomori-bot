@@ -1,4 +1,4 @@
-import { Client, Intents } from "discord.js";
+import { Client, GatewayIntentBits } from "discord.js";
 import { logger } from "./logger";
 import { Commander } from "./commander/commander";
 import { config } from "./config";
@@ -10,7 +10,7 @@ export class Server {
   init(): Promise<void> {
     return new Promise((ok) => {
       const client = new Client({
-        intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+        intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
       });
 
       client.once("ready", () => {
@@ -21,7 +21,7 @@ export class Server {
       client.on("interactionCreate", (interaction) => {
         logger.info(
           { interaction: logInteraction(interaction, true) },
-          "interaction received"
+          "interaction received",
         );
         this.commander.execute(interaction);
       });

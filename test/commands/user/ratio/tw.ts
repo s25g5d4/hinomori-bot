@@ -10,9 +10,9 @@ describe("Ratio-TW Command", function () {
   });
 
   it("should reply", async function () {
-    const stubInteraction = new StubInteraction().withGetString(
-      ["cards"],
-      "130,130,130,130,130"
+    const stubInteraction = new StubInteraction().withOptionsGet(
+      "cards",
+      "130,130,130,130,130",
     );
 
     const cmd = new RatioTW(logger, stubInteraction.build());
@@ -24,9 +24,9 @@ describe("Ratio-TW Command", function () {
   });
 
   it("should allow using space as separator in option cards", async function () {
-    const stubInteraction = new StubInteraction().withGetString(
-      ["cards"],
-      "130 130 120 115 110"
+    const stubInteraction = new StubInteraction().withOptionsGet(
+      "cards",
+      "130 130 120 115 110",
     );
 
     const cmd = new RatioTW(logger, stubInteraction.build());
@@ -39,10 +39,10 @@ describe("Ratio-TW Command", function () {
 
   it("should throw invalid option cards error (less than 4 cards)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80")
+      .withOptionsGet("index", undefined);
 
     const cmd = new RatioTW(logger, stubInteraction.build());
     expect(await cmd.executeCommand()).to.not.exist;

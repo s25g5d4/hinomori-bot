@@ -1,15 +1,15 @@
-import { Interaction } from "discord.js";
+import { BaseInteraction } from "discord.js";
 import { isNil } from "lodash";
 import { logChannel } from "./log-channel";
 import { logGuild } from "./log-guild";
 import { logUser } from "./log-user";
 
-function logBaseInteraction(interaction: Interaction) {
+function logBaseInteraction(interaction: BaseInteraction) {
   const { id } = interaction;
   return { id };
 }
 
-function logDetailInteraction(interaction: Interaction) {
+function logDetailInteraction(interaction: BaseInteraction) {
   const { type, guild, channel, user } = interaction;
   return {
     ...logBaseInteraction(interaction),
@@ -20,7 +20,7 @@ function logDetailInteraction(interaction: Interaction) {
   };
 }
 
-export function logInteraction(interaction: Interaction, detail = false) {
+export function logInteraction(interaction: BaseInteraction, detail = false) {
   if (isNil(interaction)) {
     return undefined;
   }

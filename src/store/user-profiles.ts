@@ -34,7 +34,7 @@ export class UserProfileStore {
   async set(
     guild: string,
     user: string,
-    record: UserProfileRecord
+    record: UserProfileRecord,
   ): Promise<void> {
     logger.debug({ user }, "update user-profiles record");
     await this.userProfileDoc(guild, user).set(record);

@@ -29,7 +29,7 @@ export const errorReplies: Record<string, ReplyFunc> = Object.assign(
   tagGetErrorReplies,
   tagCreateErrorReplies,
   tagUpdateErrorReplies,
-  tagRemoveErrorReplies
+  tagRemoveErrorReplies,
 );
 
 export const generalErrorMessage: ReplyFunc = () => {

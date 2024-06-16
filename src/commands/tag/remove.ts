@@ -13,17 +13,19 @@ export class RemoveTag extends InteractiveCommand {
   constructor(
     private l: Logger,
     interaction: CommandInteraction,
-    private tagStore: TagStore
+    private tagStore: TagStore,
   ) {
     super(interaction);
   }
 
   private async parseOptions(): Promise<RemoveTagOptions> {
-    const name = this.interaction.options.getString("name");
-    if (!name) {
+    const options: RemoveTagOptions = { name: null };
+    try {
+      options.name = this.getStringOption("name");
+    } catch (err) {
       throw new EmptyNameError();
     }
-    return { name };
+    return options;
   }
 
   @CatchExecuteError()

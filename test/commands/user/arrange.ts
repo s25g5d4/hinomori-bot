@@ -1,12 +1,9 @@
 import { expect } from "chai";
 import { User } from "discord.js";
 import { match } from "sinon";
-import { ArrangePlayers } from "../../../src/commands/user/arrange";
-import { logger } from "../../../src/logger";
-import {
-  UserProfileRecord,
-  UserProfileType,
-} from "../../../src/models/user-profile";
+import { ArrangePlayers } from "src/commands/user/arrange";
+import { logger } from "src/logger";
+import { UserProfileRecord, UserProfileType } from "src/models/user-profile";
 import { StubInteraction } from "../../mocks/interaction";
 import { StubUserProfileStore } from "../../mocks/profile-store";
 import { genUserProfileRecord } from "../../mocks/record";
@@ -77,7 +74,7 @@ describe("Arrange Command", function () {
             power: 150000,
           },
         },
-        1
+        1,
       ),
       genUserProfileRecord({
         // user 7
@@ -106,17 +103,17 @@ describe("Arrange Command", function () {
       .withGet([match.string, users[4].id], records[4]);
 
     const stubInteraction = new StubInteraction()
-      .withGetUser(["player1"], users[0])
-      .withGetUser(["player2"], users[1])
-      .withGetUser(["player3"], users[2])
-      .withGetUser(["player4"], users[3])
-      .withGetUser(["player5"], users[4]);
+      .withOptionsGet("player1", users[0])
+      .withOptionsGet("player2", users[1])
+      .withOptionsGet("player3", users[2])
+      .withOptionsGet("player4", users[3])
+      .withOptionsGet("player5", users[4]);
 
     const cmd = new ArrangePlayers(
       logger,
       stubInteraction.build(),
       stubProfileStore.build(),
-      true
+      true,
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -142,17 +139,17 @@ describe("Arrange Command", function () {
       .withGet([match.string, users[4].id], records[4]);
 
     const stubInteraction = new StubInteraction()
-      .withGetUser(["player1"], users[0])
-      .withGetUser(["player2"], users[1])
-      .withGetUser(["player3"], users[2])
-      .withGetUser(["player4"], users[3])
-      .withGetUser(["player5"], users[4]);
+      .withOptionsGet("player1", users[0])
+      .withOptionsGet("player2", users[1])
+      .withOptionsGet("player3", users[2])
+      .withOptionsGet("player4", users[3])
+      .withOptionsGet("player5", users[4]);
 
     const cmd = new ArrangePlayers(
       logger,
       stubInteraction.build(),
       stubProfileStore.build(),
-      false
+      false,
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -177,17 +174,17 @@ describe("Arrange Command", function () {
       .withGet([match.string, users[3].id], records[3]);
 
     const stubInteraction = new StubInteraction()
-      .withGetUser(["player1"], users[0])
-      .withGetUser(["player2"], users[1])
-      .withGetUser(["player3"], users[2])
-      .withGetUser(["player4"], users[3])
-      .withGetUser(["player5"], users[3]);
+      .withOptionsGet("player1", users[0])
+      .withOptionsGet("player2", users[1])
+      .withOptionsGet("player3", users[2])
+      .withOptionsGet("player4", users[3])
+      .withOptionsGet("player5", users[3]);
 
     const cmd = new ArrangePlayers(
       logger,
       stubInteraction.build(),
       stubProfileStore.build(),
-      true
+      true,
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -208,15 +205,15 @@ describe("Arrange Command", function () {
     const stubProfileStore = new StubUserProfileStore();
 
     const stubInteraction = new StubInteraction()
-      .withGetUser(["player1"], users[0])
-      .withGetUser(["player2"], users[1])
-      .withGetUser(["player3"], users[2]);
+      .withOptionsGet("player1", users[0])
+      .withOptionsGet("player2", users[1])
+      .withOptionsGet("player3", users[2]);
 
     const cmd = new ArrangePlayers(
       logger,
       stubInteraction.build(),
       stubProfileStore.build(),
-      true
+      true,
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -236,17 +233,17 @@ describe("Arrange Command", function () {
       .withGet([match.string, users[2].id], records[2]);
 
     const stubInteraction = new StubInteraction()
-      .withGetUser(["player1"], users[7])
-      .withGetUser(["player2"], users[0])
-      .withGetUser(["player3"], users[8])
-      .withGetUser(["player4"], users[1])
-      .withGetUser(["player5"], users[2]);
+      .withOptionsGet("player1", users[7])
+      .withOptionsGet("player2", users[0])
+      .withOptionsGet("player3", users[8])
+      .withOptionsGet("player4", users[1])
+      .withOptionsGet("player5", users[2]);
 
     const cmd = new ArrangePlayers(
       logger,
       stubInteraction.build(),
       stubProfileStore.build(),
-      true
+      true,
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -267,17 +264,17 @@ describe("Arrange Command", function () {
         .withGet([match.string, users[2].id], records[2]);
 
       const stubInteraction = new StubInteraction()
-        .withGetUser(["player1"], users[7])
-        .withGetUser(["player2"], users[0])
-        .withGetUser(["player3"], users[8])
-        .withGetUser(["player4"], users[1])
-        .withGetUser(["player5"], users[2]);
+        .withOptionsGet("player1", users[7])
+        .withOptionsGet("player2", users[0])
+        .withOptionsGet("player3", users[8])
+        .withOptionsGet("player4", users[1])
+        .withOptionsGet("player5", users[2]);
 
       const cmd = new ArrangePlayers(
         logger,
         stubInteraction.build(),
         stubProfileStore.build(),
-        false
+        false,
       );
       expect(await cmd.executeCommand()).to.not.exist;
       expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -300,17 +297,17 @@ describe("Arrange Command", function () {
       .withGet([match.string, users[6].id], records[6]);
 
     const stubInteraction = new StubInteraction()
-      .withGetUser(["player1"], users[0])
-      .withGetUser(["player2"], users[1])
-      .withGetUser(["player3"], users[2])
-      .withGetUser(["player4"], users[5])
-      .withGetUser(["player5"], users[6]);
+      .withOptionsGet("player1", users[0])
+      .withOptionsGet("player2", users[1])
+      .withOptionsGet("player3", users[2])
+      .withOptionsGet("player4", users[5])
+      .withOptionsGet("player5", users[6]);
 
     const cmd = new ArrangePlayers(
       logger,
       stubInteraction.build(),
       stubProfileStore.build(),
-      true
+      true,
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -331,17 +328,17 @@ describe("Arrange Command", function () {
         .withGet([match.string, users[6].id], records[6]);
 
       const stubInteraction = new StubInteraction()
-        .withGetUser(["player1"], users[0])
-        .withGetUser(["player2"], users[1])
-        .withGetUser(["player3"], users[2])
-        .withGetUser(["player4"], users[5])
-        .withGetUser(["player5"], users[6]);
+        .withOptionsGet("player1", users[0])
+        .withOptionsGet("player2", users[1])
+        .withOptionsGet("player3", users[2])
+        .withOptionsGet("player4", users[5])
+        .withOptionsGet("player5", users[6]);
 
       const cmd = new ArrangePlayers(
         logger,
         stubInteraction.build(),
         stubProfileStore.build(),
-        false
+        false,
       );
       expect(await cmd.executeCommand()).to.not.exist;
       expect(stubInteraction.fakeReply.callCount).to.equal(1);

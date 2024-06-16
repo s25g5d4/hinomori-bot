@@ -15,24 +15,23 @@ interface RatioJPOptions {
 }
 
 export class RatioJP extends InteractiveCommand {
-  constructor(private l: Logger, interaction: CommandInteraction) {
+  constructor(
+    private l: Logger,
+    interaction: CommandInteraction,
+  ) {
     super(interaction);
   }
 
   private async parseOptions(): Promise<RatioJPOptions> {
-    const cardsString = this.interaction.options.getString("cards");
-    if (typeof cardsString !== "string") {
-      throw new InvalidOptionCardsError();
-    }
-
-    let cardRatios: number[];
+    const options: RatioJPOptions = { cardRatios: null };
     try {
-      cardRatios = parseCards(cardsString);
-    } catch (e) {
+      const cardsString = this.getStringOption("cards");
+      options.cardRatios = parseCards(cardsString);
+    } catch (err) {
       throw new InvalidOptionCardsError();
     }
 
-    return { cardRatios };
+    return options;
   }
 
   @CatchExecuteError()
@@ -48,7 +47,7 @@ export class RatioJP extends InteractiveCommand {
     this.l.info("ratio jp calculated");
     const ver = ProfileRatioVersionName[jpVersion];
     await this.interaction.reply(
-      `此組卡片倍率為 ${ratio.toFixed(2)} (${ver})。`
+      `此組卡片倍率為 ${ratio.toFixed(2)} (${ver})。`,
     );
   }
 }

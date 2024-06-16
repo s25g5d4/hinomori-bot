@@ -1,5 +1,5 @@
 import { SinonStub, SinonSpy, fake, stub } from "sinon";
-import { UserProfileStore } from "../../src/store/user-profiles";
+import { UserProfileStore } from "src/store/user-profiles";
 
 type Init = typeof UserProfileStore.prototype.init;
 type Get = typeof UserProfileStore.prototype.get;
@@ -12,7 +12,7 @@ export class StubUserProfileStore {
 
   withGet(
     args: Parameters<typeof this.fakeGet.withArgs>,
-    resolves: Parameters<typeof this.fakeGet.resolves>[0]
+    resolves: Parameters<typeof this.fakeGet.resolves>[0],
   ): StubUserProfileStore {
     if (!this.fakeGet) {
       this.fakeGet = stub();
@@ -23,7 +23,7 @@ export class StubUserProfileStore {
 
   withSet(
     args: Parameters<typeof this.fakeSet.withArgs>,
-    resolves: Parameters<typeof this.fakeSet.resolves>[0]
+    resolves: Parameters<typeof this.fakeSet.resolves>[0],
   ): StubUserProfileStore {
     if (!this.fakeSet) {
       this.fakeSet = stub();

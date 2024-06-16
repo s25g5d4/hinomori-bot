@@ -1,16 +1,13 @@
 import { expect } from "chai";
 import { User } from "discord.js";
 import { match } from "sinon";
-import { NiGoMikuProfile } from "../../../../src/commands/user/profile/25-miku";
-import {
-  UserProfileRecord,
-  UserProfileType,
-} from "../../../../src/models/user-profile";
+import { NiGoMikuProfile } from "src/commands/user/profile/25-miku";
+import { UserProfileRecord, UserProfileType } from "src/models/user-profile";
+import { logger } from "src/logger";
 import { StubInteraction } from "../../../mocks/interaction";
 import { StubUserProfileStore } from "../../../mocks/profile-store";
 import { genUserProfileRecord } from "../../../mocks/record";
 import { genUser } from "../../../mocks/user";
-import { logger } from "../../../../src/logger";
 
 describe("Generate 25 Miku Profile Command", function () {
   let users: User[] = [];
@@ -45,8 +42,8 @@ describe("Generate 25 Miku Profile Command", function () {
   it("should generate 25 miku profile and reply", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[0])
-      .withGetString(["nickname"], "shiho")
-      .withGetNumber(["index"], 2);
+      .withOptionsGet("nickname", "shiho")
+      .withOptionsGet("index", 2);
 
     const stubProfileStore = new StubUserProfileStore()
       .withGet([match.string, users[0].id], records[0])
@@ -55,7 +52,7 @@ describe("Generate 25 Miku Profile Command", function () {
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -66,15 +63,15 @@ describe("Generate 25 Miku Profile Command", function () {
 
   it("should throw empty nickname error (undefined)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["nickname"], undefined)
-      .withGetNumber(["index"], 2);
+      .withOptionsGet("nickname", undefined)
+      .withOptionsGet("index", 2);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -87,15 +84,15 @@ describe("Generate 25 Miku Profile Command", function () {
 
   it("should throw empty nickname error (empty string)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["nickname"], "")
-      .withGetNumber(["index"], 2);
+      .withOptionsGet("nickname", "")
+      .withOptionsGet("index", 2);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -108,15 +105,15 @@ describe("Generate 25 Miku Profile Command", function () {
 
   it("should throw invalid nickname error", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["nickname"], 1 as unknown as string)
-      .withGetNumber(["index"], 2);
+      .withOptionsGet("nickname", 1 as unknown as string)
+      .withOptionsGet("index", 2);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -129,15 +126,15 @@ describe("Generate 25 Miku Profile Command", function () {
 
   it("should throw empty index error", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["nickname"], "shiho")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("nickname", "shiho")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -150,15 +147,15 @@ describe("Generate 25 Miku Profile Command", function () {
 
   it("should throw index not a number error (NaN)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["nickname"], "shiho")
-      .withGetNumber(["index"], NaN);
+      .withOptionsGet("nickname", "shiho")
+      .withOptionsGet("index", NaN);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -171,15 +168,15 @@ describe("Generate 25 Miku Profile Command", function () {
 
   it("should throw index not a number error (string)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["nickname"], "shiho")
-      .withGetNumber(["index"], "NotANumber" as unknown as number);
+      .withOptionsGet("nickname", "shiho")
+      .withOptionsGet("index", "NotANumber" as unknown as number);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -192,15 +189,15 @@ describe("Generate 25 Miku Profile Command", function () {
 
   it("should throw index out of range error (< 1)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["nickname"], "shiho")
-      .withGetNumber(["index"], 0);
+      .withOptionsGet("nickname", "shiho")
+      .withOptionsGet("index", 0);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -213,15 +210,15 @@ describe("Generate 25 Miku Profile Command", function () {
 
   it("should throw index out of range error (> 10)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["nickname"], "shiho")
-      .withGetNumber(["index"], 11);
+      .withOptionsGet("nickname", "shiho")
+      .withOptionsGet("index", 11);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -234,15 +231,15 @@ describe("Generate 25 Miku Profile Command", function () {
 
   it("should throw index out of range error (floating point)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["nickname"], "shiho")
-      .withGetNumber(["index"], 1.25);
+      .withOptionsGet("nickname", "shiho")
+      .withOptionsGet("index", 1.25);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -256,18 +253,18 @@ describe("Generate 25 Miku Profile Command", function () {
   it("should throw no profile record error", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[1])
-      .withGetString(["nickname"], "shiho")
-      .withGetNumber(["index"], 2);
+      .withOptionsGet("nickname", "shiho")
+      .withOptionsGet("index", 2);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
       [match.string, users[1].id],
-      records[1]
+      records[1],
     );
 
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -281,18 +278,18 @@ describe("Generate 25 Miku Profile Command", function () {
   it("should throw empty profile error", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[0])
-      .withGetString(["nickname"], "shiho")
-      .withGetNumber(["index"], 10);
+      .withOptionsGet("nickname", "shiho")
+      .withOptionsGet("index", 10);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
       [match.string, users[0].id],
-      records[0]
+      records[0],
     );
 
     const cmd = new NiGoMikuProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);

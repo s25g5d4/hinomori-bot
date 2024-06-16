@@ -13,7 +13,10 @@ import { InteractiveCommand } from "src/commands/interactive-command";
 export class RatioServerVersion extends InteractiveCommand {
   private readonly ratioVer = ProfileRatioVersion.V1;
 
-  constructor(private l: Logger, interaction: CommandInteraction) {
+  constructor(
+    private l: Logger,
+    interaction: CommandInteraction,
+  ) {
     super(interaction);
   }
 
@@ -26,7 +29,7 @@ export class RatioServerVersion extends InteractiveCommand {
 日服倍率計算公式版本： ${ProfileRatioVersionName[jpVersion]}
 
 機器人預設使用的版本： ${ProfileRatioVersionName[defaultVersion]}
-    `.trim()
+    `.trim(),
     );
   }
 }

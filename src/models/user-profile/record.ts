@@ -16,7 +16,7 @@ function addProfilePrefix(profile: string, i: number, active: number): string {
 
 export function formatUserProfileRecord(
   record: UserProfileRecord,
-  ratioVer: ProfileRatioVersion
+  ratioVer: ProfileRatioVersion,
 ) {
   const profileLines = record.profiles
     .map((p) => p && formatUserProfile(p, ratioVer))

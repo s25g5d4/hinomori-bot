@@ -2,7 +2,7 @@ import { expect } from "chai";
 import {
   NoProfileRecordError,
   NoValidProfileError,
-} from "../../../../src/commands/user/profile/list-errors";
+} from "src/commands/user/profile/list-errors";
 
 describe("Profile List Command Errors", function () {
   describe("NoProfileRecordError", function () {

@@ -4,13 +4,13 @@ import {
   EmptyActiveProfilesError,
   EmptyProfilesError,
   PlayerNotEnoughError,
-} from "../../../src/commands/user/arrange-errors";
+} from "src/commands/user/arrange-errors";
 
 describe("Arrange Command Errors", function () {
   describe("PlayerNotEnoughError", function () {
     it("should create", function () {
       expect(new PlayerNotEnoughError(1, false)).to.be.instanceOf(
-        PlayerNotEnoughError
+        PlayerNotEnoughError,
       );
     });
     it("should have correct id", function () {
@@ -31,7 +31,7 @@ describe("Arrange Command Errors", function () {
   describe("EmptyProfilesError", function () {
     it("should create", function () {
       expect(new EmptyProfilesError([], false)).to.be.instanceOf(
-        EmptyProfilesError
+        EmptyProfilesError,
       );
     });
     it("should have correct id", function () {
@@ -59,7 +59,7 @@ describe("Arrange Command Errors", function () {
   describe("EmptyActiveProfilesError", function () {
     it("should create", function () {
       expect(new EmptyActiveProfilesError([], false)).to.be.instanceOf(
-        EmptyActiveProfilesError
+        EmptyActiveProfilesError,
       );
     });
     it("should have correct id", function () {

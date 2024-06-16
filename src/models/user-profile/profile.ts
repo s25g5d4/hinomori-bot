@@ -9,7 +9,7 @@ export interface UserProfile {
 
 export function userProfileRatio(
   profile: UserProfile,
-  ratioVer: ProfileRatioVersion
+  ratioVer: ProfileRatioVersion,
 ): number {
   const ratioFn = profileRatioFunctions[ratioVer];
   return ratioFn(profile.cards);
@@ -17,7 +17,7 @@ export function userProfileRatio(
 
 export function formatUserProfile(
   profile: UserProfile,
-  ratioVer: ProfileRatioVersion
+  ratioVer: ProfileRatioVersion,
 ): string {
   const type = formatUserProfileType(profile.type);
   const power = profile.power.toString().padStart(6, " ");

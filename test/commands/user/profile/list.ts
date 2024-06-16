@@ -1,12 +1,9 @@
 import { expect } from "chai";
 import { User } from "discord.js";
 import { match } from "sinon";
-import { ListProfile } from "../../../../src/commands/user/profile/list";
-import { logger } from "../../../../src/logger";
-import {
-  UserProfileRecord,
-  UserProfileType,
-} from "../../../../src/models/user-profile";
+import { ListProfile } from "src/commands/user/profile/list";
+import { logger } from "src/logger";
+import { UserProfileRecord, UserProfileType } from "src/models/user-profile";
 import { StubInteraction } from "../../../mocks/interaction";
 import { StubUserProfileStore } from "../../../mocks/profile-store";
 import { genUserProfileRecord } from "../../../mocks/record";
@@ -48,7 +45,7 @@ describe("Profile List Command", function () {
             cards: [130, 110, 110, 110, 110],
           },
         },
-        1
+        1,
       ),
       null,
       genUserProfileRecord({}),
@@ -63,17 +60,17 @@ describe("Profile List Command", function () {
   it("should list profiles and reply (same user)", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[0])
-      .withGetUser(["user"], undefined);
+      .withOptionsGet("user", undefined);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
       [match.string, users[0].id],
-      records[0]
+      records[0],
     );
 
     const cmd = new ListProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -95,17 +92,17 @@ describe("Profile List Command", function () {
   it("should list profiles and reply (other user)", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[0])
-      .withGetUser(["user"], users[1]);
+      .withOptionsGet("user", users[1]);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
       [match.string, users[1].id],
-      records[1]
+      records[1],
     );
 
     const cmd = new ListProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -127,17 +124,17 @@ describe("Profile List Command", function () {
   it("should throw no profile record error", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[2])
-      .withGetUser(["user"], undefined);
+      .withOptionsGet("user", undefined);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
       [match.string, users[2].id],
-      records[2]
+      records[2],
     );
 
     const cmd = new ListProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -151,17 +148,17 @@ describe("Profile List Command", function () {
   it("should throw no valid profile error", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[3])
-      .withGetUser(["user"], undefined);
+      .withOptionsGet("user", undefined);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
       [match.string, users[3].id],
-      records[3]
+      records[3],
     );
 
     const cmd = new ListProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);

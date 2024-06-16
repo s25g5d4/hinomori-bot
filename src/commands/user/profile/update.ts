@@ -1,15 +1,15 @@
 import { CommandInteraction } from "discord.js";
-import { isNil } from "lodash";
 import { Logger } from "pino";
 import {
   formatUserProfileRecord,
   UserProfile,
   convertToUserProfileType,
   UserProfileType,
+  UnknownTypeError,
 } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
 import { defaultVersion } from "src/models/profile-ratio";
-import { InteractiveCommand } from "../../interactive-command";
+import { InteractiveCommand, NullOptionError } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import {
   IndexNotANumberError,
@@ -33,32 +33,32 @@ export class UpdateProfile extends InteractiveCommand {
   constructor(
     private l: Logger,
     interaction: CommandInteraction,
-    private profileStore: UserProfileStore
+    private profileStore: UserProfileStore,
   ) {
     super(interaction);
   }
 
   private parseOptionType(): UserProfileType {
-    const typeString = this.interaction.options.getString("type");
-    if (typeof typeString !== "string") {
-      throw new InvalidOptionTypeError();
-    }
-
-    let type: UserProfileType;
     try {
-      type = convertToUserProfileType(typeString);
-    } catch (e) {
-      this.l.error(e);
+      const typeString = this.getStringOption("type");
+      const type = convertToUserProfileType(typeString);
+      return type;
+    } catch (err) {
+      if (err instanceof UnknownTypeError) {
+        this.l.error(err);
+      }
       throw new InvalidOptionTypeError();
     }
-    return type;
   }
 
   private parseOptionCards(): [number, number, number, number, number] {
-    const cardsString = this.interaction.options.getString("cards");
-    if (typeof cardsString !== "string") {
+    let cardsString: string;
+    try {
+      cardsString = this.getStringOption("cards");
+    } catch (err) {
       throw new InvalidOptionCardsError();
     }
+
     const cardRatioStrings = cardsString.split(this.separator);
     if (cardRatioStrings.length !== 5) {
       throw new InvalidOptionCardsError();
@@ -71,8 +71,13 @@ export class UpdateProfile extends InteractiveCommand {
   }
 
   private parseOptionPower(): number {
-    const power = this.interaction.options.getNumber("power");
-    if (typeof power !== "number" || isNaN(power)) {
+    let power: number;
+    try {
+      power = this.getNumberOption("power");
+    } catch (err) {
+      throw new InvalidOptionPowerError();
+    }
+    if (isNaN(power)) {
       throw new InvalidOptionPowerError();
     }
     if (power < 10000 || power > 350000) {
@@ -82,15 +87,18 @@ export class UpdateProfile extends InteractiveCommand {
   }
 
   private parseOptionIndex(): number {
-    const index = this.interaction.options.getNumber("index");
-    if (isNil(index)) {
-      return 1;
-    }
-
-    if (typeof index !== "number" || isNaN(index)) {
+    let index: number;
+    try {
+      index = this.getNumberOption("index");
+    } catch (err) {
+      if (err instanceof NullOptionError) {
+        return 1; // default value
+      }
       throw new IndexNotANumberError();
     }
-
+    if (isNaN(index)) {
+      throw new IndexNotANumberError();
+    }
     if (index < 1 || index > 10 || !Number.isInteger(index)) {
       throw new IndexOutOfRangeError();
     }
@@ -121,7 +129,7 @@ export class UpdateProfile extends InteractiveCommand {
     const { user, guild } = this.interaction;
     this.l.debug(
       { options: { type, power, cards, index } },
-      "update profile options"
+      "update profile options",
     );
 
     const newProfile: UserProfile = { type, power, cards };
@@ -146,7 +154,7 @@ export class UpdateProfile extends InteractiveCommand {
         "```",
         formatUserProfileRecord(record, defaultVersion),
         "```",
-      ].join("\n")
+      ].join("\n"),
     );
   }
 }

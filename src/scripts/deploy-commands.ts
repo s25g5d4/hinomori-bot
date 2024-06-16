@@ -10,6 +10,6 @@ rest
     body: commands,
   })
   .then(() =>
-    console.log("Successfully registered application guild commands.")
+    console.log("Successfully registered application guild commands."),
   )
   .catch(console.error);

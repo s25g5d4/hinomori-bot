@@ -5,7 +5,7 @@ import {
   IndexNotANumberError,
   IndexOutOfRangeError,
   NoProfileRecordError,
-} from "../../../../src/commands/user/profile/activate-errors";
+} from "src/commands/user/profile/activate-errors";
 
 describe("Profile Activate Command Errors", function () {
   describe("EmptyIndexError", function () {

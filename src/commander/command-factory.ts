@@ -1,4 +1,4 @@
-import { CommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction } from "discord.js";
 
 import { UserProfileStore } from "src/store/user-profiles";
 import { UpdateProfile } from "src/commands/user/profile/update";
@@ -23,88 +23,92 @@ import { RemoveTag } from "src/commands/tag/remove";
 export class CommandFactory {
   constructor(
     private profileStore: UserProfileStore,
-    private tagStore: TagStore
+    private tagStore: TagStore,
   ) {}
 
-  newUpdateProfile(interaction: CommandInteraction): UpdateProfile {
+  newUpdateProfile(interaction: ChatInputCommandInteraction): UpdateProfile {
     const l = this.createLogger(interaction);
     return new UpdateProfile(l, interaction, this.profileStore);
   }
 
-  newListProfile(interaction: CommandInteraction): ListProfile {
+  newListProfile(interaction: ChatInputCommandInteraction): ListProfile {
     const l = this.createLogger(interaction);
     return new ListProfile(l, interaction, this.profileStore);
   }
 
-  newActivateProfile(interaction: CommandInteraction): ActivateProfile {
+  newActivateProfile(
+    interaction: ChatInputCommandInteraction,
+  ): ActivateProfile {
     const l = this.createLogger(interaction);
     return new ActivateProfile(l, interaction, this.profileStore);
   }
 
-  newRemoveProfile(interaction: CommandInteraction): RemoveProfile {
+  newRemoveProfile(interaction: ChatInputCommandInteraction): RemoveProfile {
     const l = this.createLogger(interaction);
     return new RemoveProfile(l, interaction, this.profileStore);
   }
 
-  new25MikuProfile(interaction: CommandInteraction): NiGoMikuProfile {
+  new25MikuProfile(interaction: ChatInputCommandInteraction): NiGoMikuProfile {
     const l = this.createLogger(interaction);
     return new NiGoMikuProfile(l, interaction, this.profileStore);
   }
 
   newArrangePlayers(
-    interaction: CommandInteraction,
-    mention = true
+    interaction: ChatInputCommandInteraction,
+    mention = true,
   ): ArrangePlayers {
     const l = this.createLogger(interaction);
     return new ArrangePlayers(l, interaction, this.profileStore, mention);
   }
 
-  newRatioTW(interaction: CommandInteraction): RatioTW {
+  newRatioTW(interaction: ChatInputCommandInteraction): RatioTW {
     const l = this.createLogger(interaction);
     return new RatioTW(l, interaction);
   }
 
-  newRatioJP(interaction: CommandInteraction): RatioJP {
+  newRatioJP(interaction: ChatInputCommandInteraction): RatioJP {
     const l = this.createLogger(interaction);
     return new RatioJP(l, interaction);
   }
 
-  newRatioV1(interaction: CommandInteraction): RatioV1 {
+  newRatioV1(interaction: ChatInputCommandInteraction): RatioV1 {
     const l = this.createLogger(interaction);
     return new RatioV1(l, interaction);
   }
 
-  newRatioV2(interaction: CommandInteraction): RatioV2 {
+  newRatioV2(interaction: ChatInputCommandInteraction): RatioV2 {
     const l = this.createLogger(interaction);
     return new RatioV2(l, interaction);
   }
 
-  newRatioServerVersion(interaction: CommandInteraction): RatioServerVersion {
+  newRatioServerVersion(
+    interaction: ChatInputCommandInteraction,
+  ): RatioServerVersion {
     const l = this.createLogger(interaction);
     return new RatioServerVersion(l, interaction);
   }
 
-  newTagCreate(interaction: CommandInteraction): CreateTag {
+  newTagCreate(interaction: ChatInputCommandInteraction): CreateTag {
     const l = this.createLogger(interaction);
     return new CreateTag(l, interaction, this.tagStore);
   }
 
-  newTagGet(interaction: CommandInteraction): GetTag {
+  newTagGet(interaction: ChatInputCommandInteraction): GetTag {
     const l = this.createLogger(interaction);
     return new GetTag(l, interaction, this.tagStore);
   }
 
-  newTagUpdate(interaction: CommandInteraction): UpdateTag {
+  newTagUpdate(interaction: ChatInputCommandInteraction): UpdateTag {
     const l = this.createLogger(interaction);
     return new UpdateTag(l, interaction, this.tagStore);
   }
 
-  newTagRemove(interaction: CommandInteraction): RemoveTag {
+  newTagRemove(interaction: ChatInputCommandInteraction): RemoveTag {
     const l = this.createLogger(interaction);
     return new RemoveTag(l, interaction, this.tagStore);
   }
 
-  private createLogger(interaction: CommandInteraction) {
+  private createLogger(interaction: ChatInputCommandInteraction) {
     return logger.child({ interaction: logInteraction(interaction) });
   }
 }
