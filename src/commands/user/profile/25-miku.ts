@@ -3,7 +3,7 @@ import { isNil } from "lodash";
 import { Logger } from "pino";
 import { UserProfileType } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
-import { InteractiveCommand } from "../../interactive-command";
+import { InteractiveCommand, NullOptionError } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import {
   EmptyIndexError,
@@ -35,7 +35,7 @@ export class NiGoMikuProfile extends InteractiveCommand {
   constructor(
     private l: Logger,
     interaction: CommandInteraction,
-    private profileStore: UserProfileStore
+    private profileStore: UserProfileStore,
   ) {
     super(interaction);
   }
@@ -49,26 +49,39 @@ export class NiGoMikuProfile extends InteractiveCommand {
   }
 
   private async parseOptions(): Promise<NiGoMikuProfileOptions> {
-    const nickname = this.interaction.options.getString("nickname");
-    if (isNil(nickname) || nickname === "") {
-      throw new EmptyNickNameError();
-    }
-    if (typeof nickname !== "string") {
+    const options: NiGoMikuProfileOptions = { nickname: null, index: null };
+    try {
+      options.nickname = this.getStringOption("nickname");
+    } catch (err) {
+      if (err instanceof NullOptionError) {
+        throw new EmptyNickNameError();
+      }
       throw new InvalidNickNameError();
     }
-
-    const index = this.interaction.options.getNumber("index");
-    if (isNil(index)) {
-      throw new EmptyIndexError();
+    if (options.nickname === "") {
+      throw new EmptyNickNameError();
     }
-    if (typeof index !== "number" || isNaN(index)) {
+
+    try {
+      options.index = this.getNumberOption("index");
+    } catch (err) {
+      if (err instanceof NullOptionError) {
+        throw new EmptyIndexError();
+      }
       throw new IndexNotANumberError();
     }
-    if (index < 1 || index > 10 || !Number.isInteger(index)) {
+    if (isNaN(options.index)) {
+      throw new IndexNotANumberError();
+    }
+    if (
+      options.index < 1 ||
+      options.index > 10 ||
+      !Number.isInteger(options.index)
+    ) {
       throw new IndexOutOfRangeError();
     }
 
-    return { nickname, index };
+    return options;
   }
 
   @CatchExecuteError()

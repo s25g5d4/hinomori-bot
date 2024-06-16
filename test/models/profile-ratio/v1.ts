@@ -15,7 +15,7 @@ describe("Profile Ratio v1", function () {
   it("should ignore ratios more than 5", function () {
     expect(profileRatio([100, 100, 100, 100, 100, 100])).to.be.closeTo(
       4.147,
-      0.001
+      0.001,
     );
   });
 });

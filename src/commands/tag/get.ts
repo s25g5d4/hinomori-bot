@@ -15,7 +15,7 @@ export class GetTag extends InteractiveCommand {
   constructor(
     private l: Logger,
     interaction: CommandInteraction,
-    private tagStore: TagStore
+    private tagStore: TagStore,
   ) {
     super(interaction);
   }
@@ -29,8 +29,13 @@ export class GetTag extends InteractiveCommand {
   }
 
   private async parseOptions(): Promise<GetTagOptions> {
-    const name = this.interaction.options.getString("name");
-    return { name };
+    const options: GetTagOptions = { name: null };
+    try {
+      options.name = this.getStringOption("name");
+    } catch (err) {
+      options.name = "";
+    }
+    return options;
   }
 
   @CatchExecuteError()

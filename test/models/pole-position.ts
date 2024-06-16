@@ -2,7 +2,7 @@ import { expect } from "chai";
 import {
   errIncorrectPlayerNumbers,
   polePosition,
-} from "../../src/models/pole-position";
+} from "src/models/pole-position";
 
 describe("Pole Position", function () {
   it("should return correct pole position (5 players)", function () {

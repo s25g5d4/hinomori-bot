@@ -1,4 +1,5 @@
-import { Interaction, CommandInteraction } from "discord.js";
+import { Interaction, ChatInputCommandInteraction } from "discord.js";
+import { isNil } from "lodash";
 import { logInteraction } from "src/utils/log-interaction";
 import { TagStore } from "src/store/tags";
 import { logger } from "../logger";
@@ -13,7 +14,7 @@ export class Commander {
     this.factory = new CommandFactory(profileStore, tagStore);
   }
 
-  private dispatch(interaction: CommandInteraction): Command {
+  private dispatch(interaction: ChatInputCommandInteraction): Command {
     const { commandName } = interaction;
 
     switch (commandName) {
@@ -40,7 +41,9 @@ export class Commander {
     return null;
   }
 
-  private dispatchProfileCommand(interaction: CommandInteraction): Command {
+  private dispatchProfileCommand(
+    interaction: ChatInputCommandInteraction,
+  ): Command {
     const subcommand = interaction.options.getSubcommand();
 
     switch (subcommand) {
@@ -59,7 +62,9 @@ export class Commander {
     return null;
   }
 
-  private dispatchRatioCommand(interaction: CommandInteraction): Command {
+  private dispatchRatioCommand(
+    interaction: ChatInputCommandInteraction,
+  ): Command {
     const subcommand = interaction.options.getSubcommand();
 
     switch (subcommand) {
@@ -79,7 +84,7 @@ export class Commander {
   }
 
   async execute(interaction: Interaction) {
-    if (!interaction.isCommand()) {
+    if (!interaction.isChatInputCommand()) {
       return;
     }
 
@@ -87,7 +92,7 @@ export class Commander {
 
     l.debug({ command: interaction.toString() }, "dispatching command");
     const cmd = this.dispatch(interaction);
-    if (cmd == null) {
+    if (isNil(cmd)) {
       l.warn({ command: interaction.toString() }, "unrecognized command");
       await interaction.reply("未知的指令");
       return;

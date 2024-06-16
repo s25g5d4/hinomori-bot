@@ -1,16 +1,13 @@
 import { expect } from "chai";
 import { User } from "discord.js";
 import { match } from "sinon";
-import { ActivateProfile } from "../../../../src/commands/user/profile/activate";
-import {
-  UserProfileRecord,
-  UserProfileType,
-} from "../../../../src/models/user-profile";
+import { ActivateProfile } from "src/commands/user/profile/activate";
+import { UserProfileRecord, UserProfileType } from "src/models/user-profile";
+import { logger } from "src/logger";
 import { StubInteraction } from "../../../mocks/interaction";
 import { StubUserProfileStore } from "../../../mocks/profile-store";
 import { genUserProfileRecord } from "../../../mocks/record";
 import { genUser } from "../../../mocks/user";
-import { logger } from "../../../../src/logger";
 
 describe("Profile Activate Command", function () {
   let users: User[] = [];
@@ -45,7 +42,7 @@ describe("Profile Activate Command", function () {
   it("should set activate profile and reply", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[0])
-      .withGetNumber(["index"], 2);
+      .withOptionsGet("index", 2);
 
     const stubProfileStore = new StubUserProfileStore()
       .withGet([match.string, users[0].id], records[0])
@@ -54,7 +51,7 @@ describe("Profile Activate Command", function () {
     const cmd = new ActivateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -72,9 +69,9 @@ describe("Profile Activate Command", function () {
   });
 
   it("should throw empty index error", async function () {
-    const stubInteraction = new StubInteraction().withGetNumber(
-      ["index"],
-      undefined
+    const stubInteraction = new StubInteraction().withOptionsGet(
+      "index",
+      undefined,
     );
 
     const stubProfileStore = new StubUserProfileStore();
@@ -82,7 +79,7 @@ describe("Profile Activate Command", function () {
     const cmd = new ActivateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -94,14 +91,14 @@ describe("Profile Activate Command", function () {
   });
 
   it("should throw index not a number error (NaN)", async function () {
-    const stubInteraction = new StubInteraction().withGetNumber(["index"], NaN);
+    const stubInteraction = new StubInteraction().withOptionsGet("index", NaN);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new ActivateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -113,9 +110,9 @@ describe("Profile Activate Command", function () {
   });
 
   it("should throw index not a number error (string)", async function () {
-    const stubInteraction = new StubInteraction().withGetNumber(
-      ["index"],
-      "NotANumber" as unknown as number
+    const stubInteraction = new StubInteraction().withOptionsGet(
+      "index",
+      "NotANumber" as unknown as number,
     );
 
     const stubProfileStore = new StubUserProfileStore();
@@ -123,7 +120,7 @@ describe("Profile Activate Command", function () {
     const cmd = new ActivateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -135,14 +132,14 @@ describe("Profile Activate Command", function () {
   });
 
   it("should throw index out of range error (< 1)", async function () {
-    const stubInteraction = new StubInteraction().withGetNumber(["index"], 0);
+    const stubInteraction = new StubInteraction().withOptionsGet("index", 0);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new ActivateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -154,14 +151,14 @@ describe("Profile Activate Command", function () {
   });
 
   it("should throw index out of range error (> 10)", async function () {
-    const stubInteraction = new StubInteraction().withGetNumber(["index"], 11);
+    const stubInteraction = new StubInteraction().withOptionsGet("index", 11);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new ActivateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -173,17 +170,14 @@ describe("Profile Activate Command", function () {
   });
 
   it("should throw index out of range error (floating point)", async function () {
-    const stubInteraction = new StubInteraction().withGetNumber(
-      ["index"],
-      1.25
-    );
+    const stubInteraction = new StubInteraction().withOptionsGet("index", 1.25);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new ActivateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -197,17 +191,17 @@ describe("Profile Activate Command", function () {
   it("should throw no profile record error", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[1])
-      .withGetNumber(["index"], 2);
+      .withOptionsGet("index", 2);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
       [match.string, users[1].id],
-      records[1]
+      records[1],
     );
 
     const cmd = new ActivateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -221,17 +215,17 @@ describe("Profile Activate Command", function () {
   it("should throw empty profile error", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[0])
-      .withGetNumber(["index"], 10);
+      .withOptionsGet("index", 10);
 
     const stubProfileStore = new StubUserProfileStore().withGet(
       [match.string, users[0].id],
-      records[0]
+      records[0],
     );
 
     const cmd = new ActivateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);

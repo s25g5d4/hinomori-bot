@@ -7,7 +7,7 @@ import {
   IndexOutOfRangeError,
   InvalidNickNameError,
   NoProfileRecordError,
-} from "../../../../src/commands/user/profile/25-miku-errors";
+} from "src/commands/user/profile/25-miku-errors";
 
 describe("Generate 25 Miku Profile Command Errors", function () {
   describe("EmptyNickNameError", function () {

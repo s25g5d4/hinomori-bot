@@ -9,7 +9,7 @@ import { ReplyFunc } from "./reply-func";
 
 export const errorReplies: Record<string, ReplyFunc> = {
   [errorIds.noEnoughPlayers]: (
-    data: PlayerNotEnoughErrorData
+    data: PlayerNotEnoughErrorData,
   ): InteractionReplyOptions => {
     const replyLines: string[] = [];
     if (data.hasDuplicatedPlayers) {
@@ -19,7 +19,7 @@ export const errorReplies: Record<string, ReplyFunc> = {
     return { content: replyLines.join("\n") };
   },
   [errorIds.emptyProfiles]: (
-    data: EmptyProfilesErrorData
+    data: EmptyProfilesErrorData,
   ): InteractionReplyOptions => {
     const userString = data.users.map((u) => `${u} (${u.username})`).join(" ");
     const allowedMentions: MessageMentionOptions = data.mention
@@ -28,7 +28,7 @@ export const errorReplies: Record<string, ReplyFunc> = {
     return { content: `${userString} 沒有設定編組。`, allowedMentions };
   },
   [errorIds.emptyActiveProfiles]: (
-    data: EmptyActiveProfilesErrorData
+    data: EmptyActiveProfilesErrorData,
   ): InteractionReplyOptions => {
     const userString = data.users.map((u) => `${u} (${u.username})`).join(" ");
     const allowedMentions: MessageMentionOptions = data.mention

@@ -6,7 +6,7 @@ import {
   InvalidOptionTypeError,
   OptionPowerOutOfRangeError,
   InvalidOptionCardsError,
-} from "../../../../src/commands/user/profile/update-errors";
+} from "src/commands/user/profile/update-errors";
 
 describe("Profile Update Command Errors", function () {
   describe("IndexNotANumberError", function () {
@@ -46,7 +46,7 @@ describe("Profile Update Command Errors", function () {
   describe("InvalidOptionTypeError", function () {
     it("should create", function () {
       expect(new InvalidOptionTypeError()).to.be.instanceOf(
-        InvalidOptionTypeError
+        InvalidOptionTypeError,
       );
     });
     it("should have correct id", function () {
@@ -65,7 +65,7 @@ describe("Profile Update Command Errors", function () {
   describe("InvalidOptionPowerError", function () {
     it("should create", function () {
       expect(new InvalidOptionPowerError()).to.be.instanceOf(
-        InvalidOptionPowerError
+        InvalidOptionPowerError,
       );
     });
     it("should have correct id", function () {
@@ -84,7 +84,7 @@ describe("Profile Update Command Errors", function () {
   describe("OptionPowerOutOfRangeError", function () {
     it("should create", function () {
       expect(new OptionPowerOutOfRangeError()).to.be.instanceOf(
-        OptionPowerOutOfRangeError
+        OptionPowerOutOfRangeError,
       );
     });
     it("should have correct id", function () {
@@ -103,7 +103,7 @@ describe("Profile Update Command Errors", function () {
   describe("InvalidOptionCardsError", function () {
     it("should create", function () {
       expect(new InvalidOptionCardsError()).to.be.instanceOf(
-        InvalidOptionCardsError
+        InvalidOptionCardsError,
       );
     });
     it("should have correct id", function () {

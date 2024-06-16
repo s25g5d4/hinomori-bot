@@ -20,24 +20,30 @@ export class UpdateTag extends InteractiveCommand {
   constructor(
     private l: Logger,
     interaction: CommandInteraction,
-    private tagStore: TagStore
+    private tagStore: TagStore,
   ) {
     super(interaction);
   }
 
   private async parseOptions(): Promise<UpdateTagOptions> {
-    const name = this.interaction.options.getString("name");
-    if (!name) {
+    const options: UpdateTagOptions = {
+      name: null,
+      values: null,
+    };
+    try {
+      options.name = this.getStringOption("name");
+    } catch (err) {
       throw new EmptyNameError();
     }
 
-    const value = this.interaction.options.getString("value");
-    if (!value) {
+    try {
+      const value = this.getStringOption("value");
+      options.values = splitValue(value);
+    } catch (err) {
       throw new EmptyValueError();
     }
-    const values = splitValue(value);
 
-    return { name, values };
+    return options;
   }
 
   @CatchExecuteError()

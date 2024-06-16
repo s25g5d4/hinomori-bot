@@ -3,7 +3,7 @@ import { User } from "discord.js";
 export function genUser(
   id: string,
   username: string,
-  discriminator: string
+  discriminator: string,
 ): User {
   return (<Partial<User>>{
     id,

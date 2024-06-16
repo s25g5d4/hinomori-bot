@@ -8,7 +8,7 @@ export const ratioCommands = [
       option
         .setName("cards")
         .setDescription("卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)")
-        .setRequired(true)
+        .setRequired(true),
     ),
   new SlashCommandBuilder()
     .setName("ratio")
@@ -21,10 +21,10 @@ export const ratioCommands = [
           option
             .setName("cards")
             .setDescription(
-              "卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)"
+              "卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)",
             )
-            .setRequired(true)
-        )
+            .setRequired(true),
+        ),
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -34,10 +34,10 @@ export const ratioCommands = [
           option
             .setName("cards")
             .setDescription(
-              "卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)"
+              "卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)",
             )
-            .setRequired(true)
-        )
+            .setRequired(true),
+        ),
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -47,10 +47,10 @@ export const ratioCommands = [
           option
             .setName("cards")
             .setDescription(
-              "卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)"
+              "卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)",
             )
-            .setRequired(true)
-        )
+            .setRequired(true),
+        ),
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -60,14 +60,14 @@ export const ratioCommands = [
           option
             .setName("cards")
             .setDescription(
-              "卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)"
+              "卡片倍率 (以 , 或空格分開，範例：130,110,110,100,100)",
             )
-            .setRequired(true)
-        )
+            .setRequired(true),
+        ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("server-version")
-        .setDescription("各服倍率計算公式版本")
+        .setDescription("各服倍率計算公式版本"),
     ),
 ].map((command) => command.toJSON());

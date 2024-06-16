@@ -5,7 +5,7 @@ describe("Ratio-TW Command Errors", function () {
   describe("InvalidOptionCardsError", function () {
     it("should create", function () {
       expect(new InvalidOptionCardsError()).to.be.instanceOf(
-        InvalidOptionCardsError
+        InvalidOptionCardsError,
       );
     });
     it("should have correct id", function () {

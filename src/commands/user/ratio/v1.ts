@@ -17,24 +17,23 @@ interface RatioV1Options {
 export class RatioV1 extends InteractiveCommand {
   private readonly ratioVer = ProfileRatioVersion.V1;
 
-  constructor(private l: Logger, interaction: CommandInteraction) {
+  constructor(
+    private l: Logger,
+    interaction: CommandInteraction,
+  ) {
     super(interaction);
   }
 
   private async parseOptions(): Promise<RatioV1Options> {
-    const cardsString = this.interaction.options.getString("cards");
-    if (typeof cardsString !== "string") {
-      throw new InvalidOptionCardsError();
-    }
-
-    let cardRatios: number[];
+    const options: RatioV1Options = { cardRatios: null };
     try {
-      cardRatios = parseCards(cardsString);
-    } catch (e) {
+      const cardsString = this.getStringOption("cards");
+      options.cardRatios = parseCards(cardsString);
+    } catch (err) {
       throw new InvalidOptionCardsError();
     }
 
-    return { cardRatios };
+    return options;
   }
 
   @CatchExecuteError()
@@ -50,7 +49,7 @@ export class RatioV1 extends InteractiveCommand {
     this.l.info("ratio v1 calculated");
     const ver = ProfileRatioVersionName[this.ratioVer];
     await this.interaction.reply(
-      `此組卡片倍率為 ${ratio.toFixed(2)} (${ver})。`
+      `此組卡片倍率為 ${ratio.toFixed(2)} (${ver})。`,
     );
   }
 }

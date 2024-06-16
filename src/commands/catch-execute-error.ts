@@ -10,7 +10,7 @@ type ExecuteCommandType = typeof InteractiveCommand.prototype.executeCommand;
 
 async function handleError(
   err: Error,
-  interaction: CommandInteraction
+  interaction: CommandInteraction,
 ): Promise<void> {
   if (!(err instanceof CommandError)) {
     throw err;
@@ -18,7 +18,7 @@ async function handleError(
 
   logger.info(
     { interaction: logInteraction(interaction), data: err.data },
-    err.message
+    err.message,
   );
   const getReplyMessage: ReplyFunc =
     errorReplies[err.errorId] ?? generalErrorMessage;
@@ -30,7 +30,7 @@ export function CatchExecuteError() {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     const originalMethod: ExecuteCommandType = descriptor.value;
     const newMethod: ExecuteCommandType = async function (
-      this: InteractiveCommand
+      this: InteractiveCommand,
     ) {
       try {
         return await originalMethod.apply(this);

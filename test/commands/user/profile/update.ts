@@ -2,12 +2,9 @@ import { expect } from "chai";
 import { User } from "discord.js";
 import { merge, range } from "lodash";
 import { match, stub } from "sinon";
-import { UpdateProfile } from "../../../../src/commands/user/profile/update";
-import { logger } from "../../../../src/logger";
-import {
-  UserProfileRecord,
-  UserProfileType,
-} from "../../../../src/models/user-profile";
+import { UpdateProfile } from "src/commands/user/profile/update";
+import { logger } from "src/logger";
+import { UserProfileRecord, UserProfileType } from "src/models/user-profile";
 import { StubInteraction } from "../../../mocks/interaction";
 import { StubUserProfileStore } from "../../../mocks/profile-store";
 import { genUserProfileRecord } from "../../../mocks/record";
@@ -41,10 +38,10 @@ describe("Profile Update Command", function () {
   it("should update profile and reply (no record, default index)", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[1])
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore()
       .withGet([match.string, users[1].id], records[1])
@@ -53,7 +50,7 @@ describe("Profile Update Command", function () {
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.be.equal(1);
@@ -83,10 +80,10 @@ describe("Profile Update Command", function () {
   it("should update profile and reply (has record, default index)", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[0])
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore()
       .withGet([match.string, users[0].id], records[0])
@@ -95,7 +92,7 @@ describe("Profile Update Command", function () {
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.be.equal(1);
@@ -125,10 +122,10 @@ describe("Profile Update Command", function () {
   it("should update profile and reply (no record, given index)", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[1])
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], 2);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", 2);
 
     const stubProfileStore = new StubUserProfileStore()
       .withGet([match.string, users[1].id], records[1])
@@ -137,7 +134,7 @@ describe("Profile Update Command", function () {
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.be.equal(1);
@@ -167,10 +164,10 @@ describe("Profile Update Command", function () {
   it("should update profile and reply (has record, given index)", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[0])
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], 2);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", 2);
 
     const stubProfileStore = new StubUserProfileStore()
       .withGet([match.string, users[0].id], records[0])
@@ -179,7 +176,7 @@ describe("Profile Update Command", function () {
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.be.equal(1);
@@ -210,10 +207,10 @@ describe("Profile Update Command", function () {
     for (const i of range(1, 11)) {
       const stubInteraction = new StubInteraction()
         .withUser(users[0])
-        .withGetString(["type"], "r")
-        .withGetNumber(["power"], 250000)
-        .withGetString(["cards"], "130,100,80,80,60")
-        .withGetNumber(["index"], i);
+        .withOptionsGet("type", "r")
+        .withOptionsGet("power", 250000)
+        .withOptionsGet("cards", "130,100,80,80,60")
+        .withOptionsGet("index", i);
 
       const stubProfileStore = new StubUserProfileStore()
         .withGet([match.string, users[0].id], records[0])
@@ -222,7 +219,7 @@ describe("Profile Update Command", function () {
       const cmd = new UpdateProfile(
         logger,
         stubInteraction.build(),
-        stubProfileStore.build()
+        stubProfileStore.build(),
       );
       expect(await cmd.executeCommand()).to.not.exist;
 
@@ -246,10 +243,10 @@ describe("Profile Update Command", function () {
   it("should allow using space as separator in option cards", async function () {
     const stubInteraction = new StubInteraction()
       .withUser(users[1])
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130 100 80 80 60")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130 100 80 80 60")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore()
       .withGet([match.string, users[1].id], records[1])
@@ -258,7 +255,7 @@ describe("Profile Update Command", function () {
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.be.equal(1);
@@ -273,17 +270,17 @@ describe("Profile Update Command", function () {
 
   it("should throw index not a number error (NaN)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], NaN);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", NaN);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.be.equal(1);
@@ -296,17 +293,17 @@ describe("Profile Update Command", function () {
 
   it("should throw index not a number error (string)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], "NotANumber" as unknown as number);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", "NotANumber" as unknown as number);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.be.equal(1);
@@ -319,17 +316,17 @@ describe("Profile Update Command", function () {
 
   it("should throw index out of range error (< 1)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], 0);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", 0);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -342,17 +339,17 @@ describe("Profile Update Command", function () {
 
   it("should throw index out of range error (> 10)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], 11);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", 11);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -365,17 +362,17 @@ describe("Profile Update Command", function () {
 
   it("should throw index out of range error (floating point)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], 1.25);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", 1.25);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -388,17 +385,17 @@ describe("Profile Update Command", function () {
 
   it("should throw invalid option type error (not string)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], 1 as unknown as string)
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", 1 as unknown as string)
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -411,17 +408,17 @@ describe("Profile Update Command", function () {
 
   it("should throw invalid option type error (unknown type)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "unknown")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "unknown")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
 
     // silence the unknown type error log message
@@ -438,17 +435,17 @@ describe("Profile Update Command", function () {
 
   it("should throw invalid option power error (string)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], "NotANumber" as unknown as number)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", "NotANumber" as unknown as number)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -461,17 +458,17 @@ describe("Profile Update Command", function () {
 
   it("should throw invalid option power error (NaN)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], NaN)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", NaN)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -484,17 +481,17 @@ describe("Profile Update Command", function () {
 
   it("should throw option power out of range error (< 10000)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 9999)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 9999)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -508,17 +505,17 @@ describe("Profile Update Command", function () {
 
   it("should throw option power out of range error (> 350000)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 350001)
-      .withGetString(["cards"], "130,100,80,80,60")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 350001)
+      .withOptionsGet("cards", "130,100,80,80,60")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -532,17 +529,17 @@ describe("Profile Update Command", function () {
 
   it("should throw invalid option cards error (not a string)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], 130 as unknown as string)
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", 130 as unknown as string)
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -555,17 +552,17 @@ describe("Profile Update Command", function () {
 
   it("should throw invalid option cards error (less than 4 cards)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -578,17 +575,17 @@ describe("Profile Update Command", function () {
 
   it("should throw invalid option cards error (more than 5 cards)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,100,80,80,60,40")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,100,80,80,60,40")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -601,17 +598,17 @@ describe("Profile Update Command", function () {
 
   it("should throw invalid option cards error (bad separator)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130|100|80|80|60")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130|100|80|80|60")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);
@@ -624,17 +621,17 @@ describe("Profile Update Command", function () {
 
   it("should throw invalid option cards error (not a number)", async function () {
     const stubInteraction = new StubInteraction()
-      .withGetString(["type"], "r")
-      .withGetNumber(["power"], 250000)
-      .withGetString(["cards"], "130,aaa,80,80,60")
-      .withGetNumber(["index"], undefined);
+      .withOptionsGet("type", "r")
+      .withOptionsGet("power", 250000)
+      .withOptionsGet("cards", "130,aaa,80,80,60")
+      .withOptionsGet("index", undefined);
 
     const stubProfileStore = new StubUserProfileStore();
 
     const cmd = new UpdateProfile(
       logger,
       stubInteraction.build(),
-      stubProfileStore.build()
+      stubProfileStore.build(),
     );
     expect(await cmd.executeCommand()).to.not.exist;
     expect(stubInteraction.fakeReply.callCount).to.equal(1);

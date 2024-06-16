@@ -5,7 +5,7 @@ import {
   IndexNotANumberError,
   IndexOutOfRangeError,
   NoProfileRecordError,
-} from "../../../../src/commands/user/profile/remove-errors";
+} from "src/commands/user/profile/remove-errors";
 
 describe("Profile Remove Command Errors", function () {
   describe("EmptyIndexError", function () {

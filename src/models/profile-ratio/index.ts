@@ -1,3 +1,4 @@
+import { isNil } from "lodash";
 import { config } from "src/config";
 import { ProfileRatioFn } from "./profile-ratio-fn";
 import { profileRatio as profileRatioV1 } from "./v1";
@@ -27,17 +28,36 @@ export const profileRatioFunctions: Record<
   [ProfileRatioVersion.V2]: profileRatioV2,
 };
 
-export const defaultVersion: ProfileRatioVersion =
-  (ProfileRatioVersion[config.defaultProfileRatioVersion as any] as any) ??
-  ProfileRatioVersion.V1;
+const isKeyOfProfileRatioVersion = (
+  ver: unknown,
+): ver is keyof typeof ProfileRatioVersion => {
+  return isNil(ProfileRatioVersion[ver as number]);
+};
+
+const fallback = (
+  ver: string,
+  defaultVer: ProfileRatioVersion,
+): ProfileRatioVersion => {
+  if (isKeyOfProfileRatioVersion(ver)) {
+    return ProfileRatioVersion[ver];
+  }
+  return defaultVer;
+};
+
+export const defaultVersion: ProfileRatioVersion = fallback(
+  config.defaultProfileRatioVersion,
+  ProfileRatioVersion.V1,
+);
 export const defaultProfileRatio = profileRatioFunctions[defaultVersion];
 
-export const twVersion: ProfileRatioVersion =
-  (ProfileRatioVersion[config.twProfileRatioVersion as any] as any) ??
-  ProfileRatioVersion.V1;
-export const jpVersion: ProfileRatioVersion =
-  (ProfileRatioVersion[config.jpProfileRatioVersion as any] as any) ??
-  ProfileRatioVersion.V2;
+export const twVersion: ProfileRatioVersion = fallback(
+  config.twProfileRatioVersion,
+  ProfileRatioVersion.V1,
+);
+export const jpVersion: ProfileRatioVersion = fallback(
+  config.jpProfileRatioVersion,
+  ProfileRatioVersion.V2,
+);
 export const twProfileRatio = profileRatioFunctions[twVersion];
 export const jpProfileRatio = profileRatioFunctions[jpVersion];
 

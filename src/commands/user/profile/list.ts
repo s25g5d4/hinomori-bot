@@ -17,7 +17,7 @@ export class ListProfile extends InteractiveCommand {
   constructor(
     private l: Logger,
     interaction: CommandInteraction,
-    private profileStore: UserProfileStore
+    private profileStore: UserProfileStore,
   ) {
     super(interaction);
   }
@@ -34,12 +34,19 @@ export class ListProfile extends InteractiveCommand {
   }
 
   private async parseOptions(): Promise<ListProfileOptions> {
-    let user = this.interaction.options.getUser("user");
-    if (user == null) {
-      user = this.interaction.user;
+    const options: ListProfileOptions = {
+      user: null,
+    };
+    try {
+      options.user = this.getUserOption("user");
+    } catch (err) {
+      // ignore error
+    }
+    if (isNil(options.user)) {
+      options.user = this.interaction.user;
     }
 
-    return { user };
+    return options;
   }
 
   @CatchExecuteError()
@@ -51,7 +58,7 @@ export class ListProfile extends InteractiveCommand {
     const { guild } = this.interaction;
     this.l.debug(
       { options: { user: logUser(targetUser) } },
-      "list profile options"
+      "list profile options",
     );
 
     const record = await this.getUserProfileRecord(guild.id, targetUser);

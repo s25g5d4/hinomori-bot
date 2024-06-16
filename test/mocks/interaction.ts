@@ -1,21 +1,24 @@
-import { CommandInteraction, Guild, User } from "discord.js";
+import {
+  ApplicationCommandOptionType,
+  CommandInteraction,
+  CommandInteractionOption,
+  CommandInteractionOptionResolver,
+  Guild,
+  User,
+} from "discord.js";
 import { fake, SinonStub, stub } from "sinon";
+import { has, isNil, isObject } from "lodash";
 import { genGuild } from "./guild";
 import { genUser } from "./user";
 
-type Options = typeof CommandInteraction.prototype.options;
-type GetUser = typeof CommandInteraction.prototype.options.getUser;
-type GetString = typeof CommandInteraction.prototype.options.getString;
-type GetNumber = typeof CommandInteraction.prototype.options.getNumber;
+type Get = CommandInteraction["options"]["get"];
 type Reply = typeof CommandInteraction.prototype.reply;
 
 export class StubInteraction {
   id = "default-interaction-id";
   user: User = genUser("issueCommandUser", "command-user", "0000");
   guild: Guild = genGuild("default-guild", "default guild");
-  fakeGetUser: SinonStub<Parameters<GetUser>, ReturnType<GetUser>>;
-  fakeGetString: SinonStub<Parameters<GetString>, ReturnType<GetString>>;
-  fakeGetNumber: SinonStub<Parameters<GetNumber>, ReturnType<GetNumber>>;
+  fakeGet: SinonStub<Parameters<Get>, ReturnType<Get>>;
   fakeReply = fake.resolves<Parameters<Reply>, ReturnType<Reply>>(null);
 
   withUser(user: User): StubInteraction {
@@ -28,44 +31,39 @@ export class StubInteraction {
     return this;
   }
 
-  withGetUser(
-    args: Parameters<typeof this.fakeGetUser.withArgs>,
-    returns: Parameters<typeof this.fakeGetUser.returns>[0]
+  withOptionsGet(
+    name: string,
+    returns: Parameters<typeof Option>[2],
   ): StubInteraction {
-    if (!this.fakeGetUser) {
-      this.fakeGetUser = stub();
+    if (!this.fakeGet) {
+      this.fakeGet = stub();
     }
-    this.fakeGetUser.withArgs(...args).returns(returns);
-    return this;
-  }
 
-  withGetNumber(
-    args: Parameters<typeof this.fakeGetNumber.withArgs>,
-    returns: Parameters<typeof this.fakeGetNumber.returns>[0]
-  ): StubInteraction {
-    if (!this.fakeGetNumber) {
-      this.fakeGetNumber = stub();
+    const isUser = (u: unknown): u is User => isObject(u) && has(u, "username");
+    let opt: CommandInteractionOption;
+    if (!isNil(returns)) {
+      if (typeof returns === "string") {
+        opt = Option(name, ApplicationCommandOptionType.String, returns);
+      }
+      if (typeof returns === "number") {
+        opt = Option(name, ApplicationCommandOptionType.Number, returns);
+      }
+      if (isUser(returns)) {
+        opt = Option(name, ApplicationCommandOptionType.User, returns);
+      }
+      if (isNil(opt)) {
+        throw new Error("invalid return value");
+      }
+    } else {
+      opt = returns;
     }
-    this.fakeGetNumber.withArgs(...args).returns(returns);
-    return this;
-  }
-
-  withGetString(
-    args: Parameters<typeof this.fakeGetString.withArgs>,
-    returns: Parameters<typeof this.fakeGetString.returns>[0]
-  ): StubInteraction {
-    if (!this.fakeGetString) {
-      this.fakeGetString = stub();
-    }
-    this.fakeGetString.withArgs(...args).returns(returns);
+    this.fakeGet.withArgs(name).returns(opt);
     return this;
   }
 
   build(): CommandInteraction {
-    const options: Partial<Options> = {
-      getUser: this.fakeGetUser,
-      getNumber: this.fakeGetNumber,
-      getString: this.fakeGetString,
+    const options: Partial<CommandInteractionOptionResolver> = {
+      get: this.fakeGet,
     };
 
     return (<Omit<Partial<CommandInteraction>, "valueOf">>{
@@ -76,4 +74,25 @@ export class StubInteraction {
       reply: this.fakeReply as unknown,
     }) as CommandInteraction;
   }
+}
+
+export function Option(
+  name: string,
+  type: ApplicationCommandOptionType,
+  val?: User | string | number,
+): CommandInteractionOption {
+  const opt: Partial<CommandInteractionOption> = { name, type };
+
+  switch (type) {
+    case ApplicationCommandOptionType.User:
+      opt.user = val as User;
+      break;
+
+    case ApplicationCommandOptionType.String:
+    case ApplicationCommandOptionType.Number:
+      opt.value = val as string | number;
+      break;
+  }
+
+  return opt as CommandInteractionOption;
 }

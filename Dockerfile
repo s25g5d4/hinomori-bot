@@ -1,4 +1,4 @@
-FROM node:16-alpine3.16 AS build-layer
+FROM node:20-alpine3.20 AS build-layer
 
 WORKDIR /opt/hinomori-bot
 RUN apk add --no-cache python3 make g++
@@ -13,7 +13,7 @@ RUN npm run lint && \
 
 RUN npm prune --production
 
-FROM node:16-alpine3.16 AS service-layer
+FROM node:20-alpine3.20 AS service-layer
 
 WORKDIR /opt/hinomori-bot
 COPY --from=build-layer /opt/hinomori-bot/package.json .

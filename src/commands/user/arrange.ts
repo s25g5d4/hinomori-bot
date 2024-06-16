@@ -1,5 +1,6 @@
 import { CommandInteraction, MessageMentionOptions, User } from "discord.js";
 import { Logger } from "pino";
+import { isNil } from "lodash";
 import { UserProfileStore } from "src/store/user-profiles";
 import {
   formatUserProfile,
@@ -10,7 +11,7 @@ import {
 import { polePosition } from "src/models/pole-position";
 import { logUser } from "src/utils/log-user";
 import { defaultVersion } from "src/models/profile-ratio";
-import { InteractiveCommand } from "../interactive-command";
+import { InteractiveCommand, NullOptionError } from "../interactive-command";
 import { CatchExecuteError } from "../catch-execute-error";
 import {
   EmptyActiveProfilesError,
@@ -32,14 +33,14 @@ export class ArrangePlayers extends InteractiveCommand {
     private l: Logger,
     interaction: CommandInteraction,
     private profileStore: UserProfileStore,
-    private mention: boolean
+    private mention: boolean,
   ) {
     super(interaction);
   }
 
   private checkEmptyRecords(records: UserProfileRecord[]): number[] | null {
     const emptyRecordIndices = records
-      .map((p, i) => (p == null ? i : null))
+      .map((p, i) => (isNil(p) ? i : null))
       .filter((n) => n != null);
     if (emptyRecordIndices.length === 0) {
       return null;
@@ -49,7 +50,7 @@ export class ArrangePlayers extends InteractiveCommand {
 
   private checkEmptyProfiles(records: UserProfile[]): number[] | null {
     const emptyProfileIndices = records
-      .map((p, i) => (p == null ? i : null))
+      .map((p, i) => (isNil(p) ? i : null))
       .filter((n) => n != null);
     if (emptyProfileIndices.length === 0) {
       return null;
@@ -59,13 +60,13 @@ export class ArrangePlayers extends InteractiveCommand {
 
   private async getActiveUserProfiles(
     guild: string,
-    players: User[]
+    players: User[],
   ): Promise<UserProfile[]> {
     const playerRecords = await Promise.all(
-      players.map((p) => this.profileStore.get(guild, p.id))
+      players.map((p) => this.profileStore.get(guild, p.id)),
     );
     const emptyRecordPlayers = this.checkEmptyRecords(playerRecords)?.map(
-      (n) => players[n]
+      (n) => players[n],
     );
     if (emptyRecordPlayers != null) {
       throw new EmptyProfilesError(emptyRecordPlayers, this.mention);
@@ -73,7 +74,7 @@ export class ArrangePlayers extends InteractiveCommand {
 
     const playerProfiles = playerRecords.map((p) => p.profiles[p.active]);
     const emptyProfilePlayers = this.checkEmptyProfiles(playerProfiles)?.map(
-      (n) => players[n]
+      (n) => players[n],
     );
     if (emptyProfilePlayers != null) {
       throw new EmptyActiveProfilesError(emptyProfilePlayers, this.mention);
@@ -101,11 +102,23 @@ export class ArrangePlayers extends InteractiveCommand {
     }
   }
 
+  private getPlayer(index: number): User {
+    try {
+      const user = this.getUserOption(`player${index + 1}`);
+      return user;
+    } catch (err) {
+      if (err instanceof NullOptionError) {
+        return null;
+      }
+      throw err;
+    }
+  }
+
   private async parseOptions(): Promise<ArrangePlayersOptions> {
     const players = Array(5)
       .fill(undefined)
-      .map((_, i) => this.interaction.options.getUser(`player${i + 1}`))
-      .filter((u) => u != null);
+      .map((_, i) => this.getPlayer(i))
+      .filter((u) => !isNil(u));
     return { players };
   }
 
@@ -121,7 +134,7 @@ export class ArrangePlayers extends InteractiveCommand {
         options: { players: logUser(players) },
         mention: this.mention,
       },
-      "arrange players options"
+      "arrange players options",
     );
 
     const deduped = this.checkDuplicatedPlayers(players);
@@ -134,7 +147,7 @@ export class ArrangePlayers extends InteractiveCommand {
     const position = polePosition(ratios);
     const skill6Player = profiles.reduce(
       (p, c, i, arr) => (arr[p].power > c.power ? p : i),
-      0
+      0,
     );
     const profileLines = position.map((n, i) => {
       const profileString = formatUserProfile(profiles[n], defaultVersion);
@@ -148,7 +161,7 @@ export class ArrangePlayers extends InteractiveCommand {
     }
     replyLines.push(
       `推薦站位：${position.map((n) => players[n])}`,
-      ...profileLines
+      ...profileLines,
     );
 
     const allowedMentions: MessageMentionOptions = this.mention
