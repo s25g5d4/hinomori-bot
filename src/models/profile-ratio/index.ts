@@ -31,7 +31,7 @@ export const profileRatioFunctions: Record<
 const isKeyOfProfileRatioVersion = (
   ver: unknown,
 ): ver is keyof typeof ProfileRatioVersion => {
-  return isNil(ProfileRatioVersion[ver as number]);
+  return !isNil(ProfileRatioVersion[ver as keyof typeof ProfileRatioVersion]);
 };
 
 const fallback = (
