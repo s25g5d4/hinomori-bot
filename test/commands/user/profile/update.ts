@@ -503,10 +503,10 @@ describe("Profile Update Command", function () {
     ]);
   });
 
-  it("should throw option power out of range error (> 350000)", async function () {
+  it("should throw option power out of range error (>= 500000)", async function () {
     const stubInteraction = new StubInteraction()
       .withOptionsGet("type", "r")
-      .withOptionsGet("power", 350001)
+      .withOptionsGet("power", 500000)
       .withOptionsGet("cards", "130,100,80,80,60")
       .withOptionsGet("index", undefined);
 
