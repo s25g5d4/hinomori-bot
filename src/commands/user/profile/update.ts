@@ -9,6 +9,8 @@ import {
 } from "src/models/user-profile";
 import { UserProfileStore } from "src/store/user-profiles";
 import { defaultVersion } from "src/models/profile-ratio";
+import { config } from "src/config";
+import { logger } from "src/logger";
 import { InteractiveCommand, NullOptionError } from "../../interactive-command";
 import { CatchExecuteError } from "../../catch-execute-error";
 import {
@@ -19,6 +21,27 @@ import {
   InvalidOptionTypeError,
   OptionPowerOutOfRangeError,
 } from "./update-errors";
+
+const minProfilePower = parseInt(config.minProfilePower, 10);
+const maxProfilePower = parseInt(config.maxProfilePower, 10);
+
+if (isNaN(minProfilePower)) {
+  const msg = "invalid min profile power";
+  logger.fatal({ value: config.minProfilePower }, msg);
+  throw new Error(msg);
+}
+
+if (isNaN(maxProfilePower)) {
+  const msg = "invalid max profile power";
+  logger.fatal({ value: config.maxProfilePower }, msg);
+  throw new Error(msg);
+}
+
+if (minProfilePower > maxProfilePower) {
+  const msg = "min profile power is greater than max profile power";
+  logger.fatal({ minProfilePower, maxProfilePower }, msg);
+  throw new Error(msg);
+}
 
 interface UpdateProfileOptions {
   type: UserProfileType;
@@ -80,7 +103,7 @@ export class UpdateProfile extends InteractiveCommand {
     if (isNaN(power)) {
       throw new InvalidOptionPowerError();
     }
-    if (power < 10000 || power > 350000) {
+    if (power < minProfilePower || power >= maxProfilePower) {
       throw new OptionPowerOutOfRangeError();
     }
     return power;

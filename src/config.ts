@@ -9,4 +9,6 @@ export const config = {
   jpProfileRatioVersion: process.env.JP_PROFILE_RATIO_VERSION ?? "V2",
   app: process.env.APP_NAME ?? "Hinomori",
   logLevel: process.env.LOG_LEVEL ?? "debug",
+  minProfilePower: process.env.MIN_PROFILE_POWER ?? "10000",
+  maxProfilePower: process.env.MAX_PROFILE_POWER ?? "500000",
 };
